@@ -5,7 +5,8 @@ program budgetGO;
 {$R *.res}
 
 uses
-  System.SysUtils;
+  System.SysUtils,
+  UnitTOperation in 'models\UnitTOperation.pas';
 
 begin
   try
