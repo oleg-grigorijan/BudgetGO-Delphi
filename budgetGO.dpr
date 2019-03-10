@@ -6,7 +6,8 @@ program budgetGO;
 
 uses
   System.SysUtils,
-  UnitTOperation in 'models\UnitTOperation.pas';
+  UnitTOperation in 'models\UnitTOperation.pas',
+  UnitTOperationListNode in 'models\UnitTOperationListNode.pas';
 
 begin
   try
