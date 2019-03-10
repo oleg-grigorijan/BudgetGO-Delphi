@@ -12,10 +12,11 @@ type
     protected
       head: TOperationListNode;
       last: TOperationListNode;
+      fileName: string[255];
     public
       count: Longword;
-      //constructor create(const filename: string); overload;
-      //destructor destroy();
+      constructor create(const filename: string); overload;
+      destructor destroy(); override;
       function getItemsMaxId(): Longword;
       procedure addNode(const item: POperation);
       function getItem(const id: Longword): POperation;
@@ -25,6 +26,49 @@ type
   end;
 
 implementation
+
+constructor TOperationList.create(const filename: string);
+var
+  f: File of TOperation;
+  itemTmp: POperation;
+begin
+  inherited create();
+  self.fileName := filename;
+  assignFile(f, self.fileName);
+  if not fileExists(self.filename) then
+    rewrite(f)
+  else
+  begin
+    reset(f);
+    while not eof(f) do
+    begin
+      new(itemTmp);
+      read(f, itemTmp^);
+      self.addNode(itemTmp);
+    end;
+  end;
+  closeFile(f);
+end;
+
+destructor TOperationList.destroy();
+var
+  f: File of TOperation;
+  nodeCurr: TOperationListNode;
+begin
+  if self.fileName <> '' then
+  begin
+    assignFile(f, self.fileName);
+    rewrite(f);
+    nodeCurr := self.head;
+    while nodeCurr <> nil do
+    begin
+      write(f, nodeCurr.item^);
+      nodeCurr := nodeCurr.next;
+    end;
+    closeFile(f);
+  end;
+  inherited destroy();
+end;
 
 function TOperationList.getItemsMaxId(): Longword;
 var

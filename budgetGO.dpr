@@ -10,14 +10,23 @@ uses
   UnitTOperationListNode in 'models\UnitTOperationListNode.pas',
   UnitTOperationList in 'models\UnitTOperationList.pas';
 
+const
+  dataDName = 'data';
+  operFName = 'data/operations.godev';
+
 var
   operList: TOperationList;
   operTmp: POperation;
+  i: integer;
 
 begin
   try
-    operList := TOperationList.create;
+    if not directoryExists(dataDName) then
+      createDir(dataDName);
+    operList := TOperationList.create(operFName);
+
     readln;
+
     operList.destroy()
   except
     on E: Exception do
