@@ -9,15 +9,15 @@ uses
 
 type
   TOperationList = class
-    protected
+    private
       head: TOperationListNode;
       last: TOperationListNode;
       fileName: string[255];
+      maxId: Integer;
     public
       count: Integer;
       constructor create(const filename: string); overload;
       destructor destroy(); override;
-      function getItemsMaxId(): Integer;
       procedure addNode(const item: POperation);
       function getItem(const id: Integer): POperation;
       function removeNode(const id: Integer;
@@ -77,20 +77,6 @@ begin
   inherited destroy();
 end;
 
-function TOperationList.getItemsMaxId(): Integer;
-var
-  nodeCurr: TOperationListnode;
-begin
-  result := 0;
-  nodeCurr := self.head;
-  while nodeCurr <> nil do
-  begin
-    if nodeCurr.item^.id > result then
-      result := nodeCurr.item^.id;
-    nodeCurr := nodeCurr.next;
-  end;
-end;
-
 procedure TOperationList.addNode(const item: POperation);
 var
   node, nodeCurr: TOperationListNode;
@@ -125,6 +111,13 @@ begin
     end;
     self.head := node;
   end;
+  if item^.id = 0 then
+  begin
+    inc(self.maxId);
+    item^.id := self.maxId;
+  end
+  else if item^.id > self.maxId then
+    self.maxId := item^.id;
   inc(self.count);
 end;
 
