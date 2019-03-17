@@ -24,7 +24,15 @@ begin
     if not directoryExists(dataDName) then
       createDir(dataDName);
     operList := TOperationList.create(operFName);
-
+    {
+    for i := 0 to 10000 do
+    begin
+      new(operTmp);
+      operTmp^.id := operList.getItemsMaxId + 1;
+      operList.addNode(operTmp);
+    end;
+    operlist.consoleOutput;
+    }
     readln;
 
     operList.destroy()
