@@ -14,18 +14,25 @@ type
       last: TOperationListNode;
       fileName: string[255];
     public
-      count: Longword;
+      count: Integer;
       constructor create(const filename: string); overload;
       destructor destroy(); override;
-      function getItemsMaxId(): Longword;
+      function getItemsMaxId(): Integer;
       procedure addNode(const item: POperation);
-      function getItem(const id: Longword): POperation;
-      function removeNode(const id: Longword;
+      function getItem(const id: Integer): POperation;
+      function removeNode(const id: Integer;
         const destroyItem: Boolean = true): Boolean;
       procedure consoleOutput();
   end;
 
+var
+  operList: TOperationList;
+
 implementation
+
+const
+  dataDName = 'data';
+  operFName = 'data/operations.godev';
 
 constructor TOperationList.create(const filename: string);
 var
@@ -70,7 +77,7 @@ begin
   inherited destroy();
 end;
 
-function TOperationList.getItemsMaxId(): Longword;
+function TOperationList.getItemsMaxId(): Integer;
 var
   nodeCurr: TOperationListnode;
 begin
@@ -121,7 +128,7 @@ begin
   inc(self.count);
 end;
 
-function TOperationList.getItem(const id: Longword): POperation;
+function TOperationList.getItem(const id: Integer): POperation;
 var
   nodeCurr: TOperationListNode;
 begin
@@ -138,7 +145,7 @@ begin
   end;
 end;
 
-function TOperationList.removeNode(const id: Longword;
+function TOperationList.removeNode(const id: Integer;
   const destroyItem: Boolean = true): Boolean;
 var
   nodeCurr: TOperationListNode;
@@ -180,24 +187,21 @@ procedure TOperationList.consoleOutput();
 var
   nodeCurr: TOperationListNode;
 begin
-  writeln(self.count, ' элементов в списке:');
+  writeln(self.count, ' элементов в списке операций:');
   nodeCurr := self.head;
   while nodeCurr <> nil do
   begin
-    writeln('id: ',nodeCurr.item^.id);
-    write('  тип: ');
-    case nodeCurr.item^.tp of
-      income: writeln('доход');
-      outcome: writeln('расход');
-    end;
-    writeln('  сумма: ', nodeCurr.item^.money div 100,
-      ' руб. ', nodeCurr.item^.money mod 100, ' коп.');
-    writeln('  id хранилища: ', nodeCurr.item^.storageId);
-    writeln('  id категории: ', nodeCurr.item^.categoryId);
-    writeln('  дата: ', dateToStr(nodeCurr.item^.date));
-    writeln('  описание: ', nodeCurr.item^.description);
+    nodeCurr.item^.consoleOutput();
     nodeCurr := nodeCurr.next;
   end;
 end;
+
+initialization
+  if not directoryExists(dataDName) then
+    createDir(dataDName);
+  operList := TOperationList.create(operFName);
+
+finalization
+  operList.destroy();
 
 end.
