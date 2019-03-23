@@ -5,35 +5,22 @@ interface
 uses
   System.SysUtils;
 
+const
+  DESC_LEN = 32;
+
 type
   TOperationType = (income, outcome);
   TOperation = record
     id: Integer;
     tp: TOperationType;
     money: Longword;
-    categoryId: Integer;
-    date: TDateTime;
-    description: string[255];
-    procedure consoleOutput();
+    catId: Integer;
+    date: TDate;
+    description: string[DESC_LEN];
   end;
-  TOperations = array of TOperation;
   POperation = ^TOperation;
+  TOperations = array of POperation;
 
 implementation
-
-procedure TOperation.consoleOutput();
-begin
-  writeln('id: ', self.id);
-  write('  тип: ');
-  case self.tp of
-    income: writeln('доход');
-    outcome: writeln('расход');
-  end;
-  writeln('  сумма: ', self.money div 100,
-    ' руб. ', self.money mod 100, ' коп.');
-  writeln('  id категории: ', self.categoryId);
-  writeln('  дата: ', dateToStr(self.date));
-  writeln('  описание: ', self.description);
-end;
 
 end.

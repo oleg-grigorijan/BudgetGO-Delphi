@@ -22,7 +22,6 @@ type
       function getItem(const id: Integer): POperation;
       function removeNode(const id: Integer;
         const destroyItem: Boolean = true): Boolean;
-      procedure consoleOutput();
   end;
 
 var
@@ -172,19 +171,6 @@ begin
       result := true;
       break;
     end;
-    nodeCurr := nodeCurr.next;
-  end;
-end;
-
-procedure TOperationList.consoleOutput();
-var
-  nodeCurr: TOperationListNode;
-begin
-  writeln(self.count, ' элементов в списке операций:');
-  nodeCurr := self.head;
-  while nodeCurr <> nil do
-  begin
-    nodeCurr.item^.consoleOutput();
     nodeCurr := nodeCurr.next;
   end;
 end;
