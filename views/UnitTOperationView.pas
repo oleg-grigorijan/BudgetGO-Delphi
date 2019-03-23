@@ -31,6 +31,7 @@ type
   public
     procedure prepareToCreate(tp: TOperationType);
     procedure prepareToEdit(id: Integer);
+    procedure prepareToRepeat(id: Integer);
   end;
 
 var
@@ -69,13 +70,13 @@ end;
 
 procedure TOperationView.prepareToCreate(tp: TOperationType);
 begin
+  btnSave.visible := false;
+  btnCreate.visible := true;
   case tp of
     income: lblTp.caption := 'Новый доход';
     outcome: lblTp.caption := 'Новый расход';
   end;
   lblTp.tag := ord(tp);
-  btnSave.visible := false;
-  btnCreate.visible := true;
   edtRubles.text := '0';
   edtPenny.text := '0';
   // category
@@ -111,6 +112,29 @@ begin
     edtDescription.text := description;
     dtpDate.date := date;
   end;
+  dtpDate.maxDate := date();
+end;
+
+procedure TOperationView.prepareToRepeat(id: Integer);
+var
+  item: POperation;
+begin
+  btnSave.visible := false;
+  btnCreate.Visible := true;
+  item := operList.getItem(id);
+  with item^ do
+  begin
+    case tp of
+      income: lblTp.caption := 'Новый доход';
+      outcome: lblTp.caption := 'Новый расход';
+    end;
+    lblTp.tag := ord(tp);
+    edtRubles.text := intToStr(money div 100);
+    edtPenny.text := intToStr(money mod 100);
+    edtDescription.text := description;
+  end;
+  dtpDate.maxDate := date();
+  dtpDate.date := date();
 end;
 
 end.

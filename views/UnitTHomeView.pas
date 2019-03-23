@@ -31,6 +31,7 @@ type
     shpHeaderBG: TShape;
     shpIncome: TShape;
     shpOutcome: TShape;
+    miRepeat: TMenuItem;
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
     procedure actionOperationSelect(Sender: TObject;
@@ -115,7 +116,9 @@ begin
   else if Sender = btnCreateOutcome then
     operationView.prepareToCreate(outcome)
   else if Sender = miEdit then
-    operationView.prepareToEdit(grdOperations.tag);
+    operationView.prepareToEdit(grdOperations.tag)
+  else if Sender = miRepeat then
+    operationView.prepareToRepeat(grdOperations.tag);
   operationView.ShowModal;
   if operationView.ModalResult = mrOk then
   begin
