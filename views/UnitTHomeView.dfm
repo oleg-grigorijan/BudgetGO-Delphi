@@ -220,8 +220,10 @@ object homeView: ThomeView
     FixedCols = 0
     GradientEndColor = clWhite
     Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
+    PopupMenu = pmOperation
     ScrollBars = ssVertical
     TabOrder = 2
+    OnMouseDown = actionOperationSelect
     ColWidths = (
       29
       57
@@ -274,5 +276,13 @@ object homeView: ThomeView
     ParentFont = False
     TabOrder = 4
     OnChange = actionUpdateStatistics
+  end
+  object pmOperation: TPopupMenu
+    Left = 640
+    Top = 344
+    object miDelete: TMenuItem
+      Caption = '&'#1059#1076#1072#1083#1080#1090#1100
+      OnClick = actionOperationDelete
+    end
   end
 end

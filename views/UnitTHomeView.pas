@@ -28,9 +28,15 @@ type
     shp3: TShape;
     shpIncome: TShape;
     shpOutcome: TShape;
+    pmOperation: TPopupMenu;
+    miDelete: TMenuItem;
     procedure actionInit(Sender: TObject);
     procedure actionOperationView(Sender: TObject);
     procedure actionUpdateStatistics(Sender: TObject);
+    procedure actionOperationDelete(Sender: TObject);
+    procedure actionOperationSelect(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState;
+      X, Y: Integer);
   private
     opersCurr: TOperations;
   public
@@ -77,6 +83,42 @@ begin
     dataUpdate();
     messageBox(handle, 'Операция успешно сохранена', PChar('Уведомление'),
       MB_OK + MB_ICONINFORMATION);
+  end;
+end;
+
+procedure THomeView.actionOperationDelete(Sender: TObject);
+var
+  answer: Integer;
+begin
+  if grdOperations.tag <> 0 then
+  begin
+    answer := MessageBox(handle, 'Вы действительно хотите удалить операцию?' +
+      #13#10 + 'Удалённые данные будет невозможно восстановить.',
+      'Уведомление', MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2);
+    if answer = IDYES then
+    begin
+      operList.removeNode(grdOperations.tag);
+      dataUpdate();
+    end;
+  end;
+end;
+
+procedure THomeView.actionOperationSelect(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  col, row: Integer;
+begin
+  grdOperations.mouseToCell(X, Y, col, row);
+  grdOperations.col := col;
+  if grdOperations.rowCount = 1 then
+    grdOperations.tag := 0
+  else
+  begin
+    if row = 0 then
+      grdOperations.row := 1
+    else
+      grdOperations.row := row;
+    grdOperations.tag := opersCurr[grdOperations.row - 1]^.id;
   end;
 end;
 
