@@ -69,6 +69,7 @@ object homeView: ThomeView
     Height = 25
     Caption = #1044#1086#1093#1086#1076
     TabOrder = 0
+    OnClick = actionOperationView
   end
   object btnCreateOutcome: TButton
     Left = 376
@@ -77,5 +78,6 @@ object homeView: ThomeView
     Height = 25
     Caption = #1056#1072#1089#1093#1086#1076
     TabOrder = 1
+    OnClick = actionOperationView
   end
 end

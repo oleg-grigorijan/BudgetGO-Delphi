@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperationList;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperationView, UnitTOperationList, UnitTOperation;
 
 type
   THomeView = class(TForm)
@@ -15,6 +15,7 @@ type
     btnCreateIncome: TButton;
     btnCreateOutcome: TButton;
     procedure actionInit(Sender: TObject);
+    procedure actionOperationView(Sender: TObject);
   private
 
   public
@@ -31,6 +32,23 @@ implementation
 procedure THomeView.actionInit(Sender: TObject);
 begin
   dataUpdate();
+end;
+
+procedure THomeView.actionOperationView(Sender: TObject);
+begin
+  if not assigned(operationView) then
+    operationView := TOperationView.create(self);
+  if Sender = btnCreateIncome then
+    operationView.prepareToCreate(income)
+  else if Sender = btnCreateOutcome then
+    operationView.prepareToCreate(outcome);
+  operationView.ShowModal;
+  if operationView.ModalResult = mrOk then
+  begin
+    dataUpdate();
+    messageBox(handle, 'Операция успешно сохранена', PChar('Уведомление'),
+      MB_OK + MB_ICONINFORMATION);
+  end;
 end;
 
 procedure THomeView.dataUpdate();
