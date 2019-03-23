@@ -14,14 +14,16 @@ type
       last: TOperationListNode;
       fileName: string[255];
       maxId: Integer;
-    public
       count: Integer;
+      balance: Integer;
+    public
       constructor create(const filename: string); overload;
       destructor destroy(); override;
       procedure addNode(const item: POperation);
       function getItem(const id: Integer): POperation;
       function removeNode(const id: Integer;
         const destroyItem: Boolean = true): Boolean;
+      function getBalance(): Integer;
   end;
 
 var
@@ -117,6 +119,10 @@ begin
   end
   else if item^.id > self.maxId then
     self.maxId := item^.id;
+    if item^.tp = income then
+      self.balance := self.balance + item^.money
+    else if item^.tp = outcome then
+      self.balance := self.balance - item^.money;
   inc(self.count);
 end;
 
@@ -164,6 +170,10 @@ begin
         else
           (self.head).prev := nil
       end;
+      if nodeCurr.item^.tp = income then
+        self.balance := self.balance - nodeCurr.item^.money
+      else if nodeCurr.item^.tp = outcome then
+        self.balance := self.balance + nodeCurr.item^.money;
       if destroyItem then
         dispose(nodeCurr.item);
       nodeCurr.destroy();
@@ -173,6 +183,11 @@ begin
     end;
     nodeCurr := nodeCurr.next;
   end;
+end;
+
+function TOperationList.getBalance(): Integer;
+begin
+  result := self.balance;
 end;
 
 initialization
