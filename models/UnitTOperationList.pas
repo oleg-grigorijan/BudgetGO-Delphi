@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils,
+  DateUtils,
   UnitTOperationListNode,
   UnitTOperation;
 
@@ -21,6 +22,8 @@ type
       destructor destroy(); override;
       procedure addNode(const item: POperation);
       function getItem(const id: Integer): POperation;
+      function getItems(const month, year: Integer;
+        var incomeMonth, outcomeMonth: Longword): TOperations;
       function removeNode(const id: Integer;
         const destroyItem: Boolean = true): Boolean;
       function getBalance(): Integer;
@@ -140,6 +143,40 @@ begin
       break;
     end;
     nodeCurr := nodeCurr.next;
+  end;
+end;
+
+function TOperationList.getItems(const month, year: Integer;
+  var incomeMonth, outcomeMonth: Longword): TOperations;
+var
+  nodeCurr: TOperationListNode;
+  found: Integer;
+begin
+  found := 0;
+  incomeMonth := 0;
+  outcomeMonth := 0;
+  setLength(result, found);
+  nodeCurr := self.last;
+  while (nodeCurr <> nil) and
+    ((yearOf(nodeCurr.item^.date) <> year) or
+    (monthOfTheYear(nodeCurr.item^.date) <> month)) do
+  begin
+    nodeCurr := nodeCurr.prev;
+  end;
+  while (nodeCurr <> nil) and
+    ((yearOf(nodeCurr.item^.date) = year) and
+    (monthOfTheYear(nodeCurr.item^.date) = month)) do
+  begin
+    inc(found);
+    setLength(result, found);
+    result[found - 1] := nodeCurr.item;
+    case nodeCurr.item^.tp of
+      income:
+        incomeMonth := incomeMonth + nodeCurr.item^.money;
+      outcome:
+        outcomeMonth := outcomeMonth + nodeCurr.item^.money;
+    end;
+    nodeCurr := nodeCurr.prev;
   end;
 end;
 
