@@ -17,7 +17,7 @@ object homeView: ThomeView
   OnCreate = actionInit
   PixelsPerInch = 120
   TextHeight = 16
-  object shp3: TShape
+  object shpHeaderBG: TShape
     Left = -8
     Top = 47
     Width = 701
@@ -67,7 +67,7 @@ object homeView: ThomeView
     ParentBiDiMode = False
     ParentFont = False
   end
-  object Label1: TLabel
+  object lblNewOperationBefore: TLabel
     Left = 369
     Top = 65
     Width = 104
@@ -106,7 +106,7 @@ object homeView: ThomeView
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object lblIncomeAfter: TLabel
+  object lblIncomeBefore: TLabel
     Left = 40
     Top = 230
     Width = 107
@@ -134,7 +134,7 @@ object homeView: ThomeView
     ParentBiDiMode = False
     ParentFont = False
   end
-  object lbl1: TLabel
+  object lblOutcomeBefore: TLabel
     Left = 187
     Top = 230
     Width = 110
@@ -230,12 +230,12 @@ object homeView: ThomeView
       109
       90
       41
-      371)
+      373)
   end
   object cbbMonth: TComboBox
-    Left = 167
+    Left = 179
     Top = 188
-    Width = 88
+    Width = 83
     Height = 25
     HelpType = htKeyword
     Style = csDropDownList
@@ -262,9 +262,9 @@ object homeView: ThomeView
       #1044#1077#1082#1072#1073#1088#1100)
   end
   object cbbYear: TComboBox
-    Left = 254
+    Left = 268
     Top = 188
-    Width = 88
+    Width = 52
     Height = 25
     HelpType = htKeyword
     Style = csDropDownList
@@ -280,6 +280,10 @@ object homeView: ThomeView
   object pmOperation: TPopupMenu
     Left = 640
     Top = 344
+    object miEdit: TMenuItem
+      Caption = '&'#1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
+      OnClick = actionOperationView
+    end
     object miDelete: TMenuItem
       Caption = '&'#1059#1076#1072#1083#1080#1090#1100
       OnClick = actionOperationDelete

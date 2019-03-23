@@ -18,7 +18,7 @@ object OperationView: TOperationView
   Position = poMainFormCenter
   PixelsPerInch = 120
   TextHeight = 16
-  object lbl2: TLabel
+  object lblRublesAfter: TLabel
     Left = 107
     Top = 77
     Width = 26
@@ -31,7 +31,7 @@ object OperationView: TOperationView
     Font.Style = []
     ParentFont = False
   end
-  object lbl3: TLabel
+  object lblPennyAfter: TLabel
     Left = 228
     Top = 77
     Width = 24
@@ -44,7 +44,7 @@ object OperationView: TOperationView
     Font.Style = []
     ParentFont = False
   end
-  object lbl1: TLabel
+  object lblMoneyBefore: TLabel
     Left = 18
     Top = 59
     Width = 42
@@ -57,7 +57,7 @@ object OperationView: TOperationView
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object lbl4: TLabel
+  object lblCategoryBefore: TLabel
     Left = 18
     Top = 108
     Width = 68
@@ -70,7 +70,7 @@ object OperationView: TOperationView
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object lbl5: TLabel
+  object lblDescriptionBefore: TLabel
     Left = 18
     Top = 157
     Width = 65
@@ -96,7 +96,7 @@ object OperationView: TOperationView
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object lbl6: TLabel
+  object lblDateBefore: TLabel
     Left = 18
     Top = 206
     Width = 32
@@ -129,6 +129,7 @@ object OperationView: TOperationView
     TabOrder = 7
     Visible = False
     StyleElements = [seFont, seClient]
+    OnClick = actionSave
   end
   object edtRubles: TEdit
     Left = 18
@@ -185,6 +186,7 @@ object OperationView: TOperationView
     Top = 125
     Width = 252
     Height = 25
+    Style = csDropDownList
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -192,7 +194,6 @@ object OperationView: TOperationView
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    Text = 'ComboBoxCategory'
   end
   object edtDescription: TEdit
     Left = 18
@@ -229,9 +230,15 @@ object OperationView: TOperationView
     Left = 18
     Top = 223
     Width = 252
-    Height = 24
+    Height = 25
     Date = 43546.000000000000000000
-    Time = 0.730399421299807700
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Google Sans'
+    Font.Style = []
+    MinDate = 40179.000000000000000000
+    ParentFont = False
     TabOrder = 4
   end
 end

@@ -19,18 +19,18 @@ type
     edtDescription: TEdit;
     edtPenny: TEdit;
     edtRubles: TEdit;
-    lbl1: TLabel;
-    lbl2: TLabel;
-    lbl3: TLabel;
-    lbl4: TLabel;
-    lbl5: TLabel;
-    lbl6: TLabel;
+    lblCategoryBefore: TLabel;
+    lblDateBefore: TLabel;
+    lblDescriptionBefore: TLabel;
+    lblMoneyBefore: TLabel;
+    lblPennyAfter: TLabel;
+    lblRublesAfter: TLabel;
     lblTp: TLabel;
     procedure actionCreate(Sender: TObject);
-  private
-    { Private declarations }
+    procedure actionSave(Sender: TObject);
   public
     procedure prepareToCreate(tp: TOperationType);
+    procedure prepareToEdit(id: Integer);
   end;
 
 var
@@ -56,6 +56,17 @@ begin
   operList.addNode(operation);
 end;
 
+procedure TOperationView.actionSave(Sender: TObject);
+begin
+  operList.editItem(
+    btnSave.tag,
+    strToInt(edtRubles.text)*100 + strToInt(edtPenny.text),
+    0, // category
+    edtDescription.text,
+    dtpDate.date
+  )
+end;
+
 procedure TOperationView.prepareToCreate(tp: TOperationType);
 begin
   case tp of
@@ -69,7 +80,37 @@ begin
   edtPenny.text := '0';
   // category
   edtDescription.text := '';
+  dtpDate.maxDate := date();
   dtpDate.date := date();
+end;
+
+procedure TOperationView.prepareToEdit(id: Integer);
+var
+  item: POperation;
+begin
+  btnSave.visible := true;
+  btnCreate.Visible := false;
+  item := operList.getItem(id);
+  with item^ do
+  begin
+    btnSave.tag := id;
+    case tp of
+      income:
+      begin
+        lblTp.caption := 'Редактирование дохода';
+        lblTp.tag := ord(income);
+      end;
+      outcome:
+      begin
+        lblTp.caption := 'Редактирование расхода';
+        lblTp.tag := ord(outcome);
+      end;
+    end;
+    edtRubles.text := intToStr(money div 100);
+    edtPenny.text := intToStr(money mod 100);
+    edtDescription.text := description;
+    dtpDate.date := date;
+  end;
 end;
 
 end.

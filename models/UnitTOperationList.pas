@@ -27,6 +27,9 @@ type
       function removeNode(const id: Integer;
         const destroyItem: Boolean = true): Boolean;
       function getBalance(): Integer;
+      function editItem(const id: Integer;
+        const money: Longword; const catId: Integer;
+        const description: string; const date: TDate): Boolean;
   end;
 
 var
@@ -134,7 +137,7 @@ var
   nodeCurr: TOperationListNode;
 begin
   result := nil;
-  nodeCurr := self.head;
+  nodeCurr := self.last;
   while nodeCurr <> nil do
   begin
     if nodeCurr.item^.id = id then
@@ -142,7 +145,7 @@ begin
       result := nodeCurr.item;
       break;
     end;
-    nodeCurr := nodeCurr.next;
+    nodeCurr := nodeCurr.prev;
   end;
 end;
 
@@ -186,7 +189,7 @@ var
   nodeCurr: TOperationListNode;
 begin
   result := false;
-  nodeCurr := self.head;
+  nodeCurr := self.last;
   while nodeCurr <> nil do
   begin
     if nodeCurr.item^.id = id then
@@ -218,9 +221,48 @@ begin
       result := true;
       break;
     end;
-    nodeCurr := nodeCurr.next;
+    nodeCurr := nodeCurr.prev;
   end;
 end;
+
+function TOperationList.editItem(const id: Integer;
+  const money: Longword; const catId: Integer;
+  const description: string; const date: TDate): Boolean;
+var
+  item: POperation;
+  nodeCurr: TOperationListNode;
+begin
+  result := false;
+  nodeCurr := self.last;
+  while nodeCurr <> nil do
+  begin
+    if nodeCurr.item^.id = id then
+    begin
+      item := nodeCurr.item;
+      if item^.money <> money then
+        case item^.tp of
+          income:
+            balance := balance - item^.money + money;
+          outcome:
+            balance := balance + item^.money - money;
+        end;
+      item^.money := money;
+      item^.catId := catId;
+      item^.description := description;
+      item^.date := date;
+      if (nodeCurr.prev <> nil) and
+        (nodeCurr.prev.item^.date > date) then
+      begin
+        removeNode(item^.id, false);
+        addNode(item);
+      end;
+      result := true;
+      break;
+    end;
+    nodeCurr := nodeCurr.prev;
+  end;
+end;
+
 
 function TOperationList.getBalance(): Integer;
 begin

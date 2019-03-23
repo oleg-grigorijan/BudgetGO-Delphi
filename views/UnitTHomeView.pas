@@ -10,33 +10,34 @@ uses
 
 type
   THomeView = class(TForm)
-    lblHeader: TLabel;
-    lblBalanceAfter: TLabel;
-    lblBalance: TLabel;
-    Label1: TLabel;
     btnCreateIncome: TButton;
     btnCreateOutcome: TButton;
-    lbl3: TLabel;
-    grdOperations: TStringGrid;
-    lblStatistics: TLabel;
     cbbMonth: TComboBox;
     cbbYear: TComboBox;
-    lblIncomeAfter: TLabel;
+    grdOperations: TStringGrid;
+    lbl3: TLabel;
+    lblBalance: TLabel;
+    lblBalanceAfter: TLabel;
+    lblHeader: TLabel;
     lblIncome: TLabel;
-    lbl1: TLabel;
+    lblIncomeBefore: TLabel;
+    lblNewOperationBefore: TLabel;
     lblOutcome: TLabel;
-    shp3: TShape;
+    lblOutcomeBefore: TLabel;
+    lblStatistics: TLabel;
+    miDelete: TMenuItem;
+    miEdit: TMenuItem;
+    pmOperation: TPopupMenu;
+    shpHeaderBG: TShape;
     shpIncome: TShape;
     shpOutcome: TShape;
-    pmOperation: TPopupMenu;
-    miDelete: TMenuItem;
     procedure actionInit(Sender: TObject);
-    procedure actionOperationView(Sender: TObject);
-    procedure actionUpdateStatistics(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
     procedure actionOperationSelect(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState;
       X, Y: Integer);
+    procedure actionOperationView(Sender: TObject);
+    procedure actionUpdateStatistics(Sender: TObject);
   private
     opersCurr: TOperations;
   public
@@ -67,23 +68,6 @@ begin
     cells[5, 0] := 'Описание';
   end;
   dataUpdate();
-end;
-
-procedure THomeView.actionOperationView(Sender: TObject);
-begin
-  if not assigned(operationView) then
-    operationView := TOperationView.create(self);
-  if Sender = btnCreateIncome then
-    operationView.prepareToCreate(income)
-  else if Sender = btnCreateOutcome then
-    operationView.prepareToCreate(outcome);
-  operationView.ShowModal;
-  if operationView.ModalResult = mrOk then
-  begin
-    dataUpdate();
-    messageBox(handle, 'Операция успешно сохранена', PChar('Уведомление'),
-      MB_OK + MB_ICONINFORMATION);
-  end;
 end;
 
 procedure THomeView.actionOperationDelete(Sender: TObject);
@@ -122,6 +106,25 @@ begin
   end;
 end;
 
+procedure THomeView.actionOperationView(Sender: TObject);
+begin
+  if not assigned(operationView) then
+    operationView := TOperationView.create(self);
+  if Sender = btnCreateIncome then
+    operationView.prepareToCreate(income)
+  else if Sender = btnCreateOutcome then
+    operationView.prepareToCreate(outcome)
+  else if Sender = miEdit then
+    operationView.prepareToEdit(grdOperations.tag);
+  operationView.ShowModal;
+  if operationView.ModalResult = mrOk then
+  begin
+    dataUpdate();
+    messageBox(handle, 'Операция успешно сохранена', PChar('Уведомление'),
+      MB_OK + MB_ICONINFORMATION);
+  end;
+end;
+
 procedure THomeView.actionUpdateStatistics(Sender: TObject);
 begin
   dataUpdate();
@@ -144,8 +147,8 @@ begin
   if incomeMonth + outcomeMonth = 0 then
     shpIncome.width := 0
   else
-    shpIncome.width := 280*incomeMonth div (incomeMonth +
-      outcomeMonth);
+    shpIncome.width := shpOutcome.width*incomeMonth div
+      (incomeMonth + outcomeMonth);
   with grdOperations do
   begin
     RowCount := Length(opersCurr) + 1;
