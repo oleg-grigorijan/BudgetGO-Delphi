@@ -110,10 +110,6 @@ begin
     else
       (self.head).prev := nil
   end;
-  if node.item^.tp = income then
-    self.balance := self.balance - node.item^.money
-  else if node.item^.tp = outcome then
-    self.balance := self.balance + node.item^.money;
   dispose(node.item);
   node.destroy();
 end;
@@ -232,6 +228,10 @@ begin
   node := getNodeById(id);
   if node <> nil then
   begin
+    if node.item^.tp = income then
+      self.balance := self.balance - node.item^.money
+    else if node.item^.tp = outcome then
+      self.balance := self.balance + node.item^.money;
     removeNode(node);
     result := true;
   end;
@@ -261,7 +261,7 @@ begin
         balance := balance - newItem^.money;
     end;
     if (node.prev = nil) or
-      (node.prev.item^.date < newItem^.date) then
+      (node.prev.item^.date <= newItem^.date) then
     begin
       node.item := newItem;
       dispose(oldItem);
@@ -269,7 +269,8 @@ begin
     else
     begin
       removeNode(node);
-      addItem(newItem);
+      node := TOperationListNode.create(newItem);
+      insertNode(node);
     end;
     result := true;
   end;

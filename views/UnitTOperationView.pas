@@ -61,11 +61,10 @@ var
   sum: Longword;
 begin
   sum := 0;
-  if edtRubles.text <> '' then
-    sum := sum + strToInt(edtRubles.text);
-  if edtPenny.text <> '' then
-    sum := sum + strToInt(edtPenny.text);
-  if sum = 0 then
+  if (edtRubles.text = '') or
+    (edtPenny.text = '') or
+    (strToInt(edtRubles.text) +
+    strToInt(edtPenny.text) = 0) then
   begin
     btnCreate.enabled := false;
     btnSave.enabled := false;
@@ -84,6 +83,7 @@ begin
   new(newItem);
   with newItem^ do
   begin
+    tp := TOperationType(lblTp.tag);
     money := strToInt(edtRubles.text)*100 +
       strToInt(edtPenny.text);
     description := edtDescription.text;
