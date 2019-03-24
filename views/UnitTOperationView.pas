@@ -14,12 +14,10 @@ type
     btnCancel: TButton;
     btnCreate: TButton;
     btnSave: TButton;
-    cbbCategory: TComboBox;
     dtpDate: TDateTimePicker;
     edtDescription: TEdit;
     edtPenny: TEdit;
     edtRubles: TEdit;
-    lblCategoryBefore: TLabel;
     lblDateBefore: TLabel;
     lblDescriptionBefore: TLabel;
     lblMoneyBefore: TLabel;
@@ -52,7 +50,6 @@ begin
     tp := TOperationType(lblTp.tag);
     money := strToInt(edtRubles.text) * 100 +
       strToInt(edtPenny.text);
-    // ???: category
     description := edtDescription.text;
     date := dtpDate.date;
   end;
@@ -89,7 +86,6 @@ begin
   begin
     money := strToInt(edtRubles.text)*100 +
       strToInt(edtPenny.text);
-    // ???: category
     description := edtDescription.text;
     date := dtpDate.date;
   end;
@@ -107,7 +103,6 @@ begin
   lblTp.tag := ord(tp);
   edtRubles.text := '0';
   edtPenny.text := '0';
-  // ???: category
   edtDescription.text := '';
   dtpDate.maxDate := date();
   dtpDate.date := date();
@@ -132,7 +127,6 @@ begin
     lblTp.tag := ord(tp);
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
-    // ???: category
     edtDescription.text := description;
     dtpDate.date := date;
   end;
@@ -155,7 +149,6 @@ begin
     lblTp.tag := ord(tp);
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
-    // ???: category
     edtDescription.text := description;
   end;
   dtpDate.date := date();

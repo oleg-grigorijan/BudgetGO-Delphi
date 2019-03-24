@@ -4,7 +4,7 @@ object OperationView: TOperationView
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'BudgetGO'
-  ClientHeight = 308
+  ClientHeight = 258
   ClientWidth = 290
   Color = clBtnFace
   DefaultMonitor = dmMainForm
@@ -57,22 +57,9 @@ object OperationView: TOperationView
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object lblCategoryBefore: TLabel
-    Left = 18
-    Top = 108
-    Width = 68
-    Height = 17
-    Caption = #1050#1072#1090#1077#1075#1086#1088#1080#1103
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Google Sans'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
   object lblDescriptionBefore: TLabel
     Left = 18
-    Top = 157
+    Top = 109
     Width = 65
     Height = 17
     Caption = #1054#1087#1080#1089#1072#1085#1080#1077
@@ -98,7 +85,7 @@ object OperationView: TOperationView
   end
   object lblDateBefore: TLabel
     Left = 18
-    Top = 206
+    Top = 158
     Width = 32
     Height = 17
     Caption = #1044#1072#1090#1072
@@ -113,7 +100,7 @@ object OperationView: TOperationView
   end
   object btnSave: TButton
     Left = 180
-    Top = 263
+    Top = 215
     Width = 90
     Height = 25
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
@@ -126,7 +113,7 @@ object OperationView: TOperationView
     ModalResult = 1
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 7
+    TabOrder = 6
     Visible = False
     StyleElements = [seFont, seClient]
     OnClick = actionSave
@@ -168,7 +155,7 @@ object OperationView: TOperationView
   end
   object btnCreate: TButton
     Left = 180
-    Top = 263
+    Top = 215
     Width = 90
     Height = 25
     Caption = #1057#1086#1079#1076#1072#1090#1100
@@ -181,28 +168,14 @@ object OperationView: TOperationView
     ModalResult = 1
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 5
     Visible = False
     StyleElements = [seFont, seClient]
     OnClick = actionCreate
   end
-  object cbbCategory: TComboBox
-    Left = 18
-    Top = 125
-    Width = 252
-    Height = 25
-    Style = csDropDownList
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Google Sans'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 2
-  end
   object edtDescription: TEdit
     Left = 18
-    Top = 174
+    Top = 126
     Width = 252
     Height = 25
     Font.Charset = RUSSIAN_CHARSET
@@ -212,11 +185,11 @@ object OperationView: TOperationView
     Font.Style = []
     MaxLength = 32
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
   end
   object btnCancel: TButton
     Left = 84
-    Top = 263
+    Top = 215
     Width = 90
     Height = 25
     Caption = #1054#1090#1084#1077#1085#1072
@@ -229,12 +202,12 @@ object OperationView: TOperationView
     ModalResult = 2
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 4
     StyleElements = [seFont, seClient]
   end
   object dtpDate: TDateTimePicker
     Left = 18
-    Top = 223
+    Top = 175
     Width = 252
     Height = 25
     Date = 43546.000000000000000000
@@ -245,6 +218,6 @@ object OperationView: TOperationView
     Font.Style = []
     MinDate = 40179.000000000000000000
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 3
   end
 end

@@ -64,9 +64,8 @@ begin
   begin
     cells[1, 0] := 'Тип';
     cells[2, 0] := 'Сумма';
-    cells[3, 0] := 'Категория';
-    cells[4, 0] := 'День';
-    cells[5, 0] := 'Описание';
+    cells[3, 0] := 'День';
+    cells[4, 0] := 'Описание';
   end;
   dataUpdate();
 end;
@@ -139,7 +138,7 @@ var
   i: Integer;
 begin
   lblBalance.caption := floatToStrF(operList.getBalance
-    / 100, ffFixed, 7, 2);
+    / 100, ffFixed, 7, 2) + ' руб.';
   IntToStr(operList.getBalance);
   opersCurr := operList.getItems(cbbMonth.itemIndex + 1,
     strToInt(cbbYear.text), incomeMonth, outcomeMonth);
@@ -169,8 +168,8 @@ begin
         end;
         Cells[2, i] :=  FloatToStrF(money / 100, ffFixed,
           7, 2) + ' руб.';
-        Cells[4, i] := intToStr(dayOfTheMonth(date));
-        Cells[5, i] := description;
+        Cells[3, i] := intToStr(dayOfTheMonth(date));
+        Cells[4, i] := description;
       end;
     end;
   end;

@@ -4,7 +4,7 @@ object homeView: ThomeView
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'BudgetGO'
-  ClientHeight = 489
+  ClientHeight = 505
   ClientWidth = 689
   Color = clWhite
   DragKind = dkDock
@@ -18,10 +18,10 @@ object homeView: ThomeView
   PixelsPerInch = 120
   TextHeight = 16
   object shpHeaderBG: TShape
-    Left = -2
-    Top = 41
+    Left = 0
+    Top = 42
     Width = 701
-    Height = 118
+    Height = 106
     Brush.Color = 16185078
     Pen.Color = 13290186
   end
@@ -39,8 +39,8 @@ object homeView: ThomeView
     ParentFont = False
   end
   object lblBalanceAfter: TLabel
-    Left = 226
-    Top = 110
+    Left = 350
+    Top = 74
     Width = 94
     Height = 17
     Alignment = taRightJustify
@@ -53,24 +53,23 @@ object homeView: ThomeView
     ParentFont = False
   end
   object lblBalance: TLabel
-    Left = 190
-    Top = 69
-    Width = 130
-    Height = 50
-    Alignment = taRightJustify
+    Left = 350
+    Top = 87
+    Width = 162
+    Height = 41
     BiDiMode = bdLeftToRight
-    Caption = '104.03'
+    Caption = '10.03 '#1088#1091#1073'.'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clBlack
-    Font.Height = -40
+    Font.Height = -33
     Font.Name = 'Google Sans'
     Font.Style = [fsBold]
     ParentBiDiMode = False
     ParentFont = False
   end
   object lblNewOperationBefore: TLabel
-    Left = 369
-    Top = 54
+    Left = 193
+    Top = 56
     Width = 104
     Height = 17
     Caption = #1053#1086#1074#1072#1103' '#1086#1087#1077#1088#1072#1094#1080#1103
@@ -83,7 +82,7 @@ object homeView: ThomeView
   end
   object lbl3: TLabel
     Left = 40
-    Top = 308
+    Top = 299
     Width = 86
     Height = 21
     Caption = #1054#1087#1077#1088#1072#1094#1080#1080
@@ -182,8 +181,8 @@ object homeView: ThomeView
     Shape = stRoundRect
   end
   object btnCreateIncome: TButton
-    Left = 351
-    Top = 77
+    Left = 174
+    Top = 75
     Width = 146
     Height = 25
     Caption = #1044#1086#1093#1086#1076
@@ -197,8 +196,8 @@ object homeView: ThomeView
     OnClick = actionOperationView
   end
   object btnCreateOutcome: TButton
-    Left = 351
-    Top = 108
+    Left = 174
+    Top = 103
     Width = 146
     Height = 25
     Caption = #1056#1072#1089#1093#1086#1076
@@ -213,11 +212,10 @@ object homeView: ThomeView
   end
   object grdOperations: TStringGrid
     Left = 0
-    Top = 335
+    Top = 326
     Width = 690
-    Height = 155
+    Height = 179
     Cursor = crHandPoint
-    ColCount = 6
     FixedCols = 0
     GradientEndColor = clWhite
     Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
@@ -228,14 +226,13 @@ object homeView: ThomeView
     ColWidths = (
       34
       57
-      109
-      90
-      41
-      373)
+      108
+      48
+      441)
   end
   object cbbMonth: TComboBox
-    Left = 179
-    Top = 188
+    Left = 174
+    Top = 191
     Width = 83
     Height = 25
     HelpType = htKeyword
@@ -264,7 +261,7 @@ object homeView: ThomeView
   end
   object cbbYear: TComboBox
     Left = 268
-    Top = 188
+    Top = 191
     Width = 52
     Height = 25
     HelpType = htKeyword

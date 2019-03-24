@@ -94,8 +94,6 @@
             <Form>homeView</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="models\UnitTCategory.pas"/>
-        <DCCReference Include="models\UnitTCategoryTable.pas"/>
         <DCCReference Include="models\UnitTOperation.pas"/>
         <DCCReference Include="models\UnitTOperationList.pas"/>
         <DCCReference Include="models\UnitTOperationListNode.pas"/>
