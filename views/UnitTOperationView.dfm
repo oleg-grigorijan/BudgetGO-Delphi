@@ -136,15 +136,19 @@ object OperationView: TOperationView
     Top = 76
     Width = 83
     Height = 25
+    Hint = 's'
     Alignment = taRightJustify
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Google Sans'
     Font.Style = []
+    NumbersOnly = True
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = False
     TabOrder = 0
-    Text = '0'
+    OnChange = actionMoneyChange
   end
   object edtPenny: TEdit
     Left = 139
@@ -157,9 +161,10 @@ object OperationView: TOperationView
     Font.Height = -13
     Font.Name = 'Google Sans'
     Font.Style = []
+    NumbersOnly = True
     ParentFont = False
     TabOrder = 1
-    Text = '00'
+    OnChange = actionMoneyChange
   end
   object btnCreate: TButton
     Left = 180
@@ -205,6 +210,7 @@ object OperationView: TOperationView
     Font.Height = -13
     Font.Name = 'Google Sans'
     Font.Style = []
+    MaxLength = 32
     ParentFont = False
     TabOrder = 3
   end

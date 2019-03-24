@@ -27,6 +27,7 @@ type
     lblRublesAfter: TLabel;
     lblTp: TLabel;
     procedure actionCreate(Sender: TObject);
+    procedure actionMoneyChange(Sender: TObject);
     procedure actionSave(Sender: TObject);
   public
     procedure prepareToCreate(tp: TOperationType);
@@ -55,6 +56,27 @@ begin
     description := edtDescription.text;
   end;
   operList.addNode(operation);
+end;
+
+procedure TOperationView.actionMoneyChange(Sender: TObject);
+var
+  sum: Longword;
+begin
+  sum := 0;
+  if edtRubles.text <> '' then
+    sum := sum + strToInt(edtRubles.text);
+  if edtPenny.text <> '' then
+    sum := sum + strToInt(edtPenny.text);
+  if sum = 0 then
+  begin
+    btnCreate.enabled := false;
+    btnSave.enabled := false;
+  end
+  else
+  begin
+    btnCreate.enabled := true;
+    btnSave.enabled := true;
+  end;
 end;
 
 procedure TOperationView.actionSave(Sender: TObject);
