@@ -2,9 +2,6 @@ unit UnitTOperation;
 
 interface
 
-uses
-  System.SysUtils;
-
 const
   DESC_LEN = 32;
 

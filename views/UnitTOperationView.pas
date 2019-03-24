@@ -52,10 +52,11 @@ begin
     tp := TOperationType(lblTp.tag);
     money := strToInt(edtRubles.text) * 100 +
       strToInt(edtPenny.text);
-    date := dtpDate.date;
+    // ???: category
     description := edtDescription.text;
+    date := dtpDate.date;
   end;
-  operList.addNode(operation);
+  operList.addItem(operation);
 end;
 
 procedure TOperationView.actionMoneyChange(Sender: TObject);
@@ -80,14 +81,19 @@ begin
 end;
 
 procedure TOperationView.actionSave(Sender: TObject);
+var
+  newItem: POperation;
 begin
-  operList.editItem(
-    btnSave.tag,
-    strToInt(edtRubles.text)*100 + strToInt(edtPenny.text),
-    0, // category
-    edtDescription.text,
-    dtpDate.date
-  )
+  new(newItem);
+  with newItem^ do
+  begin
+    money := strToInt(edtRubles.text)*100 +
+      strToInt(edtPenny.text);
+    // ???: category
+    description := edtDescription.text;
+    date := dtpDate.date;
+  end;
+  operList.editItem(btnSave.tag, newItem);
 end;
 
 procedure TOperationView.prepareToCreate(tp: TOperationType);
@@ -101,7 +107,7 @@ begin
   lblTp.tag := ord(tp);
   edtRubles.text := '0';
   edtPenny.text := '0';
-  // category
+  // ???: category
   edtDescription.text := '';
   dtpDate.maxDate := date();
   dtpDate.date := date();
@@ -119,18 +125,14 @@ begin
     btnSave.tag := id;
     case tp of
       income:
-      begin
         lblTp.caption := 'Редактирование дохода';
-        lblTp.tag := ord(income);
-      end;
       outcome:
-      begin
         lblTp.caption := 'Редактирование расхода';
-        lblTp.tag := ord(outcome);
-      end;
     end;
+    lblTp.tag := ord(tp);
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
+    // ???: category
     edtDescription.text := description;
     dtpDate.date := date;
   end;
@@ -153,10 +155,11 @@ begin
     lblTp.tag := ord(tp);
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
+    // ???: category
     edtDescription.text := description;
   end;
-  dtpDate.maxDate := date();
   dtpDate.date := date();
+  dtpDate.maxDate := date();
 end;
 
 end.

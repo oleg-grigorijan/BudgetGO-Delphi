@@ -18,10 +18,10 @@ object homeView: ThomeView
   PixelsPerInch = 120
   TextHeight = 16
   object shpHeaderBG: TShape
-    Left = -8
-    Top = 47
+    Left = -2
+    Top = 41
     Width = 701
-    Height = 119
+    Height = 118
     Brush.Color = 16185078
     Pen.Color = 13290186
   end
@@ -40,9 +40,10 @@ object homeView: ThomeView
   end
   object lblBalanceAfter: TLabel
     Left = 226
-    Top = 124
+    Top = 110
     Width = 94
     Height = 17
+    Alignment = taRightJustify
     Caption = #1085#1072' '#1074#1072#1096#1077#1084' '#1089#1095#1077#1090#1091
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
@@ -52,16 +53,16 @@ object homeView: ThomeView
     ParentFont = False
   end
   object lblBalance: TLabel
-    Left = 167
-    Top = 75
-    Width = 153
-    Height = 58
+    Left = 190
+    Top = 69
+    Width = 130
+    Height = 50
     Alignment = taRightJustify
     BiDiMode = bdLeftToRight
     Caption = '104.03'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clBlack
-    Font.Height = -47
+    Font.Height = -40
     Font.Name = 'Google Sans'
     Font.Style = [fsBold]
     ParentBiDiMode = False
@@ -69,7 +70,7 @@ object homeView: ThomeView
   end
   object lblNewOperationBefore: TLabel
     Left = 369
-    Top = 65
+    Top = 54
     Width = 104
     Height = 17
     Caption = #1053#1086#1074#1072#1103' '#1086#1087#1077#1088#1072#1094#1080#1103
@@ -182,7 +183,7 @@ object homeView: ThomeView
   end
   object btnCreateIncome: TButton
     Left = 351
-    Top = 88
+    Top = 77
     Width = 146
     Height = 25
     Caption = #1044#1086#1093#1086#1076
@@ -197,7 +198,7 @@ object homeView: ThomeView
   end
   object btnCreateOutcome: TButton
     Left = 351
-    Top = 119
+    Top = 108
     Width = 146
     Height = 25
     Caption = #1056#1072#1089#1093#1086#1076
@@ -225,7 +226,7 @@ object homeView: ThomeView
     TabOrder = 2
     OnMouseDown = actionOperationSelect
     ColWidths = (
-      29
+      34
       57
       109
       90

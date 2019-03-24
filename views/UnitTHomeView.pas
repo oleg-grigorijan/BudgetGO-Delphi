@@ -5,8 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperationView, UnitTOperationList, UnitTOperation,
-  Vcl.Menus, Vcl.Grids, IdBaseComponent, IdComponent,
-  IdIPAddrMon, DateUtils, Vcl.ExtCtrls;
+  Vcl.Menus, Vcl.Grids,
+  DateUtils, Vcl.ExtCtrls;
 
 type
   THomeView = class(TForm)
@@ -82,7 +82,7 @@ begin
       'Уведомление', MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2);
     if answer = IDYES then
     begin
-      operList.removeNode(grdOperations.tag);
+      operList.removeItem(grdOperations.tag);
       dataUpdate();
     end;
   end;
@@ -135,7 +135,7 @@ end;
 
 procedure THomeView.dataUpdate();
 var
-  incomeMonth, outcomeMonth: Longword;
+  incomeMonth, outcomeMonth: uint64;
   i: Integer;
 begin
   lblBalance.caption := floatToStrF(operList.getBalance

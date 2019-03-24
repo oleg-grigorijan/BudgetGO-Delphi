@@ -15,21 +15,20 @@ type
       last: TOperationListNode;
       fileName: string[255];
       maxId: Integer;
-      count: Integer;
-      balance: Integer;
+      balance: int64;
+      function getNodeById(const id: Integer): TOperationListNode;
+      procedure insertNode(const node: TOperationListNode);
+      procedure removeNode(const node: TOperationListNode);
     public
       constructor create(const filename: string); overload;
       destructor destroy(); override;
-      procedure addNode(const item: POperation);
+      procedure addItem(const item: POperation);
       function getItem(const id: Integer): POperation;
       function getItems(const month, year: Integer;
-        var incomeMonth, outcomeMonth: Longword): TOperations;
-      function removeNode(const id: Integer;
-        const destroyItem: Boolean = true): Boolean;
+        var incomeMonth, outcomeMonth: uint64): TOperations;
+      function removeItem(const id: Integer): Boolean;
       function getBalance(): Integer;
-      function editItem(const id: Integer;
-        const money: Longword; const catId: Integer;
-        const description: string; const date: TDate): Boolean;
+      function editItem(const id: Integer; const newItem: POperation): Boolean;
   end;
 
 var
@@ -41,57 +40,30 @@ const
   dataDName = 'data';
   operFName = 'data/operations.godev';
 
-constructor TOperationList.create(const filename: string);
+function TOperationList.getNodeById(const id: Integer): TOperationListNode;
 var
-  f: File of TOperation;
-  itemTmp: POperation;
-begin
-  inherited create();
-  self.fileName := filename;
-  assignFile(f, self.fileName);
-  if not fileExists(self.filename) then
-    rewrite(f)
-  else
-  begin
-    reset(f);
-    while not eof(f) do
-    begin
-      new(itemTmp);
-      read(f, itemTmp^);
-      self.addNode(itemTmp);
-    end;
-  end;
-  closeFile(f);
-end;
-
-destructor TOperationList.destroy();
-var
-  f: File of TOperation;
   nodeCurr: TOperationListNode;
 begin
-  if self.fileName <> '' then
+  result := nil;
+  nodeCurr := self.last;
+  while nodeCurr <> nil do
   begin
-    assignFile(f, self.fileName);
-    rewrite(f);
-    nodeCurr := self.head;
-    while nodeCurr <> nil do
+    if nodeCurr.item^.id = id then
     begin
-      write(f, nodeCurr.item^);
-      nodeCurr := nodeCurr.next;
+      result := nodeCurr;
+      break;
     end;
-    closeFile(f);
+    nodeCurr := nodeCurr.prev;
   end;
-  inherited destroy();
 end;
 
-procedure TOperationList.addNode(const item: POperation);
+procedure TOperationList.insertNode(const node: TOperationListNode);
 var
-  node, nodeCurr: TOperationListNode;
+  nodeCurr: TOperationListNode;
 begin
-  node := TOperationListNode.create(item);
   nodeCurr := self.last;
   while (nodeCurr <> nil) and
-    (nodeCurr.item^.date > item^.date) do
+    (nodeCurr.item^.date > node.item^.date) do
   begin
     nodeCurr := nodeCurr.prev;
   end;
@@ -118,6 +90,83 @@ begin
     end;
     self.head := node;
   end;
+end;
+
+procedure TOperationList.removeNode(const node: TOperationListNode);
+begin
+  if node.prev <> nil then
+  begin
+    (node.prev).next := node.next;
+    if node.next = nil then
+      self.last := node.prev
+    else
+      (node.next).prev := node.prev;
+  end
+  else
+  begin
+    self.head := node.next;
+    if self.head = nil then
+      self.last := nil
+    else
+      (self.head).prev := nil
+  end;
+  if node.item^.tp = income then
+    self.balance := self.balance - node.item^.money
+  else if node.item^.tp = outcome then
+    self.balance := self.balance + node.item^.money;
+  dispose(node.item);
+  node.destroy();
+end;
+
+constructor TOperationList.create(const filename: string);
+var
+  f: File of TOperation;
+  itemTmp: POperation;
+begin
+  inherited create();
+  self.fileName := filename;
+  assignFile(f, self.fileName);
+  if not fileExists(self.filename) then
+    rewrite(f)
+  else
+  begin
+    reset(f);
+    while not eof(f) do
+    begin
+      new(itemTmp);
+      read(f, itemTmp^);
+      self.addItem(itemTmp);
+    end;
+  end;
+  closeFile(f);
+end;
+
+destructor TOperationList.destroy();
+var
+  f: File of TOperation;
+  nodeCurr: TOperationListNode;
+begin
+  if self.fileName <> '' then
+  begin
+    assignFile(f, self.fileName);
+    rewrite(f);
+    nodeCurr := self.head;
+    while nodeCurr <> nil do
+    begin
+      write(f, nodeCurr.item^);
+      nodeCurr := nodeCurr.next;
+    end;
+    closeFile(f);
+  end;
+  inherited destroy();
+end;
+
+procedure TOperationList.addItem(const item: POperation);
+var
+  node: TOperationListNode;
+begin
+  node := TOperationListNode.create(item);
+  insertNode(node);
   if item^.id = 0 then
   begin
     inc(self.maxId);
@@ -125,32 +174,24 @@ begin
   end
   else if item^.id > self.maxId then
     self.maxId := item^.id;
-    if item^.tp = income then
-      self.balance := self.balance + item^.money
-    else if item^.tp = outcome then
-      self.balance := self.balance - item^.money;
-  inc(self.count);
+  case item^.tp of
+    income: self.balance := self.balance + item^.money;
+    outcome: self.balance := self.balance - item^.money;
+  end;
 end;
 
 function TOperationList.getItem(const id: Integer): POperation;
 var
-  nodeCurr: TOperationListNode;
+  node: TOperationListNode;
 begin
   result := nil;
-  nodeCurr := self.last;
-  while nodeCurr <> nil do
-  begin
-    if nodeCurr.item^.id = id then
-    begin
-      result := nodeCurr.item;
-      break;
-    end;
-    nodeCurr := nodeCurr.prev;
-  end;
+  node := getNodeById(id);
+  if node <> nil then
+    result := node.item;
 end;
 
 function TOperationList.getItems(const month, year: Integer;
-  var incomeMonth, outcomeMonth: Longword): TOperations;
+  var incomeMonth, outcomeMonth: uint64): TOperations;
 var
   nodeCurr: TOperationListNode;
   found: Integer;
@@ -183,86 +224,56 @@ begin
   end;
 end;
 
-function TOperationList.removeNode(const id: Integer;
-  const destroyItem: Boolean = true): Boolean;
+function TOperationList.removeItem(const id: Integer): Boolean;
 var
-  nodeCurr: TOperationListNode;
+  node: TOperationListNode;
 begin
   result := false;
-  nodeCurr := self.last;
-  while nodeCurr <> nil do
+  node := getNodeById(id);
+  if node <> nil then
   begin
-    if nodeCurr.item^.id = id then
-    begin
-      if nodeCurr.prev <> nil then
-      begin
-        (nodeCurr.prev).next := nodeCurr.next;
-        if nodeCurr.next = nil then
-          self.last := nodeCurr.prev
-        else
-          (nodeCurr.next).prev := nodeCurr.prev;
-      end
-      else
-      begin
-        self.head := nodeCurr.next;
-        if self.head = nil then
-          self.last := nil
-        else
-          (self.head).prev := nil
-      end;
-      if nodeCurr.item^.tp = income then
-        self.balance := self.balance - nodeCurr.item^.money
-      else if nodeCurr.item^.tp = outcome then
-        self.balance := self.balance + nodeCurr.item^.money;
-      if destroyItem then
-        dispose(nodeCurr.item);
-      nodeCurr.destroy();
-      dec(self.count);
-      result := true;
-      break;
-    end;
-    nodeCurr := nodeCurr.prev;
+    removeNode(node);
+    result := true;
   end;
 end;
 
-function TOperationList.editItem(const id: Integer;
-  const money: Longword; const catId: Integer;
-  const description: string; const date: TDate): Boolean;
+function TOperationList.editItem(const id: Integer; const newItem: POperation): Boolean;
 var
-  item: POperation;
-  nodeCurr: TOperationListNode;
+  oldItem: POperation;
+  node: TOperationListNode;
 begin
   result := false;
-  nodeCurr := self.last;
-  while nodeCurr <> nil do
+  node := getNodeById(id);
+  if node <> nil then
   begin
-    if nodeCurr.item^.id = id then
-    begin
-      item := nodeCurr.item;
-      if item^.money <> money then
-        case item^.tp of
-          income:
-            balance := balance - item^.money + money;
-          outcome:
-            balance := balance + item^.money - money;
-        end;
-      item^.money := money;
-      item^.catId := catId;
-      item^.description := description;
-      item^.date := date;
-      if (nodeCurr.prev <> nil) and
-        (nodeCurr.prev.item^.date > date) then
-      begin
-        removeNode(item^.id, false);
-        addNode(item);
-      end;
-      result := true;
-      break;
+    oldItem := node.item;
+    newItem^.id := oldItem^.id;
+    case oldItem^.tp of
+      income:
+        balance := balance - oldItem^.money;
+      outcome:
+        balance := balance + oldItem^.money;
     end;
-    nodeCurr := nodeCurr.prev;
+    case newItem^.tp of
+      income:
+        balance := balance + newItem^.money;
+      outcome:
+        balance := balance - newItem^.money;
+    end;
+    if (node.prev = nil) or
+      (node.prev.item^.date < newItem^.date) then
+    begin
+      node.item := newItem;
+      dispose(oldItem);
+    end
+    else
+    begin
+      removeNode(node);
+      addItem(newItem);
+    end;
+    result := true;
   end;
 end;
-
 
 function TOperationList.getBalance(): Integer;
 begin
