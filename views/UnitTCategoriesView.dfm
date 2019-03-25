@@ -59,7 +59,7 @@ object categoriesView: TcategoriesView
       GradientEndColor = clWhite
       Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
       ScrollBars = ssVertical
-      TabOrder = 0
+      TabOrder = 1
       ColWidths = (
         28
         129
@@ -77,7 +77,8 @@ object categoriesView: TcategoriesView
       Font.Name = 'Google Sans'
       Font.Style = []
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
+      OnClick = actionCategoryView
     end
   end
 end

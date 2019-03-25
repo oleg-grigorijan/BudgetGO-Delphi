@@ -9,7 +9,8 @@ uses
   UnitTOperationView in 'views\UnitTOperationView.pas' {OperationView},
   UnitTCategory in 'models\UnitTCategory.pas',
   UnitTCategoryTable in 'models\UnitTCategoryTable.pas',
-  UnitTCategoriesView in 'views\UnitTCategoriesView.pas' {categoriesView};
+  UnitTCategoriesView in 'views\UnitTCategoriesView.pas' {categoriesView},
+  UnitTCategoryView in 'views\UnitTCategoryView.pas' {categoryView};
 
 {$R *.res}
 
