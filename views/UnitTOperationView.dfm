@@ -183,7 +183,7 @@ object OperationView: TOperationView
     Font.Height = -13
     Font.Name = 'Google Sans'
     Font.Style = []
-    MaxLength = 32
+    MaxLength = 30
     ParentFont = False
     TabOrder = 2
   end

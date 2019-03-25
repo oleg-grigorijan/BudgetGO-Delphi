@@ -4,6 +4,7 @@ interface
 
 uses
   UnitTCategory,
+  UnitTOperation,
   System.SysUtils;
 
 type
@@ -12,13 +13,15 @@ type
       items: TCategories;
       count: Integer;
       fileName: string[255];
+      function getItemIndex(const id: Integer): Integer;
     public
       constructor create(const fileName: string); overload;
       destructor destroy(); override;
-      function addItem(const item: PCategory): Boolean;
+      procedure addItem(const item: PCategory);
       function getItem(const id: Integer): PCategory;
+      function getItems(): TCategories; overload;
+      function getItems(const operTp: TOperationType): TCategories; overload;
       function removeItem(const id: Integer): Boolean;
-      procedure consoleOutput();
   end;
 
 var
@@ -29,6 +32,28 @@ implementation
 const
   dataDName = 'data';
   catFName = 'data/categories.godev';
+
+function TCategoryTable.getItemIndex(const id: Integer): Integer;
+var
+  l, r, k: Integer;
+begin
+  result := -1;
+  l := 0;
+  r := self.count - 1;
+  while l <= r do
+  begin
+    k := (l + r) div 2;
+    if self.items[k]^.id < id then
+      l := k + 1
+    else if self.items[k]^.id > id then
+      r := k - 1
+    else
+    begin
+      result := k;
+      break;
+    end;
+  end;
+end;
 
 constructor TCategoryTable.create(const fileName: string);
 var
@@ -69,83 +94,64 @@ begin
   inherited destroy();
 end;
 
-function TCategoryTable.addItem(const item: PCategory): Boolean;
+procedure TCategoryTable.addItem(const item: PCategory);
 var
   i: Integer;
 begin
-  result := true;
-  for i := 0 to self.count - 1 do
-    if (self.items[i]^.name = item^.name) and
-      (self.items[i]^.operTp = item^.operTp) then
-      result := false;
-  if result then
-  begin
-    if item^.id = 0 then
-      if self.count = 0 then
-        item^.id := 1
-      else
-        item^.id := self.items[count - 1]^.id + 1;
-    inc(count);
-    setLength(items, count);
-    self.items[count - 1] := item;
-  end;
+  if item^.id = 0 then
+    if self.count = 0 then
+      item^.id := 1
+    else
+      item^.id := self.items[count - 1]^.id + 1;
+  inc(self.count);
+  setLength(items, self.count);
+  self.items[count - 1] := item;
 end;
 
 function TCategoryTable.getItem(const id: Integer): PCategory;
 var
-  i, l, r: Integer;
+  i: Integer;
 begin
   result := nil;
-  l := 0;
-  r := count - 1;
-  while l <= r do
-  begin
-    i := (l + r) div 2;
-    if self.items[i]^.id < id then
-      l := i + 1
-    else if self.items[i]^.id > id then
-      r := i - 1
-    else
+  i := getItemIndex(id);
+  if i >= 0 then
+    result := self.items[i];
+end;
+
+function TCategoryTable.getItems(): TCategories;
+begin
+  result := self.items;
+end;
+
+function TCategoryTable.getItems(const operTp: TOperationType): TCategories;
+var
+  i, found: Integer;
+begin
+  found := 0;
+  setLength(result, found);
+  for i := 0 to self.count - 1 do
+    if self.items[i]^.operTp = operTp then
     begin
-      result := self.items[i];
-      break;
+      inc(found);
+      setLength(result, found);
+      result[found - 1] := self.items[i];
     end;
-  end;
 end;
 
 function TCategoryTable.removeItem(const id: Integer): Boolean;
 var
-  i, j, l, r: Integer;
+  i, j: Integer;
 begin
   result := false;
-  l := 0;
-  r := count - 1;
-  while l <= r do
+  i := getItemIndex(id);
+  if i >= 0 then
   begin
-    i := (l + r) div 2;
-    if self.items[i]^.id < id then
-      l := i + 1
-    else if self.items[i]^.id > id then
-      r := i - 1
-    else
-    begin
-      result := true;
-      dec(self.count);
-      dispose(self.items[i]);
-      for j := i to count - 1 do
-        self.items[j] := self.items[j + 1];
-      break;
-    end;
+    dec(self.count);
+    dispose(self.items[i]);
+    for j := i to count - 1 do
+      self.items[j] := self.items[j + 1];
+    result := true;
   end;
-end;
-
-procedure TCategoryTable.consoleOutput();
-var
-  i: Integer;
-begin
-  writeln(self.count, ' элементов в таблице категорий:');
-  for i := 0 to self.count - 1 do
-    self.items[i]^.consoleOutput();
 end;
 
 initialization

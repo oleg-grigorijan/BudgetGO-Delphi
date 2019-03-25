@@ -3,17 +3,17 @@ unit UnitTOperation;
 interface
 
 const
-  DESC_LEN = 32;
+  OPER_DESC_LEN = 30;
 
 type
   TOperationType = (income, outcome);
-  TOperation = record
+  TOperation = packed record
     id: Integer;
     tp: TOperationType;
     money: Longword;
     catId: Integer;
     date: TDate;
-    description: string[DESC_LEN];
+    description: string[OPER_DESC_LEN];
   end;
   POperation = ^TOperation;
   TOperations = array of POperation;

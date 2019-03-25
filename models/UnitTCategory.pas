@@ -5,27 +5,20 @@ interface
 uses
   UnitTOperation;
 
+const
+  OPER_NAME_LEN = 18;
+
 type
   PCategory = ^TCategory;
-  TCategory = record
+  TCategory = packed record
     id: Integer;
-    name: string[255];
-    operTp: TOperationType;
-    procedure consoleOutput();
+    name: string[OPER_NAME_LEN];
+    case operTp: TOperationType of
+      income: ();
+      outcome: (maxMoney: Longword);
   end;
   TCategories = array of PCategory;
 
 implementation
-
-procedure TCategory.consoleOutput();
-begin
-  writeln('id: ', self.id);
-  write('  тип: ');
-  case self.operTp of
-    income: writeln('доход');
-    outcome: writeln('расход');
-  end;
-  writeln('  название: ', self.name);
-end;
 
 end.
