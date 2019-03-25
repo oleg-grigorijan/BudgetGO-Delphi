@@ -3,7 +3,6 @@ object OperationView: TOperationView
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  Caption = 'BudgetGO'
   ClientHeight = 308
   ClientWidth = 290
   Color = clBtnFace

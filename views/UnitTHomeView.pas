@@ -32,6 +32,9 @@ type
     shpHeaderBG: TShape;
     shpIncome: TShape;
     shpOutcome: TShape;
+    lbl1: TLabel;
+    btnCategories: TButton;
+    procedure actionCategoriesView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
     procedure actionOperationSelect(Sender: TObject;
@@ -51,6 +54,15 @@ var
 implementation
 
 {$R *.dfm}
+
+uses UnitTCategoriesView;
+
+procedure THomeView.actionCategoriesView(Sender: TObject);
+begin
+  if not assigned(categoriesView) then
+    categoriesView := TCategoriesView.create(self);
+    categoriesView.showModal;
+end;
 
 procedure THomeView.actionInit(Sender: TObject);
 var

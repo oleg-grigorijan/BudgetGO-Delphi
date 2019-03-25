@@ -13,9 +13,8 @@ type
   TCategory = packed record
     id: Integer;
     name: string[OPER_NAME_LEN];
-    case operTp: TOperationType of
-      income: ();
-      outcome: (maxMoney: Longword);
+    operTp: TOperationType;
+    moneyMonth: Longword;
   end;
   TCategories = array of PCategory;
 

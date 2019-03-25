@@ -4,7 +4,7 @@ object homeView: ThomeView
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'BudgetGO'
-  ClientHeight = 505
+  ClientHeight = 583
   ClientWidth = 689
   Color = clWhite
   DragKind = dkDock
@@ -82,7 +82,7 @@ object homeView: ThomeView
   end
   object lbl3: TLabel
     Left = 40
-    Top = 299
+    Top = 379
     Width = 86
     Height = 21
     Caption = #1054#1087#1077#1088#1072#1094#1080#1080
@@ -95,7 +95,7 @@ object homeView: ThomeView
   end
   object lblStatistics: TLabel
     Left = 40
-    Top = 188
+    Top = 172
     Width = 113
     Height = 25
     Caption = #1057#1090#1072#1090#1080#1089#1090#1080#1082#1072
@@ -108,7 +108,7 @@ object homeView: ThomeView
   end
   object lblIncomeBefore: TLabel
     Left = 40
-    Top = 230
+    Top = 214
     Width = 107
     Height = 17
     Caption = #1044#1086#1093#1086#1076#1099' '#1079#1072' '#1084#1077#1089#1103#1094
@@ -121,7 +121,7 @@ object homeView: ThomeView
   end
   object lblIncome: TLabel
     Left = 40
-    Top = 248
+    Top = 232
     Width = 82
     Height = 17
     BiDiMode = bdLeftToRight
@@ -136,7 +136,7 @@ object homeView: ThomeView
   end
   object lblOutcomeBefore: TLabel
     Left = 187
-    Top = 230
+    Top = 214
     Width = 110
     Height = 17
     Caption = #1056#1072#1089#1093#1086#1076#1099' '#1079#1072' '#1084#1077#1089#1103#1094
@@ -149,7 +149,7 @@ object homeView: ThomeView
   end
   object lblOutcome: TLabel
     Left = 187
-    Top = 248
+    Top = 232
     Width = 81
     Height = 17
     BiDiMode = bdLeftToRight
@@ -164,7 +164,7 @@ object homeView: ThomeView
   end
   object shpOutcome: TShape
     Left = 40
-    Top = 271
+    Top = 255
     Width = 280
     Height = 10
     Brush.Color = 13815295
@@ -173,12 +173,25 @@ object homeView: ThomeView
   end
   object shpIncome: TShape
     Left = 40
-    Top = 271
+    Top = 255
     Width = 89
     Height = 10
     Brush.Color = 14019539
     Pen.Color = 14019539
     Shape = stRoundRect
+  end
+  object lbl1: TLabel
+    Left = 40
+    Top = 290
+    Width = 89
+    Height = 21
+    Caption = #1050#1072#1090#1077#1075#1086#1088#1080#1080
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Google Sans'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object btnCreateIncome: TButton
     Left = 174
@@ -212,7 +225,7 @@ object homeView: ThomeView
   end
   object grdOperations: TStringGrid
     Left = 0
-    Top = 326
+    Top = 406
     Width = 690
     Height = 179
     Cursor = crHandPoint
@@ -235,7 +248,7 @@ object homeView: ThomeView
   end
   object cbbMonth: TComboBox
     Left = 174
-    Top = 191
+    Top = 175
     Width = 83
     Height = 25
     HelpType = htKeyword
@@ -264,7 +277,7 @@ object homeView: ThomeView
   end
   object cbbYear: TComboBox
     Left = 268
-    Top = 191
+    Top = 175
     Width = 52
     Height = 25
     HelpType = htKeyword
@@ -278,9 +291,24 @@ object homeView: ThomeView
     TabOrder = 4
     OnChange = actionUpdateStatistics
   end
+  object btnCategories: TButton
+    Left = 141
+    Top = 290
+    Width = 90
+    Height = 25
+    Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Google Sans'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 5
+    OnClick = actionCategoriesView
+  end
   object pmOperation: TPopupMenu
     Left = 640
-    Top = 344
+    Top = 424
     object miEdit: TMenuItem
       Caption = '&'#1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
       OnClick = actionOperationView

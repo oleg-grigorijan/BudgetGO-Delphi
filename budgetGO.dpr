@@ -8,7 +8,8 @@ uses
   UnitTOperationListNode in 'models\UnitTOperationListNode.pas',
   UnitTOperationView in 'views\UnitTOperationView.pas' {OperationView},
   UnitTCategory in 'models\UnitTCategory.pas',
-  UnitTCategoryTable in 'models\UnitTCategoryTable.pas';
+  UnitTCategoryTable in 'models\UnitTCategoryTable.pas',
+  UnitTCategoriesView in 'views\UnitTCategoriesView.pas' {categoriesView};
 
 {$R *.res}
 
@@ -16,6 +17,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(ThomeView, homeView);
-  Application.CreateForm(TOperationView, OperationView);
   Application.Run;
 end.
