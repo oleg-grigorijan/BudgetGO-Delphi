@@ -53,6 +53,7 @@ begin
   new(operation);
   with operation^ do
   begin
+    id := 0;
     tp := TOperationType(lblTp.tag);
     money := strToInt(edtRubles.text) * 100 +
       strToInt(edtPenny.text);

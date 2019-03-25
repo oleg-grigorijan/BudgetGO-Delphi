@@ -235,7 +235,7 @@ object homeView: ThomeView
     Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
     PopupMenu = pmOperation
     ScrollBars = ssVertical
-    TabOrder = 2
+    TabOrder = 5
     OnDblClick = actionOperationView
     OnMouseDown = actionOperationSelect
     ColWidths = (
@@ -259,7 +259,7 @@ object homeView: ThomeView
     Font.Name = 'Google Sans'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
     OnChange = actionUpdateStatistics
     Items.Strings = (
       #1071#1085#1074#1072#1088#1100
@@ -288,7 +288,7 @@ object homeView: ThomeView
     Font.Name = 'Google Sans'
     Font.Style = []
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 3
     OnChange = actionUpdateStatistics
   end
   object btnCategories: TButton
@@ -303,7 +303,7 @@ object homeView: ThomeView
     Font.Name = 'Google Sans'
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 4
     OnClick = actionCategoriesView
   end
   object pmOperation: TPopupMenu

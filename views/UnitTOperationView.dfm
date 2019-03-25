@@ -125,7 +125,7 @@ object OperationView: TOperationView
     ModalResult = 1
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 7
     Visible = False
     StyleElements = [seFont, seClient]
     OnClick = actionSave
@@ -180,7 +180,7 @@ object OperationView: TOperationView
     ModalResult = 1
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 6
     Visible = False
     StyleElements = [seFont, seClient]
     OnClick = actionCreate
@@ -197,7 +197,7 @@ object OperationView: TOperationView
     Font.Style = []
     MaxLength = 30
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 3
   end
   object btnCancel: TButton
     Left = 84
@@ -214,7 +214,7 @@ object OperationView: TOperationView
     ModalResult = 2
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 5
     StyleElements = [seFont, seClient]
   end
   object dtpDate: TDateTimePicker
@@ -230,7 +230,7 @@ object OperationView: TOperationView
     Font.Style = []
     MinDate = 40179.000000000000000000
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 4
   end
   object cbbCategory: TComboBox
     Left = 18
@@ -238,6 +238,6 @@ object OperationView: TOperationView
     Width = 252
     Height = 24
     Style = csDropDownList
-    TabOrder = 7
+    TabOrder = 2
   end
 end
