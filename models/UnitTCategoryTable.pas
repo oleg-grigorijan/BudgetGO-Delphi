@@ -17,7 +17,7 @@ type
     public
       constructor create(const fileName: string); overload;
       destructor destroy(); override;
-      procedure addItem(const item: PCategory);
+      function addItem(const item: PCategory): Boolean;
       function getItem(const id: Integer): PCategory;
       function getItems(): TCategories; overload;
       function getItems(const operTp: TOperationType): TCategories; overload;
@@ -94,18 +94,26 @@ begin
   inherited destroy();
 end;
 
-procedure TCategoryTable.addItem(const item: PCategory);
+function TCategoryTable.addItem(const item: PCategory): Boolean;
 var
   i: Integer;
 begin
-  if item^.id = 0 then
-    if self.count = 0 then
-      item^.id := 1
-    else
-      item^.id := self.items[count - 1]^.id + 1;
-  inc(self.count);
-  setLength(items, self.count);
-  self.items[count - 1] := item;
+  result := true;
+  for i := 0 to self.count - 1 do
+    if (self.items[i]^.name = item^.name) and
+      (self.items[i]^.operTp = item^.operTp) then
+      result := false;
+  if result then
+  begin
+    if item^.id = 0 then
+      if self.count = 0 then
+        item^.id := 1
+      else
+        item^.id := self.items[count - 1]^.id + 1;
+    inc(self.count);
+    setLength(items, self.count);
+    self.items[count - 1] := item;
+  end;
 end;
 
 function TCategoryTable.getItem(const id: Integer): PCategory;
