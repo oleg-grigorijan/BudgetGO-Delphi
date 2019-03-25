@@ -115,7 +115,7 @@ begin
     operationView.prepareToCreate(income)
   else if Sender = btnCreateOutcome then
     operationView.prepareToCreate(outcome)
-  else if Sender = miEdit then
+  else if (Sender = miEdit) or (Sender = grdOperations) then
     operationView.prepareToEdit(grdOperations.tag)
   else if Sender = miRepeat then
     operationView.prepareToRepeat(grdOperations.tag);

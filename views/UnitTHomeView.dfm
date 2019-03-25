@@ -223,6 +223,7 @@ object homeView: ThomeView
     PopupMenu = pmOperation
     ScrollBars = ssVertical
     TabOrder = 2
+    OnDblClick = actionOperationView
     OnMouseDown = actionOperationSelect
     ColWidths = (
       34
