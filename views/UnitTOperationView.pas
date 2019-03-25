@@ -7,7 +7,7 @@ uses
   System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ComCtrls, Vcl.ExtCtrls, UnitTOperation,
-  UnitTOperationList;
+  UnitTOperationList, UnitTCategory, UnitTCategoryTable;
 
 type
   TOperationView = class(TForm)
@@ -24,13 +24,19 @@ type
     lblPennyAfter: TLabel;
     lblRublesAfter: TLabel;
     lblTp: TLabel;
+    lblCategoryBefore: TLabel;
+    cbbCategory: TComboBox;
     procedure actionCreate(Sender: TObject);
     procedure actionMoneyChange(Sender: TObject);
     procedure actionSave(Sender: TObject);
   public
-    procedure prepareToCreate(tp: TOperationType);
-    procedure prepareToEdit(id: Integer);
-    procedure prepareToRepeat(id: Integer);
+    procedure prepareToCreate(const tp: TOperationType);
+    procedure prepareToEdit(const id: Integer);
+    procedure prepareToRepeat(const id: Integer);
+    procedure setCategories(const operTp: TOperationType); overload;
+    procedure setCategories(const operTp: TOperationType; const id: Integer); overload;
+  private
+    catIds: array of Integer;
   end;
 
 var
@@ -50,6 +56,7 @@ begin
     tp := TOperationType(lblTp.tag);
     money := strToInt(edtRubles.text) * 100 +
       strToInt(edtPenny.text);
+    catId := catTable.getItems(tp)[cbbCategory.ItemIndex]^.id;
     description := edtDescription.text;
     date := dtpDate.date;
   end;
@@ -86,13 +93,14 @@ begin
     tp := TOperationType(lblTp.tag);
     money := strToInt(edtRubles.text)*100 +
       strToInt(edtPenny.text);
+    catId := catTable.getItems(tp)[cbbCategory.ItemIndex]^.id;
     description := edtDescription.text;
     date := dtpDate.date;
   end;
   operList.editItem(btnSave.tag, newItem);
 end;
 
-procedure TOperationView.prepareToCreate(tp: TOperationType);
+procedure TOperationView.prepareToCreate(const tp: TOperationType);
 begin
   btnSave.visible := false;
   btnCreate.visible := true;
@@ -103,12 +111,13 @@ begin
   lblTp.tag := ord(tp);
   edtRubles.text := '0';
   edtPenny.text := '0';
+  setCategories(tp);
   edtDescription.text := '';
   dtpDate.maxDate := date();
   dtpDate.date := date();
 end;
 
-procedure TOperationView.prepareToEdit(id: Integer);
+procedure TOperationView.prepareToEdit(const id: Integer);
 var
   item: POperation;
 begin
@@ -127,13 +136,14 @@ begin
     lblTp.tag := ord(tp);
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
+    setCategories(tp, id);
     edtDescription.text := description;
     dtpDate.date := date;
   end;
   dtpDate.maxDate := date();
 end;
 
-procedure TOperationView.prepareToRepeat(id: Integer);
+procedure TOperationView.prepareToRepeat(const id: Integer);
 var
   item: POperation;
 begin
@@ -147,12 +157,46 @@ begin
       outcome: lblTp.caption := 'Новый расход';
     end;
     lblTp.tag := ord(tp);
+    setCategories(tp, id);
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
     edtDescription.text := description;
   end;
   dtpDate.date := date();
   dtpDate.maxDate := date();
+end;
+
+procedure TOperationView.setCategories(const operTp: TOperationType);
+var
+  cats: TCategories;
+  i: Integer;
+begin
+  cats := catTable.getItems(operTp);
+  setLength(self.catIds, length(cats));
+  cbbCategory.clear;
+  for i := 0 to length(cats) - 1 do
+  begin
+    catIds[i] := cats[i]^.id;
+    cbbCategory.items.add(cats[i]^.name);
+  end;
+  cbbCategory.itemIndex := 0;
+end;
+
+procedure TOperationView.setCategories(const operTp: TOperationType; const id: Integer);
+var
+  cats: TCategories;
+  i: Integer;
+begin
+  cats := catTable.getItems(operTp);
+  setLength(self.catIds, length(cats));
+  cbbCategory.clear;
+  for i := 0 to length(cats) - 1 do
+  begin
+    catIds[i] := cats[i]^.id;
+    cbbCategory.items.add(cats[i]^.name);
+    if cats[i]^.id = id then
+      cbbCategory.itemIndex := i;
+  end;
 end;
 
 end.

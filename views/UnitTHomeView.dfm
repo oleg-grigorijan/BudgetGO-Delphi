@@ -8,15 +8,15 @@ object homeView: ThomeView
   ClientWidth = 689
   Color = clWhite
   DragKind = dkDock
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'Tahoma'
+  Font.Name = 'Google Sans'
   Font.Style = []
   OldCreateOrder = False
   OnCreate = actionInit
   PixelsPerInch = 120
-  TextHeight = 16
+  TextHeight = 17
   object shpHeaderBG: TShape
     Left = 0
     Top = 42
@@ -216,6 +216,7 @@ object homeView: ThomeView
     Width = 690
     Height = 179
     Cursor = crHandPoint
+    ColCount = 6
     FixedCols = 0
     GradientEndColor = clWhite
     Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
@@ -226,9 +227,10 @@ object homeView: ThomeView
     ColWidths = (
       34
       57
-      108
-      48
-      441)
+      99
+      92
+      44
+      359)
   end
   object cbbMonth: TComboBox
     Left = 174

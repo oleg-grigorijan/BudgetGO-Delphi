@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperationView, UnitTOperationList, UnitTOperation,
   Vcl.Menus, Vcl.Grids,
-  DateUtils, Vcl.ExtCtrls;
+  DateUtils, Vcl.ExtCtrls, UnitTCategory, UnitTCategoryTable;
 
 type
   THomeView = class(TForm)
@@ -27,11 +27,11 @@ type
     lblStatistics: TLabel;
     miDelete: TMenuItem;
     miEdit: TMenuItem;
+    miRepeat: TMenuItem;
     pmOperation: TPopupMenu;
     shpHeaderBG: TShape;
     shpIncome: TShape;
     shpOutcome: TShape;
-    miRepeat: TMenuItem;
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
     procedure actionOperationSelect(Sender: TObject;
@@ -56,16 +56,17 @@ procedure THomeView.actionInit(Sender: TObject);
 var
   i: Integer;
 begin
-  cbbMonth.ItemIndex := monthOfTheYear(date()) - 1;
+  cbbMonth.itemIndex := monthOfTheYear(date()) - 1;
   for i := currentYear downto 2010 do
     cbbYear.items.add(IntToStr(i));
-  cbbYear.ItemIndex := 0;
+  cbbYear.itemIndex := 0;
   with grdOperations do
   begin
     cells[1, 0] := 'Тип';
     cells[2, 0] := 'Сумма';
-    cells[3, 0] := 'День';
-    cells[4, 0] := 'Описание';
+    cells[3, 0] := 'Категория';
+    cells[4, 0] := 'День';
+    cells[5, 0] := 'Описание';
   end;
   dataUpdate();
 end;
@@ -162,14 +163,15 @@ begin
       begin
         case tp of
           income:
-            Cells[1, i] := 'Доход';
+            cells[1, i] := 'Доход';
           outcome:
-            Cells[1, i] := 'Расход';
+            cells[1, i] := 'Расход';
         end;
-        Cells[2, i] :=  FloatToStrF(money / 100, ffFixed,
+        cells[2, i] :=  FloatToStrF(money / 100, ffFixed,
           7, 2) + ' руб.';
-        Cells[3, i] := intToStr(dayOfTheMonth(date));
-        Cells[4, i] := description;
+        cells[3, i] := catTable.getItem(catId)^.name;
+        cells[4, i] := intToStr(dayOfTheMonth(date));
+        cells[5, i] := description;
       end;
     end;
   end;
