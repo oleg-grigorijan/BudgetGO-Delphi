@@ -27,6 +27,7 @@ type
       function getItems(const month, year: Integer;
         var incomeMonth, outcomeMonth: uint64): TOperations;
       function removeItem(const id: Integer): Boolean;
+      procedure removeItems(const tp: TOperationType; const catId: Integer);
       function getBalance(): Integer;
       function editItem(const id: Integer; const newItem: POperation): Boolean;
   end;
@@ -235,6 +236,23 @@ begin
     removeNode(node);
     result := true;
   end;
+end;
+
+procedure TOperationList.removeItems(const tp: TOperationType; const catId: Integer);
+var
+  nodeCurr, nodeTmp: TOperationListNode;
+begin
+  nodeCurr := self.last;
+  while nodeCurr <> nil do
+    if (nodeCurr.item^.tp = tp) and
+      (nodeCurr.item^.catId = catId) then
+    begin
+      nodeTmp := nodeCurr;
+      nodeCurr := nodeCurr.prev;
+      removeNode(nodeTmp);
+    end
+    else
+      nodeCurr := nodeCurr.prev;
 end;
 
 function TOperationList.editItem(const id: Integer; const newItem: POperation): Boolean;

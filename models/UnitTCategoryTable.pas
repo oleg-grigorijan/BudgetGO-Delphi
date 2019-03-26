@@ -172,6 +172,7 @@ begin
     dispose(self.items[i]);
     for j := i to count - 1 do
       self.items[j] := self.items[j + 1];
+    setLength(items, self.count);
     result := true;
   end;
 end;

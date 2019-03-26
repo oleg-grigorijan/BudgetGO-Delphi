@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.Grids, Vcl.ComCtrls, UnitTCategory, UnitTCategoryTable, UnitTOperation, UnitTCategoryView,
-  Vcl.Menus;
+  Vcl.Menus, UnitTOperationList, UnitTHomeView;
 
 type
   TCategoriesView = class(TForm)
@@ -16,10 +16,12 @@ type
     miEdit: TMenuItem;
     pmCategory: TPopupMenu;
     tbcOperType: TTabControl;
+    miDelete: TMenuItem;
     procedure actionCategorySelect(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState;
       X, Y: Integer);
     procedure actionCategoryView(Sender: TObject);
+    procedure actionCategoryDelete(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOnTypeChange(Sender: TObject);
   private
@@ -76,6 +78,7 @@ begin
   if categoryView.modalResult = mrOk then
   begin
     dataUpdate();
+    homeView.dataUpdate();
     messageBox(handle, 'Категория успешно сохранена', PChar('Уведомление'),
       MB_OK + MB_ICONINFORMATION);
   end
@@ -84,6 +87,29 @@ begin
       'Уведомление', MB_RETRYCANCEL + MB_ICONSTOP) = IDRETRY then
     success := false;
   until success;
+end;
+
+procedure TCategoriesView.actionCategoryDelete(Sender: TObject);
+var
+  answer: Integer;
+begin
+  if grdCategories.tag <> 0 then
+  begin
+    answer := MessageBox(handle, 'Вы действительно хотите удалить категоирю?' +
+      #13#10 + 'Также будут удалены все операции с данной категорией.' +
+      #13#10 + 'Удалённые данные будет невозможно восстановить.',
+      'Уведомление', MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2);
+    if answer = IDYES then
+    begin
+      operList.removeItems(tpCurr, grdCategories.tag);
+      case tpCurr of
+        income: catsIncome.removeItem(grdCategories.tag);
+        outcome: catsOutcome.removeItem(grdCategories.tag);
+      end;
+      dataUpdate();
+      homeView.dataUpdate();
+    end;
+  end;
 end;
 
 procedure TCategoriesView.actionInit(Sender: TObject);
