@@ -141,6 +141,8 @@ object categoryView: TcategoryView
     MaxLength = 18
     ParentFont = False
     TabOrder = 0
+    Text = ' '
+    OnChange = actionOnNameChange
   end
   object btnSave: TButton
     Left = 180

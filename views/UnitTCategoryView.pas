@@ -21,6 +21,7 @@ type
     lblRublesAfter: TLabel;
     lblTp: TLabel;
     procedure actionCreate(Sender: TObject);
+    procedure actionOnNameChange(Sender: TObject);
     procedure actionSave(Sender: TObject);
   private
     procedure setInfo(const operTp: TOperationType);
@@ -55,6 +56,20 @@ begin
   end;
   if not success then
     self.modalResult := mrAbort;
+end;
+
+procedure TCategoryView.actionOnNameChange(Sender: TObject);
+begin
+  if edtName.text = '' then
+  begin
+    btnCreate.enabled := false;
+    btnSave.enabled := false;
+  end
+  else
+  begin
+    btnCreate.enabled := true;
+    btnSave.enabled := true;
+  end;
 end;
 
 procedure TCategoryView.actionSave(Sender: TObject);
