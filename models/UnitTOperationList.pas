@@ -260,8 +260,10 @@ begin
       outcome:
         balance := balance - newItem^.money;
     end;
-    if (node.prev = nil) or
-      (node.prev.item^.date <= newItem^.date) then
+    if ((node.prev = nil) or
+      (node.prev.item^.date <= newItem^.date)) and
+      ((node.next = nil) or
+      (node.next.item^.date >= newItem^.date)) then
     begin
       node.item := newItem;
       dispose(oldItem);

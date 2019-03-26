@@ -217,8 +217,14 @@ object homeView: ThomeView
     Height = 179
     Cursor = crHandPoint
     FixedCols = 0
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Google Sans'
+    Font.Style = []
     GradientEndColor = clWhite
     Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
+    ParentFont = False
     PopupMenu = pmOperation
     ScrollBars = ssVertical
     TabOrder = 2
