@@ -13,11 +13,13 @@ type
       items: TCategories;
       count: Integer;
       fileName: string[255];
+      function checkNameUnique(const name: string): Boolean;
       function getItemIndex(const id: Integer): Integer;
     public
       constructor create(const fileName: string); overload;
       destructor destroy(); override;
       function addItem(const item: PCategory): Boolean;
+      function editItem(const id: Integer; const newItem: PCategory): Boolean;
       function getItem(const id: Integer): PCategory;
       function getItems(): TCategories; overload;
       function removeItem(const id: Integer): Boolean;
@@ -33,6 +35,19 @@ const
   dataDName = 'data';
   catIncomeFName = 'data/categories_i.godev';
   catOutcomeFName = 'data/categories_o.godev';
+
+function TCategoryTable.checkNameUnique(const name: string): Boolean;
+var
+  i: Integer;
+begin
+  result := true;
+  for i := 0 to self.count - 1 do
+    if (self.items[i]^.name = name) then
+    begin
+      result := false;
+      break;
+    end;
+end;
 
 function TCategoryTable.getItemIndex(const id: Integer): Integer;
 var
@@ -99,10 +114,7 @@ function TCategoryTable.addItem(const item: PCategory): Boolean;
 var
   i: Integer;
 begin
-  result := true;
-  for i := 0 to self.count - 1 do
-    if (self.items[i]^.name = item^.name) then
-      result := false;
+  result := checkNameUnique(item^.name);
   if result then
   begin
     if item^.id = 0 then
@@ -114,6 +126,23 @@ begin
     setLength(items, self.count);
     self.items[count - 1] := item;
   end;
+end;
+
+function TCategoryTable.editItem(const id: Integer; const newItem: PCategory): Boolean;
+var
+  i: Integer;
+begin
+  result := false;
+  i := getItemIndex(id);
+  if i >= 0 then
+    if (newItem^.name = items[i].name) or
+      checkNameUnique(newItem^.name) then
+    begin
+      newItem^.id := items[i]^.id;
+      dispose(items[i]);
+      items[i] := newItem;
+      result := true;
+    end;
 end;
 
 function TCategoryTable.getItem(const id: Integer): PCategory;
