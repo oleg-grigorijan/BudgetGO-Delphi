@@ -160,6 +160,7 @@ object categoryView: TcategoryView
     TabOrder = 4
     Visible = False
     StyleElements = [seFont, seClient]
+    OnClick = actionSave
   end
   object btnCreate: TButton
     Left = 180

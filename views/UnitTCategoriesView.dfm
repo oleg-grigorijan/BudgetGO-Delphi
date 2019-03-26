@@ -16,6 +16,7 @@ object categoriesView: TcategoriesView
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = actionInit
+  OnMouseDown = actionCategorySelect
   PixelsPerInch = 120
   TextHeight = 16
   object lblHeader: TLabel
@@ -58,8 +59,11 @@ object categoriesView: TcategoriesView
       FixedCols = 0
       GradientEndColor = clWhite
       Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
+      PopupMenu = pmCategory
       ScrollBars = ssVertical
       TabOrder = 1
+      OnDblClick = actionCategoryView
+      OnMouseDown = actionCategorySelect
       ColWidths = (
         28
         129
@@ -78,6 +82,14 @@ object categoriesView: TcategoriesView
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      OnClick = actionCategoryView
+    end
+  end
+  object pmCategory: TPopupMenu
+    Left = 239
+    Top = 144
+    object miEdit: TMenuItem
+      Caption = '&'#1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
       OnClick = actionCategoryView
     end
   end

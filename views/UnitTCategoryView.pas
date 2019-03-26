@@ -21,10 +21,13 @@ type
     lblRublesAfter: TLabel;
     lblTp: TLabel;
     procedure actionCreate(Sender: TObject);
+    procedure actionSave(Sender: TObject);
   private
-    procedure setInfo(const tp: TOperationType);
+    procedure setInfo(const operTp: TOperationType);
   public
-    procedure prepareToCreate(const tp: TOperationType);
+    procedure prepareToCreate(const operTp: TOperationType);
+    procedure prepareToEdit(const operTp: TOperationType;
+      const id: Integer);
   end;
 
 var
@@ -55,9 +58,31 @@ begin
     self.modalResult := mrAbort;
 end;
 
-procedure TCategoryView.setInfo(const tp: TOperationType);
+procedure TCategoryView.actionSave(Sender: TObject);
+var
+  success: Boolean;
+  newItem: PCategory;
 begin
-  case tp of
+  new(newItem);
+  with newItem^ do
+  begin
+    name := edtName.text;
+    moneyMonth := strToInt(edtRubles.text)*100 +
+      strToInt(edtPenny.text);
+  end;
+  case lblTp.tag of
+    ord(income):
+      success := catsIncome.editItem(btnSave.tag, newItem);
+    ord(outcome):
+      success := catsOutcome.editItem(btnSave.tag, newItem);
+  end;
+  if not success then
+    self.modalResult := mrAbort;
+end;
+
+procedure TCategoryView.setInfo(const operTp: TOperationType);
+begin
+  case operTp of
     income:
     begin
       lblMoneyBefore.caption := 'Минимально в месяц';
@@ -75,19 +100,47 @@ begin
   end;
 end;
 
-procedure TCategoryView.prepareToCreate(const tp: TOperationType);
+procedure TCategoryView.prepareToCreate(const operTp: TOperationType);
 begin
   btnSave.visible := false;
   btnCreate.visible := true;
-  case tp of
+  case operTp of
     income: lblTp.caption := 'Новая категория'#13#10'дохода';
     outcome: lblTp.caption := 'Новая категория'#13#10'расхода';
   end;
-  setInfo(tp);
-  lblTp.tag := ord(tp);
+  setInfo(operTp);
+  lblTp.tag := ord(operTp);
   edtName.text := '';
   edtRubles.text := '';
   edtPenny.text := '';
 end;
 
+procedure TCategoryView.prepareToEdit(const operTp: TOperationType; const id: Integer);
+var
+  item: PCategory;
+begin
+  btnSave.visible := true;
+  btnCreate.visible := false;
+  case operTp of
+    income:
+    begin
+      item := catsIncome.getItem(id);
+      lblTp.caption := 'Редактирование'#13#10'категории дохода';
+    end;
+    outcome:
+    begin
+      item := catsOutcome.getItem(id);
+      lblTp.caption := 'Редактирование'#13#10'категории расхода';
+    end;
+  end;
+  lblTp.tag := ord(operTp);
+  setInfo(operTp);
+  with item^ do
+  begin
+    btnSave.tag := id;
+    edtName.text := name;
+    edtRubles.text := intToStr(moneyMonth div 100);
+    edtPenny.text := intToStr(moneyMonth mod 100);
+  end;
+end;
 end.

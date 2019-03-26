@@ -5,14 +5,20 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
-  Vcl.Grids, Vcl.ComCtrls, UnitTCategory, UnitTCategoryTable, UnitTOperation, UnitTCategoryView;
+  Vcl.Grids, Vcl.ComCtrls, UnitTCategory, UnitTCategoryTable, UnitTOperation, UnitTCategoryView,
+  Vcl.Menus;
 
 type
   TCategoriesView = class(TForm)
     btnCreate: TButton;
     grdCategories: TStringGrid;
     lblHeader: TLabel;
+    miEdit: TMenuItem;
+    pmCategory: TPopupMenu;
     tbcOperType: TTabControl;
+    procedure actionCategorySelect(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState;
+      X, Y: Integer);
     procedure actionCategoryView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOnTypeChange(Sender: TObject);
@@ -29,6 +35,30 @@ implementation
 
 {$R *.dfm}
 
+procedure TCategoriesView.actionCategorySelect(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  col, row: Integer;
+begin
+  grdCategories.mouseToCell(X, Y, col, row);
+  grdCategories.col := col;
+  if grdCategories.rowCount = 1 then
+    grdCategories.tag := 0
+  else
+  begin
+    if row = 0 then
+      grdCategories.row := 1
+    else
+      grdCategories.row := row;
+    case tpCurr of
+      income:
+        grdCategories.tag := catsIncome.getItems[grdCategories.row - 1]^.id;
+      outcome:
+        grdCategories.tag := catsOutcome.getItems[grdCategories.row - 1]^.id;
+    end;
+  end;
+end;
+
 procedure TCategoriesView.actionCategoryView(Sender: TObject);
 var
   success: Boolean;
@@ -37,7 +67,10 @@ begin
   if not assigned(categoryView) then
     categoryView := TCategoryView.create(self);
   if Sender = btnCreate then
-    categoryView.prepareToCreate(tpCurr);
+    categoryView.prepareToCreate(tpCurr)
+  else if (Sender = miEdit) or
+    (Sender = grdCategories) then
+    categoryView.prepareToEdit(tpCurr, grdCategories.tag);
   categoryView.showModal;
   success := true;
   if categoryView.modalResult = mrOk then
