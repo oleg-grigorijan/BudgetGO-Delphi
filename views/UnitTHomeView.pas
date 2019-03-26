@@ -62,6 +62,7 @@ begin
   if not assigned(categoriesView) then
     categoriesView := TCategoriesView.create(self);
     categoriesView.showModal;
+  dataUpdate();
 end;
 
 procedure THomeView.actionInit(Sender: TObject);
