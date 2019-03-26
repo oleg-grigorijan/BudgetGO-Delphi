@@ -7,7 +7,8 @@ uses
   System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.ComCtrls, Vcl.ExtCtrls, UnitTOperation,
-  UnitTOperationList, UnitTCategory, UnitTCategoryTable;
+  UnitTOperationList, UnitTCategory, UnitTCategoryTable,
+  UnitMoneyUtils;
 
 type
   TOperationView = class(TForm)
@@ -55,8 +56,7 @@ begin
   begin
     id := 0;
     tp := TOperationType(lblTp.tag);
-    money := strToInt(edtRubles.text) * 100 +
-      strToInt(edtPenny.text);
+    money := strToMoney(edtRubles.text, edtPenny.text);
     catId := catsCurr[cbbCategory.ItemIndex]^.id;
     description := edtDescription.text;
     date := dtpDate.date;
@@ -65,14 +65,8 @@ begin
 end;
 
 procedure TOperationView.actionMoneyChange(Sender: TObject);
-var
-  sum: Longword;
 begin
-  sum := 0;
-  if (edtRubles.text = '') or
-    (edtPenny.text = '') or
-    (strToInt(edtRubles.text) +
-    strToInt(edtPenny.text) = 0) then
+  if strToMoney(edtRubles.text, edtPenny.text) = 0 then
   begin
     btnCreate.enabled := false;
     btnSave.enabled := false;
@@ -92,8 +86,7 @@ begin
   with newItem^ do
   begin
     tp := TOperationType(lblTp.tag);
-    money := strToInt(edtRubles.text)*100 +
-      strToInt(edtPenny.text);
+    money := strToMoney(edtRubles.text, edtPenny.text);
     catId := catsCurr[cbbCategory.ItemIndex]^.id;
     description := edtDescription.text;
     date := dtpDate.date;

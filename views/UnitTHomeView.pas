@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperationView, UnitTOperationList, UnitTOperation,
   Vcl.Menus, Vcl.Grids,
-  DateUtils, Vcl.ExtCtrls, UnitTCategory, UnitTCategoryTable;
+  DateUtils, Vcl.ExtCtrls, UnitTCategory, UnitTCategoryTable, UnitMoneyUtils;
 
 type
   THomeView = class(TForm)
@@ -150,15 +150,11 @@ var
   incomeMonth, outcomeMonth: uint64;
   i: Integer;
 begin
-  lblBalance.caption := floatToStrF(operList.getBalance
-    / 100, ffFixed, 7, 2) + ' руб.';
-  IntToStr(operList.getBalance);
+  lblBalance.caption := moneyToStr(operList.getBalance) + ' руб.';
   opersCurr := operList.getItems(cbbMonth.itemIndex + 1,
     strToInt(cbbYear.text), incomeMonth, outcomeMonth);
-  lblIncome.caption := floatToStrF(incomeMonth / 100,
-    ffFixed, 7, 2) + ' руб.';
-  lblOutcome.caption := floatToStrF(outcomeMonth / 100,
-    ffFixed, 7, 2) + ' руб.';
+  lblIncome.caption := moneyToStr(incomeMonth) + ' руб.';
+  lblOutcome.caption := moneyToStr(outcomeMonth) + ' руб.';
   if incomeMonth + outcomeMonth = 0 then
     shpIncome.width := 0
   else
@@ -185,8 +181,7 @@ begin
             cells[3, i] := catsOutcome.getItem(catId)^.name;
           end;
         end;
-        cells[2, i] :=  FloatToStrF(money / 100, ffFixed,
-          7, 2) + ' руб.';
+        cells[2, i] := moneyToStr(money) + ' руб.';
         cells[4, i] := intToStr(dayOfTheMonth(date));
         cells[5, i] := description;
       end;

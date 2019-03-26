@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperation, UnitTCategory, UnitTCategoryTable;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperation, UnitTCategory, UnitTCategoryTable, UnitMoneyUtils;
 
 type
   TcategoryView = class(TForm)
@@ -47,8 +47,7 @@ begin
   begin
     id := 0;
     name := edtName.text;
-    moneyMonth := strToInt(edtRubles.text)*100 +
-      strToInt(edtPenny.text);
+    moneyMonth := strToMoney(edtRubles.text, edtPenny.text);
   end;
   case lblTp.tag of
     ord(income): success := catsIncome.addItem(item);
@@ -67,8 +66,7 @@ begin
   with newItem^ do
   begin
     name := edtName.text;
-    moneyMonth := strToInt(edtRubles.text)*100 +
-      strToInt(edtPenny.text);
+    moneyMonth := strToMoney(edtRubles.text, edtPenny.text)
   end;
   case lblTp.tag of
     ord(income):
@@ -139,8 +137,16 @@ begin
   begin
     btnSave.tag := id;
     edtName.text := name;
-    edtRubles.text := intToStr(moneyMonth div 100);
-    edtPenny.text := intToStr(moneyMonth mod 100);
+    if moneyMonth = 0 then
+    begin
+      edtRubles.text := '';
+      edtPenny.text := '';
+    end
+    else
+    begin
+      edtRubles.text := intToStr(moneyMonth div 100);
+      edtPenny.text := intToStr(moneyMonth mod 100);
+    end;
   end;
 end;
 end.

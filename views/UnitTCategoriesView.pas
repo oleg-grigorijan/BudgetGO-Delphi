@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.Grids, Vcl.ComCtrls, UnitTCategory, UnitTCategoryTable, UnitTOperation, UnitTCategoryView,
-  Vcl.Menus, UnitTOperationList, UnitTHomeView;
+  Vcl.Menus, UnitTOperationList, UnitTHomeView, UnitMoneyUtils;
 
 type
   TCategoriesView = class(TForm)
@@ -154,8 +154,7 @@ begin
         if moneyMonth = 0 then
           cells[2, i] := ''
         else
-          cells[2, i] :=  FloatToStrF(moneyMonth / 100,
-            ffFixed, 7, 2) + ' руб.'
+          cells[2, i] := moneyToStr(moneyMonth) + ' руб.';
       end;
     end;
   end;
