@@ -17,7 +17,6 @@ type
     procedure actionInit(Sender: TObject);
     procedure actionOnTypeChange(Sender: TObject);
   private
-    catsCurr: TCategories;
     tpCurr: TOperationType;
   public
     procedure dataUpdate();
@@ -67,21 +66,23 @@ end;
 
 procedure TCategoriesView.dataUpdate();
 var
+  catsCurr: TCategories;
   i: Integer;
 begin
   case tbcOperType.tabIndex of
-    0:
+    0: // income tab
     begin
       self.tpCurr := income;
       grdCategories.cells[2, 0] := 'Минимально в мес.';
+      catsCurr := catsIncome.getItems();
     end;
-    1:
+    1: // outcome tab
     begin
       self.tpCurr := outcome;
       grdCategories.cells[2, 0] := 'Максимально в мес.';
+      catsCurr := catsOutcome.getItems();
     end;
   end;
-  catsCurr := catTable.getItems(tpCurr);
   with grdCategories do
   begin
     rowCount := length(catsCurr) + 1;

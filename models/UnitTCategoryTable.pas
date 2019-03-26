@@ -20,18 +20,19 @@ type
       function addItem(const item: PCategory): Boolean;
       function getItem(const id: Integer): PCategory;
       function getItems(): TCategories; overload;
-      function getItems(const operTp: TOperationType): TCategories; overload;
       function removeItem(const id: Integer): Boolean;
   end;
 
 var
-  catTable: TCategoryTable;
+  catsIncome: TCategoryTable;
+  catsOutcome: TCategoryTable;
 
 implementation
 
 const
   dataDName = 'data';
-  catFName = 'data/categories.godev';
+  catIncomeFName = 'data/categories_i.godev';
+  catOutcomeFName = 'data/categories_o.godev';
 
 function TCategoryTable.getItemIndex(const id: Integer): Integer;
 var
@@ -100,8 +101,7 @@ var
 begin
   result := true;
   for i := 0 to self.count - 1 do
-    if (self.items[i]^.name = item^.name) and
-      (self.items[i]^.operTp = item^.operTp) then
+    if (self.items[i]^.name = item^.name) then
       result := false;
   if result then
   begin
@@ -131,21 +131,6 @@ begin
   result := self.items;
 end;
 
-function TCategoryTable.getItems(const operTp: TOperationType): TCategories;
-var
-  i, found: Integer;
-begin
-  found := 0;
-  setLength(result, found);
-  for i := 0 to self.count - 1 do
-    if self.items[i]^.operTp = operTp then
-    begin
-      inc(found);
-      setLength(result, found);
-      result[found - 1] := self.items[i];
-    end;
-end;
-
 function TCategoryTable.removeItem(const id: Integer): Boolean;
 var
   i, j: Integer;
@@ -165,9 +150,11 @@ end;
 initialization
   if not directoryExists(dataDName) then
     createDir(dataDName);
-  catTable := TCategoryTable.create(catFName);
+  catsIncome := TCategoryTable.create(catIncomeFName);
+  catsOutcome := TCategoryTable.create(catOutcomeFName);
 
 finalization
-  catTable.destroy();
+  catsIncome.destroy();
+  catsOutcome.destroy();
 
 end.

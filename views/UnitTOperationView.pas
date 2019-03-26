@@ -34,9 +34,9 @@ type
     procedure prepareToEdit(const id: Integer);
     procedure prepareToRepeat(const id: Integer);
     procedure setCategories(const operTp: TOperationType); overload;
-    procedure setCategories(const operTp: TOperationType; const id: Integer); overload;
+    procedure setCategories(const operTp: TOperationType; const catId: Integer); overload;
   private
-    catIds: array of Integer;
+    catsCurr: TCategories;
   end;
 
 var
@@ -57,7 +57,7 @@ begin
     tp := TOperationType(lblTp.tag);
     money := strToInt(edtRubles.text) * 100 +
       strToInt(edtPenny.text);
-    catId := catTable.getItems(tp)[cbbCategory.ItemIndex]^.id;
+    catId := catsCurr[cbbCategory.ItemIndex]^.id;
     description := edtDescription.text;
     date := dtpDate.date;
   end;
@@ -94,7 +94,7 @@ begin
     tp := TOperationType(lblTp.tag);
     money := strToInt(edtRubles.text)*100 +
       strToInt(edtPenny.text);
-    catId := catTable.getItems(tp)[cbbCategory.ItemIndex]^.id;
+    catId := catsCurr[cbbCategory.ItemIndex]^.id;
     description := edtDescription.text;
     date := dtpDate.date;
   end;
@@ -123,7 +123,7 @@ var
   item: POperation;
 begin
   btnSave.visible := true;
-  btnCreate.Visible := false;
+  btnCreate.visible := false;
   item := operList.getItem(id);
   with item^ do
   begin
@@ -137,7 +137,7 @@ begin
     lblTp.tag := ord(tp);
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
-    setCategories(tp, id);
+    setCategories(tp, catId);
     edtDescription.text := description;
     dtpDate.date := date;
   end;
@@ -149,7 +149,7 @@ var
   item: POperation;
 begin
   btnSave.visible := false;
-  btnCreate.Visible := true;
+  btnCreate.visible := true;
   item := operList.getItem(id);
   with item^ do
   begin
@@ -158,7 +158,7 @@ begin
       outcome: lblTp.caption := 'Новый расход';
     end;
     lblTp.tag := ord(tp);
-    setCategories(tp, id);
+    setCategories(tp, catId);
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
     edtDescription.text := description;
@@ -169,36 +169,37 @@ end;
 
 procedure TOperationView.setCategories(const operTp: TOperationType);
 var
-  cats: TCategories;
   i: Integer;
 begin
-  cats := catTable.getItems(operTp);
-  setLength(self.catIds, length(cats));
-  cbbCategory.clear;
-  for i := 0 to length(cats) - 1 do
-  begin
-    catIds[i] := cats[i]^.id;
-    cbbCategory.items.add(cats[i]^.name);
+  case operTp of
+    income:
+      catsCurr := catsIncome.getItems;
+    outcome:
+      catsCurr := catsOutcome.getItems;
   end;
+  cbbCategory.clear;
+  for i := 0 to length(catsCurr) - 1 do
+    cbbCategory.items.add(catsCurr[i]^.name);
   cbbCategory.itemIndex := 0;
 end;
 
-procedure TOperationView.setCategories(const operTp: TOperationType; const id: Integer);
+procedure TOperationView.setCategories(const operTp: TOperationType; const catId: Integer);
 var
-  cats: TCategories;
   i: Integer;
 begin
-  cats := catTable.getItems(operTp);
-  setLength(self.catIds, length(cats));
+  case operTp of
+    income:
+      catsCurr := catsIncome.getItems;
+    outcome:
+      catsCurr := catsOutcome.getItems;
+  end;
   cbbCategory.clear;
-  for i := 0 to length(cats) - 1 do
+  for i := 0 to length(catsCurr) - 1 do
   begin
-    catIds[i] := cats[i]^.id;
-    cbbCategory.items.add(cats[i]^.name);
-    if cats[i]^.id = id then
+    cbbCategory.items.add(catsCurr[i]^.name);
+    if catsCurr[i]^.id = catId then
       cbbCategory.itemIndex := i;
   end;
 end;
 
 end.
-

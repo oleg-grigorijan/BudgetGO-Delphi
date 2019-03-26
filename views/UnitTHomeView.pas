@@ -175,13 +175,18 @@ begin
       begin
         case tp of
           income:
+          begin
             cells[1, i] := 'Доход';
+            cells[3, i] := catsIncome.getItem(catId)^.name;
+          end;
           outcome:
+          begin
             cells[1, i] := 'Расход';
+            cells[3, i] := catsOutcome.getItem(catId)^.name;
+          end;
         end;
         cells[2, i] :=  FloatToStrF(money / 100, ffFixed,
           7, 2) + ' руб.';
-        cells[3, i] := catTable.getItem(catId)^.name;
         cells[4, i] := intToStr(dayOfTheMonth(date));
         cells[5, i] := description;
       end;

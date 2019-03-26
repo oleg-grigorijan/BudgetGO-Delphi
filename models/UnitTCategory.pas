@@ -13,7 +13,6 @@ type
   TCategory = packed record
     id: Integer;
     name: string[OPER_NAME_LEN];
-    operTp: TOperationType;
     moneyMonth: Longword;
   end;
   TCategories = array of PCategory;

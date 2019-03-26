@@ -36,6 +36,7 @@ implementation
 
 procedure TCategoryView.actionCreate(Sender: TObject);
 var
+  success: Boolean;
   item: PCategory;
 begin
   new(item);
@@ -43,11 +44,14 @@ begin
   begin
     id := 0;
     name := edtName.text;
-    operTp := TOperationType(lblTp.tag);
     moneyMonth := strToInt(edtRubles.text)*100 +
       strToInt(edtPenny.text);
   end;
-  if not catTable.addItem(item) then
+  case lblTp.tag of
+    ord(income): success := catsIncome.addItem(item);
+    ord(outcome): success := catsOutcome.addItem(item);
+  end;
+  if not success then
     self.modalResult := mrAbort;
 end;
 
