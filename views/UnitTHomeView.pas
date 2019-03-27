@@ -34,6 +34,8 @@ type
     shpOutcome: TShape;
     lbl1: TLabel;
     btnCategories: TButton;
+    shpNoOperationsBG: TShape;
+    lblNoOperations: TLabel;
     procedure actionCategoriesView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
@@ -150,6 +152,14 @@ var
   incomeMonth, outcomeMonth: uint64;
   i: Integer;
 begin
+  if length(catsIncome.getItems) = 0 then
+    btnCreateIncome.enabled := false
+  else
+    btnCreateIncome.enabled := true;
+  if length(catsOutcome.getItems) = 0 then
+    btnCreateOutcome.enabled := false
+  else
+    btnCreateOutcome.enabled := true;
   lblBalance.caption := moneyToStr(operList.getBalance) + ' руб.';
   opersCurr := operList.getItems(cbbMonth.itemIndex + 1,
     strToInt(cbbYear.text), incomeMonth, outcomeMonth);
@@ -160,13 +170,18 @@ begin
   else
     shpIncome.width := shpOutcome.width*incomeMonth div
       (incomeMonth + outcomeMonth);
+  if length(opersCurr) = 0 then
+  begin
+    grdOperations.visible := false
+  end
+  else
   with grdOperations do
   begin
-    RowCount := Length(opersCurr) + 1;
+    visible := true;
+    rowCount := Length(opersCurr) + 1;
     for i := 1 to Length(opersCurr) do
     begin
-
-      Cells[0, i] := IntToStr(i);
+      cells[0, i] := IntToStr(i);
       with opersCurr[i - 1]^ do
       begin
         case tp of

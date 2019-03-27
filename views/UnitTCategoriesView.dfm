@@ -49,6 +49,28 @@ object categoriesView: TcategoriesView
       #1056#1072#1089#1093#1086#1076#1099)
     TabIndex = 0
     OnChange = actionOnTypeChange
+    object shpNoCategoriesBG: TShape
+      Left = 0
+      Top = 80
+      Width = 290
+      Height = 172
+      Brush.Color = 16185078
+      Pen.Color = 13290186
+    end
+    object lblNoCategories: TLabel
+      Left = 54
+      Top = 140
+      Width = 182
+      Height = 34
+      Alignment = taCenter
+      Caption = #1042#1099' '#1077#1097#1105' '#1085#1077' '#1089#1086#1079#1076#1072#1083#1080' '#1082#1072#1090#1077#1075#1086#1088#1080#1080#13#10#1076#1083#1103' '#1086#1087#1077#1088#1072#1094#1080#1081' '#1076#1072#1085#1085#1086#1075#1086' '#1090#1080#1087#1072
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Google Sans'
+      Font.Style = []
+      ParentFont = False
+    end
     object grdCategories: TStringGrid
       Left = 0
       Top = 80

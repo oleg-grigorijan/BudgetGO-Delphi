@@ -192,35 +192,27 @@ object homeView: ThomeView
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object btnCreateIncome: TButton
-    Left = 174
-    Top = 75
-    Width = 146
-    Height = 25
-    Caption = #1044#1086#1093#1086#1076
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Google Sans'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 0
-    OnClick = actionOperationView
+  object shpNoOperationsBG: TShape
+    Left = 0
+    Top = 406
+    Width = 701
+    Height = 179
+    Brush.Color = 16185078
+    Pen.Color = 13290186
   end
-  object btnCreateOutcome: TButton
-    Left = 174
-    Top = 103
-    Width = 146
-    Height = 25
-    Caption = #1056#1072#1089#1093#1086#1076
+  object lblNoOperations: TLabel
+    Left = 260
+    Top = 477
+    Width = 168
+    Height = 34
+    Alignment = taCenter
+    Caption = #1042#1099' '#1085#1077' '#1089#1086#1074#1077#1088#1096#1072#1083#1080' '#1086#1087#1077#1088#1072#1094#1080#1080#13#10#1074' '#1101#1090#1086#1084' '#1084#1077#1089#1103#1094#1077
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Google Sans'
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
-    OnClick = actionOperationView
   end
   object grdOperations: TStringGrid
     Left = 0
@@ -250,6 +242,36 @@ object homeView: ThomeView
       92
       44
       359)
+  end
+  object btnCreateIncome: TButton
+    Left = 174
+    Top = 75
+    Width = 146
+    Height = 25
+    Caption = #1044#1086#1093#1086#1076
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Google Sans'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    OnClick = actionOperationView
+  end
+  object btnCreateOutcome: TButton
+    Left = 174
+    Top = 103
+    Width = 146
+    Height = 25
+    Caption = #1056#1072#1089#1093#1086#1076
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Google Sans'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    OnClick = actionOperationView
   end
   object cbbMonth: TComboBox
     Left = 174

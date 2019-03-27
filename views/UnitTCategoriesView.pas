@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
   Vcl.Grids, Vcl.ComCtrls, UnitTCategory, UnitTCategoryTable, UnitTOperation, UnitTCategoryView,
-  Vcl.Menus, UnitTOperationList, UnitTHomeView, UnitMoneyUtils;
+  Vcl.Menus, UnitTOperationList, UnitTHomeView, UnitMoneyUtils,
+  Vcl.ExtCtrls;
 
 type
   TCategoriesView = class(TForm)
@@ -17,6 +18,8 @@ type
     pmCategory: TPopupMenu;
     tbcOperType: TTabControl;
     miDelete: TMenuItem;
+    lblNoCategories: TLabel;
+    shpNoCategoriesBG: TShape;
     procedure actionCategorySelect(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState;
       X, Y: Integer);
@@ -142,8 +145,12 @@ begin
       catsCurr := catsOutcome.getItems();
     end;
   end;
+  if length(catsCurr) = 0 then
+    grdCategories.visible := false
+  else
   with grdCategories do
   begin
+    visible := true;
     rowCount := length(catsCurr) + 1;
     for i := 1 to length(catsCurr) do
     begin
