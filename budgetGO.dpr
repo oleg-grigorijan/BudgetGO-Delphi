@@ -10,7 +10,8 @@ uses
   UnitTCategory in 'models\UnitTCategory.pas',
   UnitTCategoryTable in 'models\UnitTCategoryTable.pas',
   UnitTCategoriesView in 'views\UnitTCategoriesView.pas' {categoriesView},
-  UnitTCategoryView in 'views\UnitTCategoryView.pas' {categoryView};
+  UnitTCategoryView in 'views\UnitTCategoryView.pas' {categoryView},
+  UnitMoneyUtils in 'components\UnitMoneyUtils.pas';
 
 {$R *.res}
 

@@ -7,7 +7,6 @@ object homeView: ThomeView
   ClientHeight = 583
   ClientWidth = 689
   Color = clWhite
-  DragKind = dkDock
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -13

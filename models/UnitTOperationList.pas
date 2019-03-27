@@ -249,6 +249,10 @@ begin
     begin
       nodeTmp := nodeCurr;
       nodeCurr := nodeCurr.prev;
+      if nodeTmp.item^.tp = income then
+        self.balance := self.balance - nodeTmp.item^.money
+      else if nodeTmp.item^.tp = outcome then
+        self.balance := self.balance + nodeTmp.item^.money;
       removeNode(nodeTmp);
     end
     else
