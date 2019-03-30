@@ -9,6 +9,7 @@ uses
   UnitMoneyUtils,
   UnitTCategory,
   UnitTCategoryTable,
+  UnitTCategoriesView,
   UnitTOperation,
   UnitTOperationList,
   UnitTOperationView,
@@ -31,8 +32,12 @@ type
     grdCatsIncome: TStringGrid;
     grdCatsOutcome: TStringGrid;
     grdOperations: TStringGrid;
-    imgCatsIncomeStatus: TImage;
-    imgCatsOutcomeStatus: TImage;
+    imgCatsIncomeStatusNo: TImage;
+    imgCatsIncomeStatusOk: TImage;
+    imgCatsIncomeStatusWarning: TImage;
+    imgCatsOutcomeStatusNo: TImage;
+    imgCatsOutcomeStatusOk: TImage;
+    imgCatsOutcomeStatusWarning: TImage;
     lblBalance: TLabel;
     lblBalanceBefore: TLabel;
     lblCategoriesBefore: TLabel;
@@ -89,8 +94,6 @@ implementation
 
 {$R *.dfm}
 
-uses UnitTCategoriesView;
-
 procedure THomeView.actionCategoriesView(Sender: TObject);
 begin
   if not assigned(categoriesView) then
@@ -111,13 +114,11 @@ begin
   begin
     cells[0, 0] := ' атегори€';
     cells[1, 0] := 'ѕолучено за мес.';
-    //row := 0;
   end;
   with grdCatsOutcome do
   begin
     cells[0, 0] := ' атегори€';
     cells[1, 0] := 'ѕотрачено за мес.';
-    //row := 0;
   end;
   with grdOperations do
   begin
@@ -190,7 +191,10 @@ end;
 procedure THomeView.actionResize(Sender: TObject; var newWidth, newHeight: Integer; var resize: Boolean);
 begin
   if newWidth > shpHeaderBG.width + homeView.width - homeView.clientWidth then
+  begin
+    homeView.clientWidth := shpHeaderBG.width;
     resize := false;
+  end;
 end;
 
 procedure THomeView.actionScroll(Sender: TObject; Shift: TShiftState;
@@ -315,38 +319,56 @@ procedure THomeView.fillCategoriesStatus();
 var
   i: Integer;
 begin
+  imgCatsIncomeStatusNo.visible := false;
   if length(catsIncome.getItems) = 0 then
   begin
     btnCreateIncome.enabled := false;
+    imgCatsIncomeStatusOk.visible := false;
+    imgCatsIncomeStatusWarning.visible := true;
     lblCatsIncomeStatus.caption := 'ƒл€ полноценного использовани€' + #13#10 +
       'приложени€ создайте категории доходов';
   end
   else
   begin
     btnCreateIncome.enabled := true;
+    imgCatsIncomeStatusOk.visible := true;
+    imgCatsIncomeStatusWarning.visible := false;
     lblCatsIncomeStatus.caption := '¬ы достигли желаемых доходов' + #13#10 +
       'по всем категори€м в этом мес€це';
     for i := 0 to length(catsIncome.getItems) - 1 do
       if catsIncomeMoney[i] < catsIncome.getItems[i]^.moneyMonth then
+      begin
         lblCatsIncomeStatus.caption := '¬ы не достигли желаемых доходов' + #13#10 +
           'по некоторым категори€м в этом мес€це';
+        imgCatsIncomeStatusNo.visible := true;
+        imgCatsIncomeStatusOk.visible := false;
+      end;
   end;
+  imgCatsOutcomeStatusNo.visible := false;
   if length(catsOutcome.getItems) = 0 then
   begin
     btnCreateOutcome.enabled := false;
+    imgCatsOutcomeStatusOk.visible := false;
+    imgCatsOutcomeStatusWarning.visible := true;
     lblCatsOutcomeStatus.caption := 'ƒл€ полноценного использовани€' + #13#10 +
       'приложени€ создайте категории расходов';
   end
   else
   begin
     btnCreateOutcome.enabled := true;
+    imgCatsOutcomeStatusOk.visible := true;
+    imgCatsOutcomeStatusWarning.visible := false;
     lblCatsOutcomeStatus.caption := '¬ы не превысили запланированные' + #13#10 +
       'расходы по категори€м в этом мес€це';
     for i := 0 to length(catsOutcome.getItems) - 1 do
       if (catsOutcome.getItems[i]^.moneyMonth <> 0) and
       (catsOutcomeMoney[i] > catsOutcome.getItems[i]^.moneyMonth) then
+      begin
         lblCatsOutcomeStatus.caption := '¬ы превысили запланированные расходы' + #13#10 +
-        'по некоторым категори€м в этом мес€це';
+          'по некоторым категори€м в этом мес€це';
+        imgCatsOutcomeStatusNo.visible := true;
+        imgCatsOutcomeStatusOk.visible := false;
+      end;
   end;
 end;
 
@@ -388,7 +410,6 @@ begin
   grdOperations.top := topCurr + 8;
   shpNoOperationsBG.top := topCurr + 8;
   lblNoOperations.top := shpNoOperationsBG.top + 55;
-
   fillOperationsGrid();
 end;
 
