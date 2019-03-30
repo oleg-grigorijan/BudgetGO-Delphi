@@ -81,7 +81,7 @@ begin
   if categoryView.modalResult = mrOk then
   begin
     dataUpdate();
-    homeView.dataUpdate();
+    homeView.updateData();
     messageBox(handle, 'Категория успешно сохранена', PChar('Уведомление'),
       MB_OK + MB_ICONINFORMATION);
   end
@@ -110,7 +110,7 @@ begin
         outcome: catsOutcome.removeItem(grdCategories.tag);
       end;
       dataUpdate();
-      homeView.dataUpdate();
+      homeView.updateData();
     end;
   end;
 end;

@@ -3,39 +3,60 @@ unit UnitTHomeView;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperationView, UnitTOperationList, UnitTOperation,
-  Vcl.Menus, Vcl.Grids,
-  DateUtils, Vcl.ExtCtrls, UnitTCategory, UnitTCategoryTable, UnitMoneyUtils;
+  DateUtils,
+  System.Classes,
+  System.SysUtils,
+  UnitMoneyUtils,
+  UnitTCategory,
+  UnitTCategoryTable,
+  UnitTOperation,
+  UnitTOperationList,
+  UnitTOperationView,
+  Vcl.Controls,
+  Vcl.ExtCtrls,
+  Vcl.Forms,
+  Vcl.Grids,
+  Vcl.Imaging.pngimage,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  Winapi.Windows;
 
 type
   THomeView = class(TForm)
     btnCreateIncome: TButton;
     btnCreateOutcome: TButton;
+    btnEditCategories: TButton;
     cbbMonth: TComboBox;
     cbbYear: TComboBox;
+    grdCatsIncome: TStringGrid;
+    grdCatsOutcome: TStringGrid;
     grdOperations: TStringGrid;
-    lbl3: TLabel;
+    imgCatsIncomeStatus: TImage;
+    imgCatsOutcomeStatus: TImage;
     lblBalance: TLabel;
-    lblBalanceAfter: TLabel;
+    lblBalanceBefore: TLabel;
+    lblCategoriesBefore: TLabel;
+    lblCatsIncomeBefore: TLabel;
+    lblCatsIncomeStatus: TLabel;
+    lblCatsOutcomeBefore: TLabel;
+    lblCatsOutcomeStatus: TLabel;
     lblHeader: TLabel;
     lblIncome: TLabel;
     lblIncomeBefore: TLabel;
     lblNewOperationBefore: TLabel;
+    lblNoOperations: TLabel;
+    lblOperationsBefore: TLabel;
     lblOutcome: TLabel;
     lblOutcomeBefore: TLabel;
-    lblStatistics: TLabel;
+    lblStatisticsBefore: TLabel;
     miDelete: TMenuItem;
     miEdit: TMenuItem;
     miRepeat: TMenuItem;
     pmOperation: TPopupMenu;
     shpHeaderBG: TShape;
     shpIncome: TShape;
-    shpOutcome: TShape;
-    lbl1: TLabel;
-    btnCategories: TButton;
     shpNoOperationsBG: TShape;
-    lblNoOperations: TLabel;
+    shpOutcome: TShape;
     procedure actionCategoriesView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
@@ -43,11 +64,22 @@ type
       Button: TMouseButton; Shift: TShiftState;
       X, Y: Integer);
     procedure actionOperationView(Sender: TObject);
+    procedure actionResize(Sender: TObject; var newWidth, newHeight: Integer; var resize: Boolean);
+    procedure actionScroll(Sender: TObject; Shift: TShiftState;
+      WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure actionUpdateStatistics(Sender: TObject);
   private
-    opersCurr: TOperations;
+    var
+      catsIncomeMoney, catsOutcomeMoney: array of Longword;
+      incomeMonth: Longword;
+      opersCurr: TOperations;
+      outcomeMonth: Longword;
+    procedure countCategoriesMoney();
+    procedure fillCategoriesStatus();
+    procedure fillCategoriesGrids();
+    procedure fillOperationsGrid();
   public
-    procedure dataUpdate();
+    procedure updateData();
   end;
 
 var
@@ -70,10 +102,23 @@ procedure THomeView.actionInit(Sender: TObject);
 var
   i: Integer;
 begin
+  homeView.width := shpHeaderBG.width + homeView.width - homeView.clientWidth;
   cbbMonth.itemIndex := monthOfTheYear(date()) - 1;
   for i := currentYear downto 2010 do
     cbbYear.items.add(IntToStr(i));
   cbbYear.itemIndex := 0;
+  with grdCatsIncome do
+  begin
+    cells[0, 0] := 'Категория';
+    cells[1, 0] := 'Получено за мес.';
+    //row := 0;
+  end;
+  with grdCatsOutcome do
+  begin
+    cells[0, 0] := 'Категория';
+    cells[1, 0] := 'Потрачено за мес.';
+    //row := 0;
+  end;
   with grdOperations do
   begin
     cells[1, 0] := 'Тип';
@@ -82,7 +127,7 @@ begin
     cells[4, 0] := 'День';
     cells[5, 0] := 'Описание';
   end;
-  dataUpdate();
+  updateData();
 end;
 
 procedure THomeView.actionOperationDelete(Sender: TObject);
@@ -97,7 +142,7 @@ begin
     if answer = IDYES then
     begin
       operList.removeItem(grdOperations.tag);
-      dataUpdate();
+      updateData();
     end;
   end;
 end;
@@ -136,72 +181,215 @@ begin
   operationView.ShowModal;
   if operationView.ModalResult = mrOk then
   begin
-    dataUpdate();
+    updateData();
     messageBox(handle, 'Операция успешно сохранена', PChar('Уведомление'),
       MB_OK + MB_ICONINFORMATION);
   end;
 end;
 
-procedure THomeView.actionUpdateStatistics(Sender: TObject);
+procedure THomeView.actionResize(Sender: TObject; var newWidth, newHeight: Integer; var resize: Boolean);
 begin
-  dataUpdate();
+  if newWidth > shpHeaderBG.width + homeView.width - homeView.clientWidth then
+    resize := false;
 end;
 
-procedure THomeView.dataUpdate();
+procedure THomeView.actionScroll(Sender: TObject; Shift: TShiftState;
+  WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  homeView.VertScrollBar.Position :=  homeView.VertScrollBar.Position - WheelDelta;
+end;
+
+procedure THomeView.actionUpdateStatistics(Sender: TObject);
+begin
+  updateData();
+end;
+
+procedure THomeView.countCategoriesMoney();
 var
-  incomeMonth, outcomeMonth: uint64;
+  i, j: Integer;
+begin
+  setLength(catsIncomeMoney, length(catsIncome.getItems));
+  for i := 0 to length(catsIncomeMoney) - 1 do
+    catsIncomeMoney[i] := 0;
+  setLength(catsOutcomeMoney, length(catsOutcome.getItems));
+  for i := 0 to length(catsOutcomeMoney) - 1 do
+    catsOutcomeMoney[i] := 0;
+  for i := 0 to length(opersCurr) - 1 do
+    with opersCurr[i]^ do
+    begin
+      case tp of
+        income:
+        begin
+          j := catsIncome.getItemIndex(catId);
+          catsIncomeMoney[j] := catsIncomeMoney[j] + money;
+        end;
+        outcome:
+        begin
+          j := catsOutcome.getItemIndex(catId);
+          catsOutcomeMoney[j] := catsOutcomeMoney[j] + money;
+        end;
+      end;
+    end;
+end;
+
+procedure THomeView.fillCategoriesGrids();
+var
+  i: Integer;
+begin
+  with grdCatsIncome do
+  begin
+    rowCount := length(catsIncome.getItems) + 1;
+    height := (defaultRowHeight + gridLineWidth) * rowCount;
+    for i := 0 to length(catsIncome.getItems) - 1 do
+    begin
+      cells[0, i + 1] := catsIncome.getItems[i]^.name;
+      cells[1, i + 1] := moneyToStr(catsIncomeMoney[i]);
+      if catsIncome.getItems[i]^.moneyMonth <> 0 then
+        cells[1, i + 1] := cells[1, i + 1] + ' / ' +
+          moneyToStr(catsIncome.getItems[i]^.moneyMonth);
+      cells[1, i + 1] := cells[1, i + 1] + ' руб.';
+    end;
+  end;
+  with grdCatsOutcome do
+  begin
+    rowCount := length(catsOutcome.getItems) + 1;
+    height := (defaultRowHeight + gridLineWidth) * rowCount;
+    for i := 0 to length(catsOutcome.getItems) - 1 do
+    begin
+      cells[0, i + 1] := catsOutcome.getItems[i]^.name;
+      cells[1, i + 1] := moneyToStr(catsOutcomeMoney[i]);
+      if catsOutcome.getItems[i]^.moneyMonth <> 0 then
+        cells[1, i + 1] := cells[1, i + 1] + ' / ' +
+        moneyToStr(catsOutcome.getItems[i]^.moneyMonth);
+      cells[1, i + 1] := cells[1, i + 1] + ' руб.';
+    end;
+  end;
+end;
+
+procedure THomeView.fillOperationsGrid();
+var
+  i: Integer;
+begin
+  with grdOperations do
+  begin
+    if length(opersCurr) = 0 then
+    begin
+      visible := false;
+      lblNoOperations.visible := true;
+      shpNoOperationsBG.visible := true;
+    end
+    else
+    begin
+      visible := true;
+      lblNoOperations.visible := false;
+      shpNoOperationsBG.visible := false;
+      rowCount := length(opersCurr) + 1;
+      height := defaultRowHeight*rowCount + gridLineWidth*(rowCount + 4);
+      for i := 1 to length(opersCurr) do
+      begin
+        cells[0, i] := intToStr(i);
+        with opersCurr[i - 1]^ do
+        begin
+          case tp of
+            income:
+            begin
+              cells[1, i] := 'Доход';
+              cells[3, i] := catsIncome.getItem(catId)^.name;
+            end;
+            outcome:
+            begin
+              cells[1, i] := 'Расход';
+              cells[3, i] := catsOutcome.getItem(catId)^.name;
+            end;
+          end;
+          cells[2, i] := moneyToStr(money) + ' руб.';
+          cells[4, i] := intToStr(dayOfTheMonth(date));
+          cells[5, i] := description;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure THomeView.fillCategoriesStatus();
+var
   i: Integer;
 begin
   if length(catsIncome.getItems) = 0 then
-    btnCreateIncome.enabled := false
+  begin
+    btnCreateIncome.enabled := false;
+    lblCatsIncomeStatus.caption := 'Для полноценного использования' + #13#10 +
+      'приложения создайте категории доходов';
+  end
   else
+  begin
     btnCreateIncome.enabled := true;
+    lblCatsIncomeStatus.caption := 'Вы достигли желаемых доходов' + #13#10 +
+      'по всем категориям в этом месяце';
+    for i := 0 to length(catsIncome.getItems) - 1 do
+      if catsIncomeMoney[i] < catsIncome.getItems[i]^.moneyMonth then
+        lblCatsIncomeStatus.caption := 'Вы не достигли желаемых доходов' + #13#10 +
+          'по некоторым категориям в этом месяце';
+  end;
   if length(catsOutcome.getItems) = 0 then
-    btnCreateOutcome.enabled := false
+  begin
+    btnCreateOutcome.enabled := false;
+    lblCatsOutcomeStatus.caption := 'Для полноценного использования' + #13#10 +
+      'приложения создайте категории расходов';
+  end
   else
+  begin
     btnCreateOutcome.enabled := true;
+    lblCatsOutcomeStatus.caption := 'Вы не превысили запланированные' + #13#10 +
+      'расходы по категориям в этом месяце';
+    for i := 0 to length(catsOutcome.getItems) - 1 do
+      if (catsOutcome.getItems[i]^.moneyMonth <> 0) and
+      (catsOutcomeMoney[i] > catsOutcome.getItems[i]^.moneyMonth) then
+        lblCatsOutcomeStatus.caption := 'Вы превысили запланированные расходы' + #13#10 +
+        'по некоторым категориям в этом месяце';
+  end;
+end;
+
+procedure THomeView.updateData();
+var
+  i: Integer;
+  topCurr: Integer;
+begin
   lblBalance.caption := moneyToStr(operList.getBalance) + ' руб.';
   opersCurr := operList.getItems(cbbMonth.itemIndex + 1,
-    strToInt(cbbYear.text), incomeMonth, outcomeMonth);
+    strToInt(cbbYear.text));
+
+  countCategoriesMoney();
+
+  incomeMonth := 0;
+  for i := 0 to length(catsIncomeMoney) - 1 do
+    incomeMonth := incomeMonth + catsIncomeMoney[i];
+  outcomeMonth := 0;
+  for i := 0 to length(catsOutcomeMoney) - 1 do
+    outcomeMonth := outcomeMonth + catsOutcomeMoney[i];
   lblIncome.caption := moneyToStr(incomeMonth) + ' руб.';
   lblOutcome.caption := moneyToStr(outcomeMonth) + ' руб.';
+
   if incomeMonth + outcomeMonth = 0 then
     shpIncome.width := 0
   else
     shpIncome.width := shpOutcome.width*incomeMonth div
       (incomeMonth + outcomeMonth);
-  if length(opersCurr) = 0 then
-  begin
-    grdOperations.visible := false
-  end
+
+  fillCategoriesStatus();
+  fillCategoriesGrids();
+
+  if grdCatsIncome.height >= grdCatsOutcome.height then
+    topCurr := grdCatsIncome.top + grdCatsIncome.height
   else
-  with grdOperations do
-  begin
-    visible := true;
-    rowCount := Length(opersCurr) + 1;
-    for i := 1 to Length(opersCurr) do
-    begin
-      cells[0, i] := IntToStr(i);
-      with opersCurr[i - 1]^ do
-      begin
-        case tp of
-          income:
-          begin
-            cells[1, i] := 'Доход';
-            cells[3, i] := catsIncome.getItem(catId)^.name;
-          end;
-          outcome:
-          begin
-            cells[1, i] := 'Расход';
-            cells[3, i] := catsOutcome.getItem(catId)^.name;
-          end;
-        end;
-        cells[2, i] := moneyToStr(money) + ' руб.';
-        cells[4, i] := intToStr(dayOfTheMonth(date));
-        cells[5, i] := description;
-      end;
-    end;
-  end;
+    topCurr := grdCatsOutcome.top + grdCatsOutcome.height;
+  lblOperationsBefore.top := topCurr + 25;
+  topCurr := lblOperationsBefore.top + lblOperationsBefore.height;
+  grdOperations.top := topCurr + 8;
+  shpNoOperationsBG.top := topCurr + 8;
+  lblNoOperations.top := shpNoOperationsBG.top + 55;
+
+  fillOperationsGrid();
 end;
 
 end.

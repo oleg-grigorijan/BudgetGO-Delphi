@@ -24,8 +24,7 @@ type
       destructor destroy(); override;
       procedure addItem(const item: POperation);
       function getItem(const id: Integer): POperation;
-      function getItems(const month, year: Integer;
-        var incomeMonth, outcomeMonth: uint64): TOperations;
+      function getItems(const month, year: Integer): TOperations;
       function removeItem(const id: Integer): Boolean;
       procedure removeItems(const tp: TOperationType; const catId: Integer);
       function getBalance(): Integer;
@@ -187,15 +186,12 @@ begin
     result := node.item;
 end;
 
-function TOperationList.getItems(const month, year: Integer;
-  var incomeMonth, outcomeMonth: uint64): TOperations;
+function TOperationList.getItems(const month, year: Integer): TOperations;
 var
   nodeCurr: TOperationListNode;
   found: Integer;
 begin
   found := 0;
-  incomeMonth := 0;
-  outcomeMonth := 0;
   setLength(result, found);
   nodeCurr := self.last;
   while (nodeCurr <> nil) and
@@ -211,12 +207,6 @@ begin
     inc(found);
     setLength(result, found);
     result[found - 1] := nodeCurr.item;
-    case nodeCurr.item^.tp of
-      income:
-        incomeMonth := incomeMonth + nodeCurr.item^.money;
-      outcome:
-        outcomeMonth := outcomeMonth + nodeCurr.item^.money;
-    end;
     nodeCurr := nodeCurr.prev;
   end;
 end;

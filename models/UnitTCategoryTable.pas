@@ -14,8 +14,8 @@ type
       count: Integer;
       fileName: string[255];
       function checkNameUnique(const name: string): Boolean;
-      function getItemIndex(const id: Integer): Integer;
     public
+      function getItemIndex(const id: Integer): Integer;
       constructor create(const fileName: string); overload;
       destructor destroy(); override;
       function addItem(const item: PCategory): Boolean;
