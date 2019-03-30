@@ -16,7 +16,6 @@ object categoriesView: TcategoriesView
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = actionInit
-  OnMouseDown = actionCategorySelect
   PixelsPerInch = 120
   TextHeight = 16
   object lblHeader: TLabel
