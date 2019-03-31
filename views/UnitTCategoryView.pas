@@ -3,8 +3,15 @@ unit UnitTCategoryView;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, UnitTOperation, UnitTCategory, UnitTCategoryTable, UnitMoneyUtils;
+  System.Classes,
+  System.SysUtils,
+  UnitMoneyUtils,
+  UnitTCategoriesTable,
+  UnitTCategory,
+  UnitTOperation,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.StdCtrls;
 
 type
   TcategoryView = class(TForm)
@@ -21,14 +28,17 @@ type
     lblRublesAfter: TLabel;
     lblTp: TLabel;
     procedure actionCreate(Sender: TObject);
+    procedure actionInit(Sender: TObject);
     procedure actionOnNameChange(Sender: TObject);
     procedure actionSave(Sender: TObject);
   private
+    catsTable: TCategoriesTable;
     procedure setInfo(const operTp: TOperationType);
   public
-    procedure prepareToCreate(const operTp: TOperationType);
-    procedure prepareToEdit(const operTp: TOperationType;
-      const id: Integer);
+    procedure prepareToCreate(const catsTable:
+      TCategoriesTable);
+    procedure prepareToEdit(const catsTable:
+      TCategoriesTable; const id: Integer);
   end;
 
 var
@@ -40,7 +50,6 @@ implementation
 
 procedure TCategoryView.actionCreate(Sender: TObject);
 var
-  success: Boolean;
   item: PCategory;
 begin
   new(item);
@@ -48,17 +57,20 @@ begin
   begin
     id := 0;
     name := edtName.text;
-    moneyMonth := strToMoney(edtRubles.text, edtPenny.text);
+    moneyMonth := strToMoney(edtRubles.text,
+      edtPenny.text);
   end;
-  case lblTp.tag of
-    ord(income): success := catsIncome.addItem(item);
-    ord(outcome): success := catsOutcome.addItem(item);
-  end;
-  if not success then
+  if not catsTable.addItem(item) then
     self.modalResult := mrAbort;
 end;
 
-procedure TCategoryView.actionOnNameChange(Sender: TObject);
+procedure TCategoryView.actionInit(Sender: TObject);
+begin
+  edtName.maxLength := CAT_NAME_LEN;
+end;
+
+procedure TCategoryView.actionOnNameChange(Sender:
+  TObject);
 begin
   if edtName.text = '' then
   begin
@@ -74,7 +86,6 @@ end;
 
 procedure TCategoryView.actionSave(Sender: TObject);
 var
-  success: Boolean;
   newItem: PCategory;
 begin
   new(newItem);
@@ -83,72 +94,68 @@ begin
     name := edtName.text;
     moneyMonth := strToMoney(edtRubles.text, edtPenny.text)
   end;
-  case lblTp.tag of
-    ord(income):
-      success := catsIncome.editItem(btnSave.tag, newItem);
-    ord(outcome):
-      success := catsOutcome.editItem(btnSave.tag, newItem);
-  end;
-  if not success then
+  if not catsTable.editItem(btnSave.tag, newItem) then
     self.modalResult := mrAbort;
 end;
 
-procedure TCategoryView.setInfo(const operTp: TOperationType);
+procedure TCategoryView.setInfo(const operTp:
+  TOperationType);
 begin
   case operTp of
     income:
     begin
       lblMoneyBefore.caption := 'Минимально в месяц';
-      lblInfo.caption := 'Мы уведомим вас, если до конца'#13#10 +
-        'месяца вы не достигнете желаемой'#13#10 +
-        'суммы по данной категории.';
+      lblInfo.caption := 'Мы уведомим вас, если до конца' +
+        #13#10 + 'месяца вы не достигнете желаемой' +
+        #13#10 + 'суммы по данной категории';
     end;
     outcome:
     begin
       lblMoneyBefore.caption := 'Максимально в месяц';
-      lblInfo.caption := 'Мы предупредим вас, если в течение'#13#10 +
-        'месяца вы превысите желаемую'#13#10 +
-        'сумму по данной категории.';
+      lblInfo.caption :=
+        'Мы предупредим вас, если в течение' + #13#10 +
+        'месяца вы превысите желаемую' + #13#10 +
+        'сумму по данной категории';
     end;
   end;
 end;
 
-procedure TCategoryView.prepareToCreate(const operTp: TOperationType);
+procedure TCategoryView.prepareToCreate(const catsTable:
+  TCategoriesTable);
 begin
+  self.catsTable := catsTable;
   btnSave.visible := false;
   btnCreate.visible := true;
-  case operTp of
-    income: lblTp.caption := 'Новая категория'#13#10'дохода';
-    outcome: lblTp.caption := 'Новая категория'#13#10'расхода';
+  case catsTable.operTp of
+    income: lblTp.caption := 'Новая категория' + #13#10 +
+      'дохода';
+    outcome: lblTp.caption := 'Новая категория' + #13#10 +
+      'расхода';
   end;
-  setInfo(operTp);
-  lblTp.tag := ord(operTp);
+  setInfo(catsTable.operTp);
   edtName.text := '';
   edtRubles.text := '';
   edtPenny.text := '';
 end;
 
-procedure TCategoryView.prepareToEdit(const operTp: TOperationType; const id: Integer);
+procedure TCategoryView.prepareToEdit(
+  const catsTable: TCategoriesTable;
+  const id: Integer
+);
 var
   item: PCategory;
 begin
+  self.catsTable := catsTable;
   btnSave.visible := true;
   btnCreate.visible := false;
-  case operTp of
-    income:
-    begin
-      item := catsIncome.getItem(id);
-      lblTp.caption := 'Редактирование'#13#10'категории дохода';
-    end;
-    outcome:
-    begin
-      item := catsOutcome.getItem(id);
-      lblTp.caption := 'Редактирование'#13#10'категории расхода';
-    end;
+  case catsTable.operTp of
+    income: lblTp.caption := 'Редактирование' + #13#10 +
+      'категории дохода';
+    outcome: lblTp.caption := 'Редактирование' + #13#10 +
+      'категории расхода';
   end;
-  lblTp.tag := ord(operTp);
-  setInfo(operTp);
-  with item^ do
+  setInfo(catsTable.operTp);
+  with catsTable.getItem(id)^ do
   begin
     btnSave.tag := id;
     edtName.text := name;
@@ -164,4 +171,5 @@ begin
     end;
   end;
 end;
+
 end.

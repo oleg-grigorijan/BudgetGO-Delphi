@@ -1,38 +1,50 @@
-unit UnitTOperationList;
+unit UnitTOperationsTable;
 
 interface
 
 uses
   System.SysUtils,
   DateUtils,
-  UnitTOperationListNode,
   UnitTOperation;
 
 type
-  TOperationList = class
-    private
-      head: TOperationListNode;
-      last: TOperationListNode;
-      fileName: string[255];
-      maxId: Integer;
-      balance: int64;
-      function getNodeById(const id: Integer): TOperationListNode;
-      procedure insertNode(const node: TOperationListNode);
-      procedure removeNode(const node: TOperationListNode);
-    public
-      constructor create(const filename: string); overload;
-      destructor destroy(); override;
-      procedure addItem(const item: POperation);
-      function getItem(const id: Integer): POperation;
-      function getItems(const month, year: Integer): TOperations;
-      function removeItem(const id: Integer): Boolean;
-      procedure removeItems(const tp: TOperationType; const catId: Integer);
-      function getBalance(): Integer;
-      function editItem(const id: Integer; const newItem: POperation): Boolean;
+  TOperationListNode = class
+  private
+    item: POperation;
+    next: TOperationListNode;
+    prev: TOperationListNode;
+  public
+    constructor create(const item: POperation);
+  end;
+
+  TOperationsTable = class
+  private
+    fBalance: int64;
+    fileName: string[255];
+    head: TOperationListNode;
+    last: TOperationListNode;
+    maxId: Integer;
+    function getNodeById(const id: Integer):
+      TOperationListNode;
+    procedure insertNode(const node: TOperationListNode);
+    procedure removeNode(const node: TOperationListNode);
+  public
+    constructor create(const filename: string); overload;
+    destructor destroy(); override;
+    procedure addItem(const item: POperation);
+    function getItem(const id: Integer): POperation;
+    function getItems(const month, year: Integer):
+      TOperations;
+    function removeItem(const id: Integer): Boolean;
+    procedure removeItems(const tp: TOperationType;
+      const catId: Integer);
+    function editItem(const id: Integer;
+      const newItem: POperation): Boolean;
+    property balance: int64 read fBalance;
   end;
 
 var
-  operList: TOperationList;
+  opers: TOperationsTable;
 
 implementation
 
@@ -40,7 +52,15 @@ const
   dataDName = 'data';
   operFName = 'data/operations.godev';
 
-function TOperationList.getNodeById(const id: Integer): TOperationListNode;
+constructor TOperationListNode.create(const item:
+  POperation);
+begin
+  inherited create();
+  self.item := item;
+end;
+
+function TOperationsTable.getNodeById(const id: Integer):
+  TOperationListNode;
 var
   nodeCurr: TOperationListNode;
 begin
@@ -57,7 +77,8 @@ begin
   end;
 end;
 
-procedure TOperationList.insertNode(const node: TOperationListNode);
+procedure TOperationsTable.insertNode(const node:
+  TOperationListNode);
 var
   nodeCurr: TOperationListNode;
 begin
@@ -92,7 +113,8 @@ begin
   end;
 end;
 
-procedure TOperationList.removeNode(const node: TOperationListNode);
+procedure TOperationsTable.removeNode(const node:
+  TOperationListNode);
 begin
   if node.prev <> nil then
   begin
@@ -114,7 +136,8 @@ begin
   node.destroy();
 end;
 
-constructor TOperationList.create(const filename: string);
+constructor TOperationsTable.create(const filename:
+  string);
 var
   f: File of TOperation;
   itemTmp: POperation;
@@ -137,7 +160,7 @@ begin
   closeFile(f);
 end;
 
-destructor TOperationList.destroy();
+destructor TOperationsTable.destroy();
 var
   f: File of TOperation;
   nodeCurr: TOperationListNode;
@@ -157,7 +180,7 @@ begin
   inherited destroy();
 end;
 
-procedure TOperationList.addItem(const item: POperation);
+procedure TOperationsTable.addItem(const item: POperation);
 var
   node: TOperationListNode;
 begin
@@ -171,12 +194,13 @@ begin
   else if item^.id > self.maxId then
     self.maxId := item^.id;
   case item^.tp of
-    income: self.balance := self.balance + item^.money;
-    outcome: self.balance := self.balance - item^.money;
+    income: self.fBalance := self.fBalance + item^.money;
+    outcome: self.fBalance := self.fBalance - item^.money;
   end;
 end;
 
-function TOperationList.getItem(const id: Integer): POperation;
+function TOperationsTable.getItem(const id: Integer):
+  POperation;
 var
   node: TOperationListNode;
 begin
@@ -186,7 +210,8 @@ begin
     result := node.item;
 end;
 
-function TOperationList.getItems(const month, year: Integer): TOperations;
+function TOperationsTable.getItems(const month, year:
+  Integer): TOperations;
 var
   nodeCurr: TOperationListNode;
   found: Integer;
@@ -211,7 +236,8 @@ begin
   end;
 end;
 
-function TOperationList.removeItem(const id: Integer): Boolean;
+function TOperationsTable.removeItem(const id: Integer):
+  Boolean;
 var
   node: TOperationListNode;
 begin
@@ -220,15 +246,18 @@ begin
   if node <> nil then
   begin
     if node.item^.tp = income then
-      self.balance := self.balance - node.item^.money
+      self.fBalance := self.fBalance - node.item^.money
     else if node.item^.tp = outcome then
-      self.balance := self.balance + node.item^.money;
+      self.fBalance := self.fBalance + node.item^.money;
     removeNode(node);
     result := true;
   end;
 end;
 
-procedure TOperationList.removeItems(const tp: TOperationType; const catId: Integer);
+procedure TOperationsTable.removeItems(
+  const tp: TOperationType;
+  const catId: Integer
+);
 var
   nodeCurr, nodeTmp: TOperationListNode;
 begin
@@ -240,16 +269,19 @@ begin
       nodeTmp := nodeCurr;
       nodeCurr := nodeCurr.prev;
       if nodeTmp.item^.tp = income then
-        self.balance := self.balance - nodeTmp.item^.money
+        self.fBalance := self.fBalance -
+          nodeTmp.item^.money
       else if nodeTmp.item^.tp = outcome then
-        self.balance := self.balance + nodeTmp.item^.money;
+        self.fBalance := self.fBalance +
+          nodeTmp.item^.money;
       removeNode(nodeTmp);
     end
     else
       nodeCurr := nodeCurr.prev;
 end;
 
-function TOperationList.editItem(const id: Integer; const newItem: POperation): Boolean;
+function TOperationsTable.editItem(const id: Integer;
+  const newItem: POperation): Boolean;
 var
   oldItem: POperation;
   node: TOperationListNode;
@@ -262,15 +294,15 @@ begin
     newItem^.id := oldItem^.id;
     case oldItem^.tp of
       income:
-        balance := balance - oldItem^.money;
+        fBalance := fBalance - oldItem^.money;
       outcome:
-        balance := balance + oldItem^.money;
+        fBalance := fBalance + oldItem^.money;
     end;
     case newItem^.tp of
       income:
-        balance := balance + newItem^.money;
+        fBalance := fBalance + newItem^.money;
       outcome:
-        balance := balance - newItem^.money;
+        fBalance := fBalance - newItem^.money;
     end;
     if ((node.prev = nil) or
       (node.prev.item^.date <= newItem^.date)) and
@@ -290,17 +322,12 @@ begin
   end;
 end;
 
-function TOperationList.getBalance(): Integer;
-begin
-  result := self.balance;
-end;
-
 initialization
   if not directoryExists(dataDName) then
     createDir(dataDName);
-  operList := TOperationList.create(operFName);
+  opers := TOperationsTable.create(operFName);
 
 finalization
-  operList.destroy();
+  opers.destroy();
 
 end.

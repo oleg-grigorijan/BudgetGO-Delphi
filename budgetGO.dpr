@@ -1,17 +1,22 @@
 program BudgetGO;
 
 uses
-  Vcl.Forms,
-  UnitTHomeView in 'views\UnitTHomeView.pas' {homeView},
-  UnitTOperation in 'models\UnitTOperation.pas',
-  UnitTOperationList in 'models\UnitTOperationList.pas',
-  UnitTOperationListNode in 'models\UnitTOperationListNode.pas',
-  UnitTOperationView in 'views\UnitTOperationView.pas' {OperationView},
+  // Components
+  UnitMoneyUtils in 'components\UnitMoneyUtils.pas',
+
+  // Models
+  UnitTCategoriesTable in 'models\UnitTCategoriesTable.pas',
   UnitTCategory in 'models\UnitTCategory.pas',
-  UnitTCategoryTable in 'models\UnitTCategoryTable.pas',
+  UnitTOperation in 'models\UnitTOperation.pas',
+  UnitTOperationsTable in 'models\UnitTOperationsTable.pas',
+
+  // Views
   UnitTCategoriesView in 'views\UnitTCategoriesView.pas' {categoriesView},
   UnitTCategoryView in 'views\UnitTCategoryView.pas' {categoryView},
-  UnitMoneyUtils in 'components\UnitMoneyUtils.pas';
+  UnitTHomeView in 'views\UnitTHomeView.pas' {homeView},
+  UnitTOperationView in 'views\UnitTOperationView.pas' {operationView},
+
+  Vcl.Forms;
 
 {$R *.res}
 

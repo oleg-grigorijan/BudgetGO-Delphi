@@ -13,6 +13,7 @@ object categoryView: TcategoryView
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = actionInit
   PixelsPerInch = 120
   TextHeight = 16
   object lblTp: TLabel
@@ -138,7 +139,6 @@ object categoryView: TcategoryView
     Font.Height = -13
     Font.Name = 'Google Sans'
     Font.Style = []
-    MaxLength = 18
     ParentFont = False
     TabOrder = 0
     Text = ' '

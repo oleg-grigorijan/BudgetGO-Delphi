@@ -2,9 +2,6 @@ unit UnitTCategory;
 
 interface
 
-uses
-  UnitTOperation;
-
 const
   CAT_NAME_LEN = 18;
 

@@ -15,6 +15,7 @@ object OperationView: TOperationView
   Padding.Top = 5
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnCreate = actionInit
   PixelsPerInch = 120
   TextHeight = 16
   object lblRublesAfter: TLabel
@@ -195,7 +196,6 @@ object OperationView: TOperationView
     Font.Height = -13
     Font.Name = 'Google Sans'
     Font.Style = []
-    MaxLength = 30
     ParentFont = False
     TabOrder = 3
   end

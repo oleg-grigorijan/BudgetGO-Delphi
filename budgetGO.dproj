@@ -92,28 +92,23 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="views\UnitTHomeView.pas">
-            <Form>homeView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="models\UnitTOperation.pas"/>
-        <DCCReference Include="models\UnitTOperationList.pas"/>
-        <DCCReference Include="models\UnitTOperationListNode.pas"/>
-        <DCCReference Include="views\UnitTOperationView.pas">
-            <Form>OperationView</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
+        <DCCReference Include="components\UnitMoneyUtils.pas"/>
+        <DCCReference Include="models\UnitTCategoriesTable.pas"/>
         <DCCReference Include="models\UnitTCategory.pas"/>
-        <DCCReference Include="models\UnitTCategoryTable.pas"/>
+        <DCCReference Include="models\UnitTOperation.pas"/>
+        <DCCReference Include="models\UnitTOperationsTable.pas"/>
         <DCCReference Include="views\UnitTCategoriesView.pas">
             <Form>categoriesView</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="views\UnitTCategoryView.pas">
             <Form>categoryView</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="components\UnitMoneyUtils.pas"/>
+        <DCCReference Include="views\UnitTHomeView.pas">
+            <Form>homeView</Form>
+        </DCCReference>
+        <DCCReference Include="views\UnitTOperationView.pas">
+            <Form>operationView</Form>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
