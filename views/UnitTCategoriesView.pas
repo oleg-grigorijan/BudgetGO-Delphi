@@ -141,12 +141,27 @@ end;
 procedure TCategoriesView.actionInit(Sender: TObject);
 begin
   grdCategories.cells[1, 0] := 'Название';
+  actionOnTypeChange(self);
   updateData();
 end;
 
 procedure TCategoriesView.actionOnTypeChange(Sender:
   TObject);
 begin
+  case tbcOperType.tabIndex of
+    INCOME_TAB:
+    begin
+      btnCreate.caption := 'Новая категория дохода';
+      grdCategories.cells[2, 0] := 'Минимально в мес.';
+      catsCurr := catsIncome;
+    end;
+    OUTCOME_TAB:
+    begin
+      btnCreate.caption := 'Новая категория расхода';
+      grdCategories.cells[2, 0] := 'Максимально в мес.';
+      catsCurr := catsOutcome;
+    end;
+  end;
   updateData();
 end;
 
@@ -154,19 +169,6 @@ procedure TCategoriesView.updateData();
 var
   i: Integer;
 begin
-  case tbcOperType.tabIndex of
-    INCOME_TAB:
-    begin
-      grdCategories.cells[2, 0] := 'Минимально в мес.';
-      catsCurr := catsIncome;
-    end;
-    OUTCOME_TAB:
-    begin
-      grdCategories.cells[2, 0] := 'Максимально в мес.';
-      catsCurr := catsOutcome;
-    end;
-  end;
-
   if catsCurr.count = 0 then
     grdCategories.visible := false
   else

@@ -91,11 +91,11 @@ object categoriesView: TcategoriesView
         155)
     end
     object btnCreate: TButton
-      Left = 75
+      Left = 61
       Top = 40
-      Width = 145
+      Width = 174
       Height = 25
-      Caption = #1053#1086#1074#1072#1103' '#1082#1072#1090#1077#1075#1086#1088#1080#1103
+      Caption = #1053#1086#1074#1072#1103' '#1082#1072#1090#1077#1075#1086#1088#1080#1103' '#1088#1072#1089#1093#1086#1076#1072
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
