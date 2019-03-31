@@ -2,7 +2,7 @@ object homeView: ThomeView
   Left = 0
   Top = 0
   Width = 709
-  Height = 600
+  Height = 535
   VertScrollBar.Smooth = True
   AutoScroll = True
   BorderIcons = [biSystemMenu, biMinimize]
@@ -11,7 +11,7 @@ object homeView: ThomeView
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'Google Sans'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
   OnCanResize = actionResize
@@ -20,22 +20,34 @@ object homeView: ThomeView
   PixelsPerInch = 120
   TextHeight = 17
   object lblCatsIncomeStatus: TLabel
-    Left = 65
-    Top = 348
-    Width = 251
+    Left = 70
+    Top = 346
+    Width = 249
     Height = 34
     Caption = 
       #1042#1099' '#1085#1077' '#1076#1086#1089#1090#1080#1075#1083#1080' '#1078#1077#1083#1072#1077#1084#1099#1093' '#1076#1086#1093#1086#1076#1086#1074#13#10#1087#1086' '#1085#1077#1082#1086#1090#1086#1088#1099#1084' '#1082#1072#1090#1077#1075#1086#1088#1080#1103#1084' '#1074' '#1101#1090#1086#1084' ' +
       #1084#1077#1089#1103#1094#1077
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
   end
   object lblCatsOutcomeStatus: TLabel
-    Left = 375
-    Top = 348
-    Width = 236
+    Left = 380
+    Top = 346
+    Width = 233
     Height = 34
     Caption = 
       #1042#1099' '#1085#1077' '#1087#1088#1077#1074#1099#1089#1080#1083#1080' '#1079#1072#1087#1083#1072#1085#1080#1088#1086#1074#1072#1085#1085#1099#1077#13#10#1088#1072#1089#1093#1086#1076#1099' '#1087#1086' '#1082#1072#1090#1077#1075#1086#1088#1080#1103#1084' '#1074' '#1101#1090#1086#1084' '#1084#1077 +
       'c'#1103#1094#1077
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
   end
   object shpHeaderBG: TShape
     Left = 0
@@ -46,21 +58,21 @@ object homeView: ThomeView
     Pen.Color = 13290186
   end
   object lblHeader: TLabel
-    Left = 286
-    Top = 8
-    Width = 104
-    Height = 25
+    Left = 287
+    Top = 5
+    Width = 95
+    Height = 28
     Caption = 'BudgetGO'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblBalanceBefore: TLabel
-    Left = 350
-    Top = 74
+    Left = 346
+    Top = 77
     Width = 94
     Height = 17
     Alignment = taRightJustify
@@ -68,88 +80,88 @@ object homeView: ThomeView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object lblBalance: TLabel
     Left = 350
     Top = 87
-    Width = 162
+    Width = 136
     Height = 41
     BiDiMode = bdLeftToRight
     Caption = '10.03 '#1088#1091#1073'.'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clBlack
-    Font.Height = -33
-    Font.Name = 'Google Sans'
+    Font.Height = -30
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentBiDiMode = False
     ParentFont = False
   end
   object lblNewOperationBefore: TLabel
-    Left = 193
-    Top = 56
+    Left = 195
+    Top = 54
     Width = 104
     Height = 17
     Caption = #1053#1086#1074#1072#1103' '#1086#1087#1077#1088#1072#1094#1080#1103
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblOperationsBefore: TLabel
     Left = 40
     Top = 514
-    Width = 86
-    Height = 21
+    Width = 82
+    Height = 23
     Caption = #1054#1087#1077#1088#1072#1094#1080#1080
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -17
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblStatisticsBefore: TLabel
     Left = 40
     Top = 172
-    Width = 113
-    Height = 25
+    Width = 103
+    Height = 28
     Caption = #1057#1090#1072#1090#1080#1089#1090#1080#1082#1072
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblIncomeBefore: TLabel
     Left = 40
     Top = 214
-    Width = 107
+    Width = 104
     Height = 17
     Caption = #1044#1086#1093#1086#1076#1099' '#1079#1072' '#1084#1077#1089#1103#1094
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object lblIncome: TLabel
     Left = 40
-    Top = 232
-    Width = 82
+    Top = 231
+    Width = 75
     Height = 17
     BiDiMode = bdLeftToRight
     Caption = '2265.50 '#1088#1091#1073'.'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clBlack
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentBiDiMode = False
     ParentFont = False
@@ -157,27 +169,27 @@ object homeView: ThomeView
   object lblOutcomeBefore: TLabel
     Left = 187
     Top = 214
-    Width = 110
+    Width = 107
     Height = 17
     Caption = #1056#1072#1089#1093#1086#1076#1099' '#1079#1072' '#1084#1077#1089#1103#1094
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object lblOutcome: TLabel
     Left = 187
-    Top = 232
-    Width = 81
+    Top = 231
+    Width = 73
     Height = 17
     BiDiMode = bdLeftToRight
     Caption = '1250.64 '#1088#1091#1073'.'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clBlack
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentBiDiMode = False
     ParentFont = False
@@ -203,13 +215,13 @@ object homeView: ThomeView
   object lblCategoriesBefore: TLabel
     Left = 40
     Top = 290
-    Width = 89
-    Height = 21
+    Width = 82
+    Height = 23
     Caption = #1050#1072#1090#1077#1075#1086#1088#1080#1080
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -17
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -231,7 +243,7 @@ object homeView: ThomeView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -243,27 +255,27 @@ object homeView: ThomeView
   end
   object lblCatsIncomeBefore: TLabel
     Left = 40
-    Top = 320
-    Width = 53
+    Top = 322
+    Width = 50
     Height = 17
     Caption = #1044#1086#1093#1086#1076#1099
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clBlack
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblCatsOutcomeBefore: TLabel
     Left = 350
-    Top = 320
-    Width = 56
+    Top = 322
+    Width = 54
     Height = 17
     Caption = #1056#1072#1089#1093#1086#1076#1099
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clBlack
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -374,7 +386,7 @@ object homeView: ThomeView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     GradientEndColor = clWhite
     Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
@@ -401,7 +413,7 @@ object homeView: ThomeView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 0
@@ -416,7 +428,7 @@ object homeView: ThomeView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 1
@@ -424,7 +436,7 @@ object homeView: ThomeView
   end
   object cbbMonth: TComboBox
     Left = 174
-    Top = 175
+    Top = 174
     Width = 83
     Height = 25
     HelpType = htKeyword
@@ -432,10 +444,10 @@ object homeView: ThomeView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 3
     OnChange = actionUpdateStatistics
     Items.Strings = (
       #1071#1085#1074#1072#1088#1100
@@ -452,38 +464,38 @@ object homeView: ThomeView
       #1044#1077#1082#1072#1073#1088#1100)
   end
   object cbbYear: TComboBox
-    Left = 268
-    Top = 175
-    Width = 52
+    Left = 263
+    Top = 174
+    Width = 57
     Height = 25
     HelpType = htKeyword
     Style = csDropDownList
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 4
     OnChange = actionUpdateStatistics
   end
   object btnEditCategories: TButton
     Left = 141
-    Top = 286
+    Top = 291
     Width = 90
     Height = 25
     Caption = #1048#1079#1084#1077#1085#1080#1090#1100
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 2
     OnClick = actionCategoriesView
   end
   object grdCatsIncome: TStringGrid
-    Left = 40
+    Left = 37
     Top = 390
     Width = 285
     Height = 105
@@ -493,7 +505,13 @@ object homeView: ThomeView
     FixedCols = 0
     RowCount = 2
     FixedRows = 0
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     Options = [goFixedHorzLine, goHorzLine, goRowSelect]
+    ParentFont = False
     ScrollBars = ssNone
     TabOrder = 6
     ColWidths = (
@@ -501,7 +519,7 @@ object homeView: ThomeView
       173)
   end
   object grdCatsOutcome: TStringGrid
-    Left = 350
+    Left = 347
     Top = 390
     Width = 285
     Height = 105
@@ -511,7 +529,13 @@ object homeView: ThomeView
     FixedCols = 0
     RowCount = 2
     FixedRows = 0
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     Options = [goFixedHorzLine, goHorzLine, goRowSelect]
+    ParentFont = False
     ScrollBars = ssNone
     TabOrder = 7
     ColWidths = (

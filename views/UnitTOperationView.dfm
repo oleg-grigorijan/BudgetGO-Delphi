@@ -3,31 +3,32 @@ object OperationView: TOperationView
   Top = 0
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
+  Caption = 'BudgetGO'
   ClientHeight = 308
   ClientWidth = 290
   Color = clBtnFace
   DefaultMonitor = dmMainForm
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'Tahoma'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   Padding.Top = 5
   OldCreateOrder = False
   Position = poMainFormCenter
   OnCreate = actionInit
   PixelsPerInch = 120
-  TextHeight = 16
+  TextHeight = 17
   object lblRublesAfter: TLabel
     Left = 107
     Top = 77
-    Width = 26
+    Width = 25
     Height = 17
     Caption = #1088#1091#1073'.'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -40,74 +41,74 @@ object OperationView: TOperationView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object lblMoneyBefore: TLabel
     Left = 18
-    Top = 59
+    Top = 55
     Width = 42
     Height = 17
     Caption = #1057#1091#1084#1084#1072
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblDescriptionBefore: TLabel
     Left = 18
-    Top = 157
-    Width = 65
+    Top = 154
+    Width = 62
     Height = 17
     Caption = #1054#1087#1080#1089#1072#1085#1080#1077
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblTp: TLabel
     Left = 18
-    Top = 18
-    Width = 252
-    Height = 25
+    Top = 15
+    Width = 237
+    Height = 28
     Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#1088#1072#1089#1093#1086#1076#1072
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblDateBefore: TLabel
     Left = 18
-    Top = 206
-    Width = 32
+    Top = 203
+    Width = 29
     Height = 17
     Caption = #1044#1072#1090#1072
     Color = clWhite
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
   end
   object lblCategoryBefore: TLabel
     Left = 18
-    Top = 107
-    Width = 68
+    Top = 104
+    Width = 64
     Height = 17
     Caption = #1050#1072#1090#1077#1075#1086#1088#1080#1103
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
@@ -121,7 +122,7 @@ object OperationView: TOperationView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 1
     ParentDoubleBuffered = False
@@ -133,7 +134,7 @@ object OperationView: TOperationView
   end
   object edtRubles: TEdit
     Left = 18
-    Top = 76
+    Top = 74
     Width = 83
     Height = 25
     Hint = 's'
@@ -141,7 +142,7 @@ object OperationView: TOperationView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     NumbersOnly = True
     ParentFont = False
@@ -159,7 +160,7 @@ object OperationView: TOperationView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     NumbersOnly = True
     ParentFont = False
@@ -176,7 +177,7 @@ object OperationView: TOperationView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 1
     ParentDoubleBuffered = False
@@ -188,13 +189,13 @@ object OperationView: TOperationView
   end
   object edtDescription: TEdit
     Left = 18
-    Top = 174
+    Top = 173
     Width = 252
     Height = 25
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 3
@@ -209,7 +210,7 @@ object OperationView: TOperationView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 2
     ParentDoubleBuffered = False
@@ -226,7 +227,7 @@ object OperationView: TOperationView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     MinDate = 40179.000000000000000000
     ParentFont = False
@@ -234,10 +235,16 @@ object OperationView: TOperationView
   end
   object cbbCategory: TComboBox
     Left = 18
-    Top = 122
+    Top = 124
     Width = 252
-    Height = 24
+    Height = 25
     Style = csDropDownList
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 2
   end
 end

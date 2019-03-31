@@ -152,13 +152,13 @@ begin
     INCOME_TAB:
     begin
       btnCreate.caption := 'Новая категория дохода';
-      grdCategories.cells[2, 0] := 'Минимально в мес.';
+      grdCategories.cells[2, 0] := 'Минимально в месяц';
       catsCurr := catsIncome;
     end;
     OUTCOME_TAB:
     begin
       btnCreate.caption := 'Новая категория расхода';
-      grdCategories.cells[2, 0] := 'Максимально в мес.';
+      grdCategories.cells[2, 0] := 'Максимально в месяц';
       catsCurr := catsOutcome;
     end;
   end;

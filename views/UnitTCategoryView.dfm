@@ -7,92 +7,92 @@ object categoryView: TcategoryView
   ClientHeight = 308
   ClientWidth = 290
   Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
+  Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -13
-  Font.Name = 'Tahoma'
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
   OnCreate = actionInit
   PixelsPerInch = 120
-  TextHeight = 16
+  TextHeight = 17
   object lblTp: TLabel
     Left = 18
-    Top = 18
-    Width = 181
-    Height = 50
+    Top = 15
+    Width = 171
+    Height = 56
     Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1085#1080#1077' '#13#10#1082#1072#1090#1077#1075#1086#1088#1080#1080' '#1076#1086#1093#1086#1076#1072
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblRublesAfter: TLabel
     Left = 107
-    Top = 158
-    Width = 26
+    Top = 157
+    Width = 25
     Height = 17
     Caption = #1088#1091#1073'.'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object lblPennyAfter: TLabel
     Left = 228
-    Top = 158
+    Top = 157
     Width = 24
     Height = 17
     Caption = #1082#1086#1087'.'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object lblMoneyBefore: TLabel
     Left = 18
-    Top = 138
+    Top = 136
     Width = 136
     Height = 17
     Caption = #1052#1080#1085#1080#1084#1072#1083#1100#1085#1086' '#1074' '#1084#1077#1089#1103#1094
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblNameBefore: TLabel
     Left = 18
-    Top = 88
-    Width = 62
+    Top = 84
+    Width = 60
     Height = 17
     Caption = #1053#1072#1079#1074#1072#1085#1080#1077
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object lblInfo: TLabel
     Left = 18
     Top = 193
-    Width = 219
+    Width = 214
     Height = 51
     Caption = 
       #1052#1099' '#1091#1074#1077#1076#1086#1084#1080#1084' '#1074#1072#1089', '#1077#1089#1083#1080' '#1076#1086' '#1082#1086#1085#1094#1072#13#10#1084#1077#1089#1103#1094#1072' '#1074#1099' '#1085#1077' '#1076#1086#1089#1090#1080#1075#1085#1077#1090#1077' '#1078#1077#1083#1072#1077#1084#1086#1081 +
       #13#10#1089#1091#1084#1084#1099' '#1087#1086' '#1076#1072#1085#1085#1086#1081' '#1082#1072#1090#1077#1075#1086#1088#1080#1080'.'
-    Font.Charset = RUSSIAN_CHARSET
+    Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
@@ -106,7 +106,7 @@ object categoryView: TcategoryView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     NumbersOnly = True
     ParentFont = False
@@ -123,7 +123,7 @@ object categoryView: TcategoryView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     NumbersOnly = True
     ParentFont = False
@@ -137,7 +137,7 @@ object categoryView: TcategoryView
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 0
@@ -151,10 +151,10 @@ object categoryView: TcategoryView
     Height = 25
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
     DoubleBuffered = False
-    Font.Charset = RUSSIAN_CHARSET
+    Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 1
     ParentDoubleBuffered = False
@@ -171,10 +171,10 @@ object categoryView: TcategoryView
     Height = 25
     Caption = #1057#1086#1079#1076#1072#1090#1100
     DoubleBuffered = False
-    Font.Charset = RUSSIAN_CHARSET
+    Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 1
     ParentDoubleBuffered = False
@@ -191,10 +191,10 @@ object categoryView: TcategoryView
     Height = 25
     Caption = #1054#1090#1084#1077#1085#1072
     DoubleBuffered = False
-    Font.Charset = RUSSIAN_CHARSET
+    Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Google Sans'
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ModalResult = 2
     ParentDoubleBuffered = False
