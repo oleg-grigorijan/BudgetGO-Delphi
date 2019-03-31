@@ -111,6 +111,7 @@ end;
 procedure THomeView.actionInit(Sender: TObject);
 var
   i: Integer;
+  noHighlight: TGridRect;
 begin
   homeView.width := shpHeaderBG.width + homeView.width -
     homeView.clientWidth;
@@ -123,14 +124,21 @@ begin
   with grdCatsIncome do
   begin
     cells[0, 0] := 'Категория';
-    cells[1, 0] := 'Получено за мес.';
+    cells[1, 0] := 'Получено за месяц';
   end;
 
   with grdCatsOutcome do
   begin
     cells[0, 0] := 'Категория';
-    cells[1, 0] := 'Потрачено за мес.';
+    cells[1, 0] := 'Потрачено за месяц';
   end;
+
+  noHighlight.left := -1;
+  noHighlight.right := -1;
+  noHighlight.top := -1;
+  noHighlight.bottom := -1;
+  grdCatsIncome.selection := noHighlight;
+  grdCatsOutcome.selection := noHighlight;
 
   with grdOperations do
   begin
@@ -244,14 +252,57 @@ begin
 end;
 
 procedure THomeView.arrangeComponents();
+
+  procedure setGtidHeight(const grid: TStringGrid);
+  begin
+    with grid do
+      height := defaultRowHeight*rowCount +
+        gridLineWidth*(rowCount + 4);
+  end;
+
 var
   topCurr: Integer;
 begin
-  if grdCatsIncome.height >= grdCatsOutcome.height then
-    topCurr := grdCatsIncome.top + grdCatsIncome.height
-  else
-    topCurr := grdCatsOutcome.top + grdCatsOutcome.height;
-  lblOperationsBefore.top := topCurr + 25;
+  topCurr := lblCatsIncomeStatus.top +
+    lblCatsIncomeStatus.height;
+
+  with grdCatsIncome do
+    if catsIncome.count = 0 then
+      visible := false
+    else
+    begin
+      setGtidHeight(grdCatsIncome);
+      visible := true;
+      topCurr := top + height;
+    end;
+
+  with grdCatsOutcome do
+    if catsOutcome.count = 0 then
+      visible := false
+    else
+    begin
+      setGtidHeight(grdCatsOutcome);
+      visible := true;
+      if top + height > topCurr then
+        topCurr := top + height;
+    end;
+
+  with grdOperations do
+    if length(opersCurr) = 0 then
+    begin
+      visible := false;
+      lblNoOperations.visible := true;
+      shpNoOperationsBG.visible := true;
+    end
+    else
+    begin
+      setGtidHeight(grdOperations);
+      visible := true;
+      lblNoOperations.visible := false;
+      shpNoOperationsBG.visible := false;
+    end;
+
+  lblOperationsBefore.top := topCurr + 20;
   topCurr := lblOperationsBefore.top +
     lblOperationsBefore.height;
   grdOperations.top := topCurr + 8;
@@ -313,29 +364,16 @@ begin
       cells[1, i + 1] := cells[1, i + 1] + ' руб.';
     end;
   end;
-  arrangeComponents();
 end;
 
 procedure THomeView.fillOperationsGrid();
 var
   i: Integer;
 begin
-  with grdOperations do
-  begin
-    if length(opersCurr) = 0 then
+  if length(opersCurr) <> 0 then
+    with grdOperations do
     begin
-      visible := false;
-      lblNoOperations.visible := true;
-      shpNoOperationsBG.visible := true;
-    end
-    else
-    begin
-      visible := true;
-      lblNoOperations.visible := false;
-      shpNoOperationsBG.visible := false;
       rowCount := length(opersCurr) + 1;
-      height := defaultRowHeight*rowCount +
-        gridLineWidth*(rowCount + 4);
       for i := 1 to length(opersCurr) do
       begin
         cells[0, i] := intToStr(i);
@@ -361,7 +399,6 @@ begin
         end;
       end;
     end;
-  end;
 end;
 
 procedure THomeView.fillCategoriesStatus();
@@ -374,7 +411,7 @@ begin
     imgCatsIncomeStatus.picture := imgIcoWarning.picture;
     lblCatsIncomeStatus.caption :=
       'Для полноценного использования' + #13#10 +
-      'приложения создайте категории доходов';
+      'программы создайте категории доходов';
   end
   else
   begin
@@ -400,7 +437,7 @@ begin
     imgCatsOutcomeStatus.picture := imgIcoWarning.picture;
     lblCatsOutcomeStatus.caption :=
       'Для полноценного использования' + #13#10 +
-      'приложения создайте категории расходов';
+      'программы создайте категории расходов';
   end
   else
   begin
@@ -457,6 +494,8 @@ begin
     catsOutcomeMoney);
 
   fillOperationsGrid();
+
+  arrangeComponents();
 end;
 
 end.

@@ -492,6 +492,7 @@ object homeView: ThomeView
     Enabled = False
     FixedCols = 0
     RowCount = 2
+    FixedRows = 0
     Options = [goFixedHorzLine, goHorzLine, goRowSelect]
     ScrollBars = ssNone
     TabOrder = 6
@@ -509,6 +510,7 @@ object homeView: ThomeView
     Enabled = False
     FixedCols = 0
     RowCount = 2
+    FixedRows = 0
     Options = [goFixedHorzLine, goHorzLine, goRowSelect]
     ScrollBars = ssNone
     TabOrder = 7
