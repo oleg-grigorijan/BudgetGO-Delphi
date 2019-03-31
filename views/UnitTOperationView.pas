@@ -63,7 +63,7 @@ begin
     tp := catsCurr.operTp;
     money := strToMoney(edtRubles.text, edtPenny.text);
     catId := catsCurr.items[cbbCategory.itemIndex]^.id;
-    description := edtDescription.text;
+    description := trim(edtDescription.text);
     date := dtpDate.date;
   end;
   opers.addItem(operation);
@@ -99,7 +99,7 @@ begin
     tp := catsCurr.operTp;
     money := strToMoney(edtRubles.text, edtPenny.text);
     catId := catsCurr.items[cbbCategory.itemIndex]^.id;
-    description := edtDescription.text;
+    description := trim(edtDescription.text);
     date := dtpDate.date;
   end;
   opers.editItem(btnSave.tag, newItem);

@@ -56,7 +56,7 @@ begin
   with item^ do
   begin
     id := 0;
-    name := edtName.text;
+    name := trim(edtName.text);
     moneyMonth := strToMoney(edtRubles.text,
       edtPenny.text);
   end;
@@ -91,7 +91,7 @@ begin
   new(newItem);
   with newItem^ do
   begin
-    name := edtName.text;
+    name := trim(edtName.text);
     moneyMonth := strToMoney(edtRubles.text, edtPenny.text)
   end;
   if not catsTable.editItem(btnSave.tag, newItem) then
