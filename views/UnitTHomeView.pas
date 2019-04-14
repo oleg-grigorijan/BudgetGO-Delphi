@@ -20,7 +20,7 @@ uses
   Vcl.Imaging.pngimage,
   Vcl.Menus,
   Vcl.StdCtrls,
-  Winapi.Windows;
+  Winapi.Windows, Vcl.Imaging.jpeg;
 
 type
   THomeView = class(TForm)
@@ -34,6 +34,9 @@ type
     grdOperations: TStringGrid;
     imgCatsIncomeStatus: TImage;
     imgCatsOutcomeStatus: TImage;
+    imgIcoNo: TImage;
+    imgIcoOk: TImage;
+    imgIcoWarning: TImage;
     lblBalance: TLabel;
     lblBalanceBefore: TLabel;
     lblCategoriesBefore: TLabel;
@@ -54,13 +57,15 @@ type
     miEdit: TMenuItem;
     miRepeat: TMenuItem;
     pmOperation: TPopupMenu;
-    shpHeaderBG: TShape;
+    pnlCategories: TPanel;
+    pnlContent: TPanel;
+    pnlHeader: TPanel;
+    pnlMainTools: TPanel;
+    pnlMainToolsWrapper: TPanel;
+    pnlOperations: TPanel;
+    pnlStatistics: TPanel;
     shpIncome: TShape;
-    shpNoOperationsBG: TShape;
     shpOutcome: TShape;
-    imgIcoNo: TImage;
-    imgIcoOk: TImage;
-    imgIcoWarning: TImage;
     procedure actionCategoriesView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
@@ -113,8 +118,7 @@ var
   i: Integer;
   noHighlight: TGridRect;
 begin
-  homeView.width := shpHeaderBG.width + homeView.width -
-    homeView.clientWidth;
+  homeView.clientWidth := pnlContent.width;
 
   cbbMonth.itemIndex := monthOfTheYear(date()) - 1;
   for i := currentYear downto 2010 do
@@ -224,13 +228,24 @@ procedure THomeView.actionResize(
   var newWidth, newHeight: Integer;
   var resize: Boolean
 );
+var
+  center: Integer;
 begin
-  if newWidth > shpHeaderBG.width + homeView.width
-    - homeView.clientWidth then
+  if newWidth < pnlContent.width + homeView.width -
+    homeView.clientWidth +
+    getSystemMetrics(SM_CXVSCROLL) then
   begin
-    homeView.clientWidth := shpHeaderBG.width;
-    resize := false;
+    newWidth := pnlContent.width + homeView.width -
+      homeView.clientWidth +
+      getSystemMetrics(SM_CXVSCROLL);
   end;
+  center := homeView.clientWidth;
+  if not homeView.vertScrollBar.isScrollBarVisible then
+    center := center - getSystemMetrics(SM_CXVSCROLL);
+  center := center div 2;
+  lblHeader.left := center - lblHeader.width div 2;
+  pnlContent.left := center - pnlContent.width div 2;
+  pnlMainTools.left := pnlContent.left;
 end;
 
 procedure THomeView.actionScroll(
@@ -242,7 +257,7 @@ procedure THomeView.actionScroll(
 );
 begin
   homeView.VertScrollBar.Position :=
-    homeView.VertScrollBar.Position - WheelDelta;
+   homeView.VertScrollBar.Position - WheelDelta;
 end;
 
 procedure THomeView.actionUpdateStatistics(Sender:
@@ -260,54 +275,34 @@ procedure THomeView.arrangeComponents();
         gridLineWidth*(rowCount + 4);
   end;
 
-var
-  topCurr: Integer;
 begin
-  topCurr := lblCatsIncomeStatus.top +
-    lblCatsIncomeStatus.height;
+  if catsIncome.count = 0 then
+    grdCatsIncome.visible := false
+  else
+  begin
+    setGtidHeight(grdCatsIncome);
+    grdCatsIncome.visible := true;
+  end;
 
-  with grdCatsIncome do
-    if catsIncome.count = 0 then
-      visible := false
-    else
-    begin
-      setGtidHeight(grdCatsIncome);
-      visible := true;
-      topCurr := top + height;
-    end;
+  if catsOutcome.count = 0 then
+    grdCatsOutcome.visible := false
+  else
+  begin
+    setGtidHeight(grdCatsOutcome);
+    grdCatsOutcome.visible := true;
+  end;
 
-  with grdCatsOutcome do
-    if catsOutcome.count = 0 then
-      visible := false
-    else
-    begin
-      setGtidHeight(grdCatsOutcome);
-      visible := true;
-      if top + height > topCurr then
-        topCurr := top + height;
-    end;
-
-  with grdOperations do
-    if length(opersCurr) = 0 then
-    begin
-      visible := false;
-      lblNoOperations.visible := true;
-      shpNoOperationsBG.visible := true;
-    end
-    else
-    begin
-      setGtidHeight(grdOperations);
-      visible := true;
-      lblNoOperations.visible := false;
-      shpNoOperationsBG.visible := false;
-    end;
-
-  lblOperationsBefore.top := topCurr + 20;
-  topCurr := lblOperationsBefore.top +
-    lblOperationsBefore.height;
-  grdOperations.top := topCurr + 8;
-  shpNoOperationsBG.top := topCurr + 8;
-  lblNoOperations.top := shpNoOperationsBG.top + 55;
+  if length(opersCurr) = 0 then
+  begin
+    grdOperations.visible := false;
+    lblNoOperations.visible := true;
+  end
+  else
+  begin
+    setGtidHeight(grdOperations);
+    grdOperations.visible := true;
+    lblNoOperations.visible := false;
+  end;
 end;
 
 procedure THomeView.countCategoriesMoney();

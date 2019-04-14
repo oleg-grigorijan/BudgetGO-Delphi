@@ -1,11 +1,12 @@
 object homeView: ThomeView
-  Left = 0
-  Top = 0
-  Width = 709
-  Height = 535
+  Left = 480
+  Top = 231
+  Width = 754
+  Height = 754
+  HorzScrollBar.Visible = False
   VertScrollBar.Smooth = True
+  VertScrollBar.Tracking = True
   AutoScroll = True
-  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'BudgetGO'
   Color = clWhite
   Font.Charset = RUSSIAN_CHARSET
@@ -14,277 +15,12 @@ object homeView: ThomeView
   Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDesigned
   OnCanResize = actionResize
   OnCreate = actionInit
   OnMouseWheel = actionScroll
   PixelsPerInch = 120
   TextHeight = 17
-  object lblCatsIncomeStatus: TLabel
-    Left = 70
-    Top = 346
-    Width = 249
-    Height = 34
-    Caption = 
-      #1042#1099' '#1085#1077' '#1076#1086#1089#1090#1080#1075#1083#1080' '#1078#1077#1083#1072#1077#1084#1099#1093' '#1076#1086#1093#1086#1076#1086#1074#13#10#1087#1086' '#1085#1077#1082#1086#1090#1086#1088#1099#1084' '#1082#1072#1090#1077#1075#1086#1088#1080#1103#1084' '#1074' '#1101#1090#1086#1084' ' +
-      #1084#1077#1089#1103#1094#1077
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lblCatsOutcomeStatus: TLabel
-    Left = 380
-    Top = 346
-    Width = 233
-    Height = 34
-    Caption = 
-      #1042#1099' '#1085#1077' '#1087#1088#1077#1074#1099#1089#1080#1083#1080' '#1079#1072#1087#1083#1072#1085#1080#1088#1086#1074#1072#1085#1085#1099#1077#13#10#1088#1072#1089#1093#1086#1076#1099' '#1087#1086' '#1082#1072#1090#1077#1075#1086#1088#1080#1103#1084' '#1074' '#1101#1090#1086#1084' '#1084#1077 +
-      'c'#1103#1094#1077
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object shpHeaderBG: TShape
-    Left = 0
-    Top = 42
-    Width = 670
-    Height = 106
-    Brush.Color = 16185078
-    Pen.Color = 13290186
-  end
-  object lblHeader: TLabel
-    Left = 287
-    Top = 5
-    Width = 95
-    Height = 28
-    Caption = 'BudgetGO'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -20
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object lblBalanceBefore: TLabel
-    Left = 346
-    Top = 77
-    Width = 94
-    Height = 17
-    Alignment = taRightJustify
-    Caption = #1085#1072' '#1074#1072#1096#1077#1084' '#1089#1095#1077#1090#1091
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lblBalance: TLabel
-    Left = 350
-    Top = 87
-    Width = 136
-    Height = 41
-    BiDiMode = bdLeftToRight
-    Caption = '10.03 '#1088#1091#1073'.'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clBlack
-    Font.Height = -30
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentBiDiMode = False
-    ParentFont = False
-  end
-  object lblNewOperationBefore: TLabel
-    Left = 195
-    Top = 54
-    Width = 104
-    Height = 17
-    Caption = #1053#1086#1074#1072#1103' '#1086#1087#1077#1088#1072#1094#1080#1103
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object lblOperationsBefore: TLabel
-    Left = 40
-    Top = 514
-    Width = 82
-    Height = 23
-    Caption = #1054#1087#1077#1088#1072#1094#1080#1080
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -17
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object lblStatisticsBefore: TLabel
-    Left = 40
-    Top = 172
-    Width = 103
-    Height = 28
-    Caption = #1057#1090#1072#1090#1080#1089#1090#1080#1082#1072
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -20
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object lblIncomeBefore: TLabel
-    Left = 40
-    Top = 214
-    Width = 104
-    Height = 17
-    Caption = #1044#1086#1093#1086#1076#1099' '#1079#1072' '#1084#1077#1089#1103#1094
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lblIncome: TLabel
-    Left = 40
-    Top = 231
-    Width = 75
-    Height = 17
-    BiDiMode = bdLeftToRight
-    Caption = '2265.50 '#1088#1091#1073'.'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentBiDiMode = False
-    ParentFont = False
-  end
-  object lblOutcomeBefore: TLabel
-    Left = 187
-    Top = 214
-    Width = 107
-    Height = 17
-    Caption = #1056#1072#1089#1093#1086#1076#1099' '#1079#1072' '#1084#1077#1089#1103#1094
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object lblOutcome: TLabel
-    Left = 187
-    Top = 231
-    Width = 73
-    Height = 17
-    BiDiMode = bdLeftToRight
-    Caption = '1250.64 '#1088#1091#1073'.'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentBiDiMode = False
-    ParentFont = False
-  end
-  object shpOutcome: TShape
-    Left = 40
-    Top = 255
-    Width = 280
-    Height = 10
-    Brush.Color = 3951847
-    Pen.Color = 3951847
-    Shape = stRoundRect
-  end
-  object shpIncome: TShape
-    Left = 40
-    Top = 255
-    Width = 89
-    Height = 10
-    Brush.Color = 7457838
-    Pen.Color = 7457838
-    Shape = stRoundRect
-  end
-  object lblCategoriesBefore: TLabel
-    Left = 40
-    Top = 290
-    Width = 82
-    Height = 23
-    Caption = #1050#1072#1090#1077#1075#1086#1088#1080#1080
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -17
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object shpNoOperationsBG: TShape
-    Left = 0
-    Top = 541
-    Width = 670
-    Height = 120
-    Brush.Color = 16185078
-    Pen.Color = 13290186
-  end
-  object lblNoOperations: TLabel
-    Left = 251
-    Top = 588
-    Width = 168
-    Height = 34
-    Alignment = taCenter
-    Caption = #1042#1099' '#1085#1077' '#1089#1086#1074#1077#1088#1096#1072#1083#1080' '#1086#1087#1077#1088#1072#1094#1080#1080#13#10#1074' '#1101#1090#1086#1084' '#1084#1077#1089#1103#1094#1077
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object imgCatsIncomeStatus: TImage
-    Left = 40
-    Top = 348
-    Width = 24
-    Height = 24
-  end
-  object lblCatsIncomeBefore: TLabel
-    Left = 40
-    Top = 322
-    Width = 50
-    Height = 17
-    Caption = #1044#1086#1093#1086#1076#1099
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object lblCatsOutcomeBefore: TLabel
-    Left = 350
-    Top = 322
-    Width = 54
-    Height = 17
-    Caption = #1056#1072#1089#1093#1086#1076#1099
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = 'Segoe UI Semibold'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object imgCatsOutcomeStatus: TImage
-    Left = 350
-    Top = 348
-    Width = 24
-    Height = 24
-  end
   object imgIcoNo: TImage
     Left = 641
     Top = 411
@@ -374,177 +110,547 @@ object homeView: ThomeView
       EE4BC4FECE97F967014F9124A5197B904C160000000049454E44AE426082}
     Visible = False
   end
-  object grdOperations: TStringGrid
+  object pnlHeader: TPanel
     Left = 0
-    Top = 541
-    Width = 670
-    Height = 120
-    Cursor = crHandPoint
-    ColCount = 6
-    FixedCols = 0
-    RowCount = 2
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    GradientEndColor = clWhite
-    Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
-    ParentFont = False
-    PopupMenu = pmOperation
-    ScrollBars = ssNone
-    TabOrder = 5
-    OnDblClick = actionOperationView
-    OnMouseDown = actionOperationSelect
-    ColWidths = (
-      34
-      57
-      99
-      92
-      44
-      359)
-  end
-  object btnCreateIncome: TButton
-    Left = 174
-    Top = 75
-    Width = 146
-    Height = 25
-    Caption = #1044#1086#1093#1086#1076
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
+    Top = 0
+    Width = 736
+    Height = 42
+    Align = alTop
+    BevelEdges = [beBottom]
+    BevelKind = bkFlat
+    BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
     TabOrder = 0
-    OnClick = actionOperationView
+    object lblHeader: TLabel
+      Left = 320
+      Top = 4
+      Width = 95
+      Height = 28
+      Alignment = taCenter
+      Caption = 'BudgetGO'
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'Segoe UI Semibold'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
   end
-  object btnCreateOutcome: TButton
-    Left = 174
-    Top = 103
-    Width = 146
-    Height = 25
-    Caption = #1056#1072#1089#1093#1086#1076
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
+  object pnlMainToolsWrapper: TPanel
+    Left = 0
+    Top = 42
+    Width = 736
+    Height = 110
+    Align = alTop
+    BevelEdges = [beBottom]
+    BevelKind = bkFlat
+    BevelOuter = bvNone
+    ParentBackground = False
     TabOrder = 1
-    OnClick = actionOperationView
+    object pnlMainTools: TPanel
+      Left = 0
+      Top = 17
+      Width = 293
+      Height = 77
+      AutoSize = True
+      BevelOuter = bvNone
+      Padding.Left = 20
+      TabOrder = 0
+      object lblNewOperationBefore: TLabel
+        Left = 20
+        Top = 0
+        Width = 104
+        Height = 17
+        Alignment = taCenter
+        Caption = #1053#1086#1074#1072#1103' '#1086#1087#1077#1088#1072#1094#1080#1103
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblBalance: TLabel
+        AlignWithMargins = True
+        Left = 154
+        Top = 33
+        Width = 136
+        Height = 41
+        BiDiMode = bdLeftToRight
+        Caption = '10.03 '#1088#1091#1073'.'
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clBlack
+        Font.Height = -30
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+      end
+      object lblBalanceBefore: TLabel
+        Left = 154
+        Top = 21
+        Width = 94
+        Height = 17
+        Caption = #1085#1072' '#1074#1072#1096#1077#1084' '#1089#1095#1077#1090#1091
+      end
+      object btnCreateOutcome: TButton
+        Left = 20
+        Top = 47
+        Width = 104
+        Height = 25
+        Caption = #1056#1072#1089#1093#1086#1076
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        OnClick = actionOperationView
+      end
+      object btnCreateIncome: TButton
+        Left = 20
+        Top = 24
+        Width = 104
+        Height = 25
+        Caption = #1044#1086#1093#1086#1076
+        Default = True
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = actionOperationView
+      end
+    end
   end
-  object cbbMonth: TComboBox
-    Left = 174
-    Top = 174
-    Width = 83
-    Height = 25
-    HelpType = htKeyword
-    Style = csDropDownList
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 3
-    OnChange = actionUpdateStatistics
-    Items.Strings = (
-      #1071#1085#1074#1072#1088#1100
-      #1060#1077#1074#1088#1072#1083#1100
-      #1052#1072#1088#1090
-      #1040#1087#1088#1077#1083#1100
-      #1052#1072#1081
-      #1048#1102#1085#1100
-      #1048#1102#1083#1100
-      #1040#1074#1075#1091#1089#1090
-      #1057#1077#1085#1090#1103#1073#1088#1100
-      #1054#1082#1090#1103#1073#1088#1100
-      #1053#1086#1103#1073#1088#1100
-      #1044#1077#1082#1072#1073#1088#1100)
-  end
-  object cbbYear: TComboBox
-    Left = 263
-    Top = 174
-    Width = 57
-    Height = 25
-    HelpType = htKeyword
-    Style = csDropDownList
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 4
-    OnChange = actionUpdateStatistics
-  end
-  object btnEditCategories: TButton
-    Left = 141
-    Top = 291
-    Width = 90
-    Height = 25
-    Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
+  object pnlContent: TPanel
+    Left = 2
+    Top = 158
+    Width = 732
+    Height = 533
+    Margins.Left = 20
+    Margins.Right = 20
+    AutoSize = True
+    BevelOuter = bvNone
+    Color = clGradientActiveCaption
+    Constraints.MinWidth = 680
+    Padding.Left = 20
+    Padding.Right = 20
     TabOrder = 2
-    OnClick = actionCategoriesView
-  end
-  object grdCatsIncome: TStringGrid
-    Left = 37
-    Top = 390
-    Width = 285
-    Height = 105
-    BorderStyle = bsNone
-    ColCount = 2
-    Enabled = False
-    FixedCols = 0
-    RowCount = 2
-    FixedRows = 0
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    Options = [goFixedHorzLine, goHorzLine, goRowSelect]
-    ParentFont = False
-    ScrollBars = ssNone
-    TabOrder = 6
-    ColWidths = (
-      110
-      173)
-  end
-  object grdCatsOutcome: TStringGrid
-    Left = 347
-    Top = 390
-    Width = 285
-    Height = 105
-    BorderStyle = bsNone
-    ColCount = 2
-    Enabled = False
-    FixedCols = 0
-    RowCount = 2
-    FixedRows = 0
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    Options = [goFixedHorzLine, goHorzLine, goRowSelect]
-    ParentFont = False
-    ScrollBars = ssNone
-    TabOrder = 7
-    ColWidths = (
-      110
-      173)
+    object pnlCategories: TPanel
+      AlignWithMargins = True
+      Left = 20
+      Top = 132
+      Width = 692
+      Height = 161
+      Margins.Left = 0
+      Margins.Top = 20
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alTop
+      AutoSize = True
+      BevelOuter = bvNone
+      Color = clWhite
+      TabOrder = 1
+      object imgCatsIncomeStatus: TImage
+        Left = 3
+        Top = 58
+        Width = 24
+        Height = 24
+      end
+      object imgCatsOutcomeStatus: TImage
+        Left = 313
+        Top = 58
+        Width = 24
+        Height = 24
+      end
+      object lblCategoriesBefore: TLabel
+        Left = 3
+        Top = 0
+        Width = 82
+        Height = 23
+        Caption = #1050#1072#1090#1077#1075#1086#1088#1080#1080
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblCatsIncomeBefore: TLabel
+        Left = 3
+        Top = 32
+        Width = 50
+        Height = 17
+        Caption = #1044#1086#1093#1086#1076#1099
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblCatsIncomeStatus: TLabel
+        Left = 33
+        Top = 56
+        Width = 249
+        Height = 34
+        Caption = 
+          #1042#1099' '#1085#1077' '#1076#1086#1089#1090#1080#1075#1083#1080' '#1078#1077#1083#1072#1077#1084#1099#1093' '#1076#1086#1093#1086#1076#1086#1074#13#10#1087#1086' '#1085#1077#1082#1086#1090#1086#1088#1099#1084' '#1082#1072#1090#1077#1075#1086#1088#1080#1103#1084' '#1074' '#1101#1090#1086#1084' ' +
+          #1084#1077#1089#1103#1094#1077
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lblCatsOutcomeBefore: TLabel
+        Left = 313
+        Top = 32
+        Width = 54
+        Height = 17
+        Caption = #1056#1072#1089#1093#1086#1076#1099
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblCatsOutcomeStatus: TLabel
+        Left = 343
+        Top = 56
+        Width = 233
+        Height = 34
+        Caption = 
+          #1042#1099' '#1085#1077' '#1087#1088#1077#1074#1099#1089#1080#1083#1080' '#1079#1072#1087#1083#1072#1085#1080#1088#1086#1074#1072#1085#1085#1099#1077#13#10#1088#1072#1089#1093#1086#1076#1099' '#1087#1086' '#1082#1072#1090#1077#1075#1086#1088#1080#1103#1084' '#1074' '#1101#1090#1086#1084' '#1084#1077 +
+          'c'#1103#1094#1077
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object btnEditCategories: TButton
+        Left = 108
+        Top = 1
+        Width = 90
+        Height = 25
+        Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = actionCategoriesView
+      end
+      object grdCatsIncome: TStringGrid
+        Left = 0
+        Top = 100
+        Width = 285
+        Height = 53
+        BorderStyle = bsNone
+        ColCount = 2
+        Enabled = False
+        FixedCols = 0
+        RowCount = 2
+        FixedRows = 0
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        Options = [goFixedHorzLine, goHorzLine, goRowSelect]
+        ParentFont = False
+        ScrollBars = ssNone
+        TabOrder = 1
+        ColWidths = (
+          110
+          173)
+      end
+      object grdCatsOutcome: TStringGrid
+        Left = 310
+        Top = 100
+        Width = 285
+        Height = 61
+        BorderStyle = bsNone
+        ColCount = 2
+        Enabled = False
+        FixedCols = 0
+        RowCount = 2
+        FixedRows = 0
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        Options = [goFixedHorzLine, goHorzLine, goRowSelect]
+        ParentFont = False
+        ScrollBars = ssNone
+        TabOrder = 2
+        ColWidths = (
+          110
+          173)
+      end
+    end
+    object pnlOperations: TPanel
+      AlignWithMargins = True
+      Left = 20
+      Top = 313
+      Width = 692
+      Height = 220
+      Margins.Left = 0
+      Margins.Top = 20
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alTop
+      AutoSize = True
+      BevelOuter = bvNone
+      Color = clWhite
+      TabOrder = 2
+      object lblOperationsBefore: TLabel
+        AlignWithMargins = True
+        Left = 0
+        Top = 0
+        Width = 689
+        Height = 23
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Bottom = 10
+        Align = alTop
+        Caption = #1054#1087#1077#1088#1072#1094#1080#1080
+        Color = clWhite
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        ExplicitWidth = 82
+      end
+      object lblNoOperations: TLabel
+        AlignWithMargins = True
+        Left = 0
+        Top = 153
+        Width = 689
+        Height = 17
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Bottom = 50
+        Align = alTop
+        Caption = #1042#1099' '#1085#1077' '#1089#1086#1074#1077#1088#1096#1072#1083#1080' '#1086#1087#1077#1088#1072#1094#1080#1080' '#1074' '#1101#1090#1086#1084' '#1084#1077#1089#1103#1094#1077
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        ExplicitWidth = 258
+      end
+      object grdOperations: TStringGrid
+        Left = 0
+        Top = 33
+        Width = 692
+        Height = 120
+        Cursor = crHandPoint
+        Margins.Left = 0
+        Margins.Top = 0
+        Margins.Right = 0
+        Margins.Bottom = 0
+        Align = alTop
+        ColCount = 6
+        Constraints.MaxWidth = 732
+        FixedCols = 0
+        RowCount = 2
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        GradientEndColor = clWhite
+        Options = [goFixedHorzLine, goHorzLine, goDrawFocusSelected, goRowSelect]
+        ParentFont = False
+        PopupMenu = pmOperation
+        ScrollBars = ssNone
+        TabOrder = 0
+        OnDblClick = actionOperationView
+        OnMouseDown = actionOperationSelect
+        ColWidths = (
+          34
+          57
+          99
+          92
+          48
+          361)
+      end
+    end
+    object pnlStatistics: TPanel
+      AlignWithMargins = True
+      Left = 20
+      Top = 20
+      Width = 692
+      Height = 92
+      Margins.Left = 0
+      Margins.Top = 20
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alTop
+      AutoSize = True
+      BevelOuter = bvNone
+      Color = clWhite
+      TabOrder = 0
+      object lblIncome: TLabel
+        Left = 0
+        Top = 59
+        Width = 75
+        Height = 17
+        BiDiMode = bdLeftToRight
+        Caption = '2265.50 '#1088#1091#1073'.'
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+      end
+      object lblIncomeBefore: TLabel
+        Left = 0
+        Top = 42
+        Width = 104
+        Height = 17
+        BiDiMode = bdLeftToRight
+        Caption = #1044#1086#1093#1086#1076#1099' '#1079#1072' '#1084#1077#1089#1103#1094
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentBiDiMode = False
+        ParentFont = False
+      end
+      object lblOutcome: TLabel
+        Left = 147
+        Top = 59
+        Width = 73
+        Height = 17
+        BiDiMode = bdLeftToRight
+        Caption = '1250.64 '#1088#1091#1073'.'
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+      end
+      object lblOutcomeBefore: TLabel
+        Left = 147
+        Top = 42
+        Width = 107
+        Height = 17
+        BiDiMode = bdLeftToRight
+        Caption = #1056#1072#1089#1093#1086#1076#1099' '#1079#1072' '#1084#1077#1089#1103#1094
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentBiDiMode = False
+        ParentFont = False
+      end
+      object lblStatisticsBefore: TLabel
+        Left = 0
+        Top = 0
+        Width = 103
+        Height = 28
+        BiDiMode = bdLeftToRight
+        Caption = #1057#1090#1072#1090#1080#1089#1090#1080#1082#1072
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -20
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentFont = False
+      end
+      object shpOutcome: TShape
+        Left = 0
+        Top = 82
+        Width = 280
+        Height = 10
+        Brush.Color = 3951847
+        Pen.Color = 3951847
+        Shape = stRoundRect
+      end
+      object shpIncome: TShape
+        Left = 0
+        Top = 82
+        Width = 89
+        Height = 10
+        Brush.Color = 7457838
+        Pen.Color = 7457838
+        Shape = stRoundRect
+      end
+      object cbbMonth: TComboBox
+        Left = 132
+        Top = 6
+        Width = 83
+        Height = 25
+        HelpType = htKeyword
+        Style = csDropDownList
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnChange = actionUpdateStatistics
+        Items.Strings = (
+          #1071#1085#1074#1072#1088#1100
+          #1060#1077#1074#1088#1072#1083#1100
+          #1052#1072#1088#1090
+          #1040#1087#1088#1077#1083#1100
+          #1052#1072#1081
+          #1048#1102#1085#1100
+          #1048#1102#1083#1100
+          #1040#1074#1075#1091#1089#1090
+          #1057#1077#1085#1090#1103#1073#1088#1100
+          #1054#1082#1090#1103#1073#1088#1100
+          #1053#1086#1103#1073#1088#1100
+          #1044#1077#1082#1072#1073#1088#1100)
+      end
+      object cbbYear: TComboBox
+        Left = 223
+        Top = 6
+        Width = 57
+        Height = 25
+        HelpType = htKeyword
+        Style = csDropDownList
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        OnChange = actionUpdateStatistics
+      end
+    end
   end
   object pmOperation: TPopupMenu
-    Left = 24
-    Top = 457
+    Left = 683
+    Top = 9
     object miEdit: TMenuItem
       Caption = '&'#1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
       OnClick = actionOperationView
