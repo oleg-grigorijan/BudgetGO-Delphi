@@ -19,17 +19,11 @@ Coordinates=10,416,140,58
 [lblCatsOutcomeBefore]
 Coordinates=10,348,144,58
 
-[lblBalance]
-Coordinates=170,280,74,58
-
 [imgIcoOk]
 Coordinates=291,348,69,58
 
 [lblOutcome]
 Coordinates=382,280,80,58
-
-[btnCreateOutcome]
-Coordinates=226,212,123,58
 
 [lblCatsOutcomeStatus]
 Coordinates=493,348,143,58
@@ -69,9 +63,6 @@ Coordinates=160,144,96,58
 
 [lblCategoriesBefore]
 Coordinates=694,280,128,58
-
-[btnCreateIncome]
-Coordinates=370,348,113,58
 
 [lblOutcomeBefore]
 Coordinates=646,348,118,58
@@ -125,5 +116,24 @@ Coordinates=122,212,94,58
 Coordinates=266,144,84,58
 
 []
-Coordinates=390,10,111,58
+Coordinates=226,212,123,58
+Visible=True
+
+[imgBG]
+Coordinates=418,1,54,58
+
+[imgCreateIncome]
+Coordinates=860,243,116,58
+
+[pnlEditCategories]
+Coordinates=860,166,116,58
+
+[imgCreateOutcome]
+Coordinates=1014,1,126,58
+
+[imgEditCategories]
+Coordinates=860,397,120,58
+
+[lblEditCategories]
+Coordinates=860,320,112,58
 

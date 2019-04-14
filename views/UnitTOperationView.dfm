@@ -117,6 +117,7 @@ object OperationView: TOperationView
     Top = 263
     Width = 90
     Height = 25
+    Cursor = crHandPoint
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
     DoubleBuffered = False
     Font.Charset = RUSSIAN_CHARSET
@@ -137,6 +138,7 @@ object OperationView: TOperationView
     Top = 74
     Width = 83
     Height = 25
+    Cursor = crIBeam
     Hint = 's'
     Alignment = taRightJustify
     Font.Charset = RUSSIAN_CHARSET
@@ -156,6 +158,7 @@ object OperationView: TOperationView
     Top = 74
     Width = 83
     Height = 25
+    Cursor = crIBeam
     Alignment = taRightJustify
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
@@ -172,6 +175,7 @@ object OperationView: TOperationView
     Top = 263
     Width = 90
     Height = 25
+    Cursor = crHandPoint
     Caption = #1057#1086#1079#1076#1072#1090#1100
     DoubleBuffered = False
     Font.Charset = RUSSIAN_CHARSET
@@ -192,6 +196,7 @@ object OperationView: TOperationView
     Top = 173
     Width = 252
     Height = 25
+    Cursor = crIBeam
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -205,6 +210,7 @@ object OperationView: TOperationView
     Top = 263
     Width = 90
     Height = 25
+    Cursor = crHandPoint
     Caption = #1054#1090#1084#1077#1085#1072
     DoubleBuffered = False
     Font.Charset = RUSSIAN_CHARSET
@@ -223,6 +229,7 @@ object OperationView: TOperationView
     Top = 223
     Width = 252
     Height = 25
+    Cursor = crIBeam
     Date = 43546.000000000000000000
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
@@ -238,6 +245,7 @@ object OperationView: TOperationView
     Top = 124
     Width = 252
     Height = 25
+    Cursor = crHandPoint
     Style = csDropDownList
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText

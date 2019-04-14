@@ -101,6 +101,7 @@ object categoryView: TcategoryView
     Top = 155
     Width = 83
     Height = 25
+    Cursor = crIBeam
     Hint = 's'
     Alignment = taRightJustify
     Font.Charset = RUSSIAN_CHARSET
@@ -119,6 +120,7 @@ object categoryView: TcategoryView
     Top = 155
     Width = 83
     Height = 25
+    Cursor = crIBeam
     Alignment = taRightJustify
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
@@ -134,6 +136,7 @@ object categoryView: TcategoryView
     Top = 103
     Width = 252
     Height = 25
+    Cursor = crIBeam
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -149,27 +152,8 @@ object categoryView: TcategoryView
     Top = 263
     Width = 90
     Height = 25
+    Cursor = crHandPoint
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
-    DoubleBuffered = False
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ModalResult = 1
-    ParentDoubleBuffered = False
-    ParentFont = False
-    TabOrder = 4
-    Visible = False
-    StyleElements = [seFont, seClient]
-    OnClick = actionSave
-  end
-  object btnCreate: TButton
-    Left = 180
-    Top = 263
-    Width = 90
-    Height = 25
-    Caption = #1057#1086#1079#1076#1072#1090#1100
     DoubleBuffered = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
@@ -182,6 +166,27 @@ object categoryView: TcategoryView
     TabOrder = 5
     Visible = False
     StyleElements = [seFont, seClient]
+    OnClick = actionSave
+  end
+  object btnCreate: TButton
+    Left = 180
+    Top = 263
+    Width = 90
+    Height = 25
+    Cursor = crHandPoint
+    Caption = #1057#1086#1079#1076#1072#1090#1100
+    DoubleBuffered = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ModalResult = 1
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 4
+    Visible = False
+    StyleElements = [seFont, seClient]
     OnClick = actionCreate
   end
   object btnCancel: TButton
@@ -189,6 +194,7 @@ object categoryView: TcategoryView
     Top = 263
     Width = 90
     Height = 25
+    Cursor = crHandPoint
     Caption = #1054#1090#1084#1077#1085#1072
     DoubleBuffered = False
     Font.Charset = ANSI_CHARSET

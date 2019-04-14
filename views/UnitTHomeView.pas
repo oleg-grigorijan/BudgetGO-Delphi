@@ -20,12 +20,11 @@ uses
   Vcl.Imaging.pngimage,
   Vcl.Menus,
   Vcl.StdCtrls,
-  Winapi.Windows, Vcl.Imaging.jpeg;
+  Winapi.Windows, Vcl.Imaging.jpeg, Vcl.Buttons,
+  Vcl.ComCtrls;
 
 type
   THomeView = class(TForm)
-    btnCreateIncome: TButton;
-    btnCreateOutcome: TButton;
     btnEditCategories: TButton;
     cbbMonth: TComboBox;
     cbbYear: TComboBox;
@@ -37,7 +36,6 @@ type
     imgIcoNo: TImage;
     imgIcoOk: TImage;
     imgIcoWarning: TImage;
-    lblBalance: TLabel;
     lblBalanceBefore: TLabel;
     lblCategoriesBefore: TLabel;
     lblCatsIncomeBefore: TLabel;
@@ -66,6 +64,15 @@ type
     pnlStatistics: TPanel;
     shpIncome: TShape;
     shpOutcome: TShape;
+    imgBG: TImage;
+    lblEditCategories: TLabel;
+    imgEditCategories: TImage;
+    pnlEditCategories: TPanel;
+    imgCreateOutcome: TImage;
+    imgCreateIncome: TImage;
+    lblBalance: TLabel;
+    imgCreateIncomeOff: TImage;
+    imgCreateOutcomeOff: TImage;
     procedure actionCategoriesView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
@@ -203,23 +210,34 @@ begin
   if not assigned(operationView) then
     operationView := TOperationView.create(self);
 
-  if Sender = btnCreateIncome then
+  if Sender = imgCreateIncome then
     operationView.prepareToCreate(income)
-  else if Sender = btnCreateOutcome then
+  else if Sender = imgCreateOutcome then
     operationView.prepareToCreate(outcome)
   else if (Sender = miEdit) or
     (Sender = grdOperations) then
     operationView.prepareToEdit(selectedOperId)
   else if Sender = miRepeat then
     operationView.prepareToRepeat(selectedOperId);
-
-  operationView.ShowModal;
-  if operationView.ModalResult = mrOk then
+  if (Sender = imgCreateIncomeOff) or
+    (Sender = imgCreateOutcomeOff) then
   begin
-    updateData();
-    messageBox(handle,
-      'Операция успешно сохранена', PChar('Уведомление'),
-      MB_OK + MB_ICONINFORMATION);
+    messageBox(Handle,
+      'Чтобы создавать операции данного типа,' + #13#10 +
+      'сначала создайте категории', 'Уведомление',
+      MB_OK + MB_ICONWARNING);
+    actionCategoriesView(Sender);
+  end
+  else
+  begin
+    operationView.ShowModal;
+    if operationView.ModalResult = mrOk then
+    begin
+      updateData();
+      messageBox(handle,
+        'Операция успешно сохранена', PChar('Уведомление'),
+        MB_OK + MB_ICONINFORMATION);
+    end;
   end;
 end;
 
@@ -277,19 +295,31 @@ procedure THomeView.arrangeComponents();
 
 begin
   if catsIncome.count = 0 then
-    grdCatsIncome.visible := false
+  begin
+    grdCatsIncome.visible := false;
+    imgCreateIncomeOff.visible := true;
+    imgCreateIncome.visible := false;
+  end
   else
   begin
     setGtidHeight(grdCatsIncome);
     grdCatsIncome.visible := true;
+    imgCreateIncome.visible := true;
+    imgCreateIncomeOff.visible := false;
   end;
 
   if catsOutcome.count = 0 then
-    grdCatsOutcome.visible := false
+  begin
+    grdCatsOutcome.visible := false;
+    imgCreateOutcomeOff.visible := true;
+    imgCreateOutcome.visible := false;
+  end
   else
   begin
     setGtidHeight(grdCatsOutcome);
     grdCatsOutcome.visible := true;
+    imgCreateOutcome.visible := true;
+    imgCreateOutcomeOff.visible := false;
   end;
 
   if length(opersCurr) = 0 then
@@ -402,7 +432,6 @@ var
 begin
   if catsIncome.count = 0 then
   begin
-    btnCreateIncome.enabled := false;
     imgCatsIncomeStatus.picture := imgIcoWarning.picture;
     lblCatsIncomeStatus.caption :=
       'Для полноценного использования' + #13#10 +
@@ -410,7 +439,6 @@ begin
   end
   else
   begin
-    btnCreateIncome.enabled := true;
     imgCatsIncomeStatus.picture := imgIcoOk.picture;
     lblCatsIncomeStatus.caption :=
       'Вы достигли желаемых доходов' + #13#10 +
@@ -428,7 +456,6 @@ begin
 
   if catsOutcome.count = 0 then
   begin
-    btnCreateOutcome.enabled := false;
     imgCatsOutcomeStatus.picture := imgIcoWarning.picture;
     lblCatsOutcomeStatus.caption :=
       'Для полноценного использования' + #13#10 +
@@ -436,7 +463,6 @@ begin
   end
   else
   begin
-    btnCreateOutcome.enabled := true;
     imgCatsOutcomeStatus.picture := imgIcoOk.picture;
     lblCatsOutcomeStatus.caption :=
       'Вы не превысили запланированные' + #13#10 +

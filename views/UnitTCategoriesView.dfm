@@ -95,6 +95,7 @@ object categoriesView: TcategoriesView
       Top = 40
       Width = 174
       Height = 25
+      Cursor = crHandPoint
       Caption = #1053#1086#1074#1072#1103' '#1082#1072#1090#1077#1075#1086#1088#1080#1103' '#1088#1072#1089#1093#1086#1076#1072
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
