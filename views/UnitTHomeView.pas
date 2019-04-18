@@ -125,7 +125,7 @@ var
   i: Integer;
   noHighlight: TGridRect;
 begin
-  homeView.clientWidth := pnlContent.width;
+  self.clientWidth := pnlContent.width;
 
   cbbMonth.itemIndex := monthOfTheYear(date()) - 1;
   for i := currentYear downto 2010 do
@@ -249,16 +249,16 @@ procedure THomeView.actionResize(
 var
   center: Integer;
 begin
-  if newWidth < pnlContent.width + homeView.width -
-    homeView.clientWidth +
+  if newWidth < pnlContent.width + self.width -
+    self.clientWidth +
     getSystemMetrics(SM_CXVSCROLL) then
   begin
-    newWidth := pnlContent.width + homeView.width -
-      homeView.clientWidth +
+    newWidth := pnlContent.width + self.width -
+      self.clientWidth +
       getSystemMetrics(SM_CXVSCROLL);
   end;
-  center := homeView.clientWidth;
-  if not homeView.vertScrollBar.isScrollBarVisible then
+  center := self.clientWidth;
+  if not self.vertScrollBar.isScrollBarVisible then
     center := center - getSystemMetrics(SM_CXVSCROLL);
   center := center div 2;
   lblHeader.left := center - lblHeader.width div 2;
@@ -274,8 +274,8 @@ procedure THomeView.actionScroll(
   var Handled: Boolean
 );
 begin
-  homeView.VertScrollBar.Position :=
-   homeView.VertScrollBar.Position - WheelDelta;
+  self.VertScrollBar.Position :=
+    self.VertScrollBar.Position - WheelDelta;
 end;
 
 procedure THomeView.actionUpdateStatistics(Sender:
