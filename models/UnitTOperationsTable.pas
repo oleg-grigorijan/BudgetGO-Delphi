@@ -193,10 +193,7 @@ begin
   end
   else if item^.id > self.maxId then
     self.maxId := item^.id;
-  case item^.tp of
-    income: self.fBalance := self.fBalance + item^.money;
-    outcome: self.fBalance := self.fBalance - item^.money;
-  end;
+  fBalance := fBalance + item^.getDelta;
 end;
 
 function TOperationsTable.getItem(const id: Integer):
@@ -245,10 +242,7 @@ begin
   node := getNodeById(id);
   if node <> nil then
   begin
-    if node.item^.tp = income then
-      self.fBalance := self.fBalance - node.item^.money
-    else if node.item^.tp = outcome then
-      self.fBalance := self.fBalance + node.item^.money;
+    fBalance := fBalance - node.item^.getDelta;
     removeNode(node);
     result := true;
   end;
@@ -268,12 +262,7 @@ begin
     begin
       nodeTmp := nodeCurr;
       nodeCurr := nodeCurr.prev;
-      if nodeTmp.item^.tp = income then
-        self.fBalance := self.fBalance -
-          nodeTmp.item^.money
-      else if nodeTmp.item^.tp = outcome then
-        self.fBalance := self.fBalance +
-          nodeTmp.item^.money;
+      fBalance := fBalance - nodeTmp.item^.getDelta;
       removeNode(nodeTmp);
     end
     else
@@ -292,18 +281,8 @@ begin
   begin
     oldItem := node.item;
     newItem^.id := oldItem^.id;
-    case oldItem^.tp of
-      income:
-        fBalance := fBalance - oldItem^.money;
-      outcome:
-        fBalance := fBalance + oldItem^.money;
-    end;
-    case newItem^.tp of
-      income:
-        fBalance := fBalance + newItem^.money;
-      outcome:
-        fBalance := fBalance - newItem^.money;
-    end;
+    fBalance := fBalance - oldItem^.getDelta +
+      newItem^.getDelta;
     if ((node.prev = nil) or
       (node.prev.item^.date <= newItem^.date)) and
       ((node.next = nil) or
