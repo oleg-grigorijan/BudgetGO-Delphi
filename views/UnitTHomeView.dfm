@@ -1245,7 +1245,6 @@ object homeView: ThomeView
       BevelOuter = bvNone
       Color = clWhite
       TabOrder = 0
-      ExplicitWidth = 273
       object lblIncome: TLabel
         Left = 0
         Top = 59

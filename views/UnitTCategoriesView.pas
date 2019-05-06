@@ -49,9 +49,6 @@ type
     procedure updateData();
   end;
 
-var
-  categoriesView: TcategoriesView;
-
 implementation
 
 {$R *.dfm}
@@ -59,18 +56,20 @@ implementation
 uses
   UnitTHomeView;
 
-procedure TCategoriesView.actionCategoryDelete(Sender:
-  TObject);
+procedure TCategoriesView.actionCategoryDelete
+  (Sender: TObject);
 var
   answer: Integer;
 begin
   if selectedCatId <> 0 then
   begin
     answer := messageBox(handle,
-      'Вы действительно хотите удалить категоирю?' + #13#10 +
-      'Также будут удалены все операции с данной категорией.' +
-      #13#10 + 'Удалённые данные будет невозможно восстановить.',
-      'Уведомление', MB_YESNO + MB_ICONQUESTION + MB_DEFBUTTON2);
+      'Вы действительно хотите удалить категоирю?' + #13#10
+      + 'Также будут удалены все операции с данной категорией.'
+      + #13#10 +
+      'Удалённые данные будет невозможно восстановить.',
+      'Уведомление', MB_YESNO + MB_ICONQUESTION +
+      MB_DEFBUTTON2);
     if answer = IDYES then
     begin
       opers.removeItems(catsCurr.operTp, selectedCatId);
@@ -81,12 +80,9 @@ begin
   end;
 end;
 
-procedure TCategoriesView.actionCategorySelect(
-  Sender: TObject;
-  Button: TMouseButton;
-  Shift: TShiftState;
-  X, Y: Integer
-);
+procedure TCategoriesView.actionCategorySelect
+  (Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
 var
   col, row: Integer;
 begin
@@ -100,42 +96,42 @@ begin
       grdCategories.row := 1
     else
       grdCategories.row := row;
-    selectedCatId :=
-      catsCurr.items[grdCategories.row - 1]^.id;
+    selectedCatId := catsCurr.items
+      [grdCategories.row - 1]^.id;
   end;
 end;
 
-procedure TCategoriesView.actionCategoryView(Sender:
-  TObject);
+procedure TCategoriesView.actionCategoryView
+  (Sender: TObject);
 var
+  categoryView: TCategoryView;
   success: Boolean;
 begin
+  categoryView := TCategoryView.create(self);
   repeat
-  if not assigned(categoryView) then
-    categoryView := TCategoryView.create(self);
+    if Sender = btnCreate then
+      categoryView.prepareToCreate(catsCurr)
+    else if (Sender = miEdit) or (Sender = grdCategories)
+    then
+      categoryView.prepareToEdit(catsCurr, selectedCatId);
 
-  if Sender = btnCreate then
-    categoryView.prepareToCreate(catsCurr)
-  else if (Sender = miEdit) or
-    (Sender = grdCategories) then
-    categoryView.prepareToEdit(catsCurr, selectedCatId);
-
-  categoryView.showModal;
-  success := true;
-  if categoryView.modalResult = mrOk then
-  begin
-    updateData();
-    homeView.updateData();
-    messageBox(handle, 'Категория успешно сохранена',
-      PChar('Уведомление'), MB_OK + MB_ICONINFORMATION);
-  end
-  else if categoryView.modalResult = mrAbort then
-    if messageBox(Handle,
-      'Категория с таким именем и типом уже существует.',
-      'Уведомление', MB_RETRYCANCEL + MB_ICONSTOP) =
-      IDRETRY then
-    success := false;
+    categoryView.showModal;
+    success := true;
+    if categoryView.modalResult = mrOk then
+    begin
+      updateData();
+      homeView.updateData();
+      messageBox(handle, 'Категория успешно сохранена',
+        PChar('Уведомление'), MB_OK + MB_ICONINFORMATION);
+    end
+    else if categoryView.modalResult = mrAbort then
+      if messageBox(handle,
+        'Категория с таким именем и типом уже существует.',
+        'Уведомление', MB_RETRYCANCEL + MB_ICONSTOP) = IDRETRY
+      then
+        success := false;
   until success;
+  categoryView.free;
 end;
 
 procedure TCategoriesView.actionInit(Sender: TObject);
@@ -145,22 +141,22 @@ begin
   updateData();
 end;
 
-procedure TCategoriesView.actionOnTypeChange(Sender:
-  TObject);
+procedure TCategoriesView.actionOnTypeChange
+  (Sender: TObject);
 begin
   case tbcOperType.tabIndex of
     INCOME_TAB:
-    begin
-      btnCreate.caption := 'Новая категория дохода';
-      grdCategories.cells[2, 0] := 'Минимально в месяц';
-      catsCurr := catsIncome;
-    end;
+      begin
+        btnCreate.caption := 'Новая категория дохода';
+        grdCategories.cells[2, 0] := 'Минимально в месяц';
+        catsCurr := catsIncome;
+      end;
     OUTCOME_TAB:
-    begin
-      btnCreate.caption := 'Новая категория расхода';
-      grdCategories.cells[2, 0] := 'Максимально в месяц';
-      catsCurr := catsOutcome;
-    end;
+      begin
+        btnCreate.caption := 'Новая категория расхода';
+        grdCategories.cells[2, 0] := 'Максимально в месяц';
+        catsCurr := catsOutcome;
+      end;
   end;
   updateData();
 end;
@@ -172,23 +168,24 @@ begin
   if catsCurr.count = 0 then
     grdCategories.visible := false
   else
-  with grdCategories do
-  begin
-    visible := true;
-    rowCount := catsCurr.count + 1;
-    for i := 1 to catsCurr.count do
+    with grdCategories do
     begin
-      cells[0, i] := IntToStr(i);
-      with catsCurr.items[i - 1]^ do
+      visible := true;
+      rowCount := catsCurr.count + 1;
+      for i := 1 to catsCurr.count do
       begin
-        cells[1, i] := name;
-        if moneyMonth = 0 then
-          cells[2, i] := ''
-        else
-          cells[2, i] := moneyToStr(moneyMonth) + ' руб.';
+        cells[0, i] := IntToStr(i);
+        with catsCurr.items[i - 1]^ do
+        begin
+          cells[1, i] := name;
+          if moneyMonth = 0 then
+            cells[2, i] := ''
+          else
+            cells[2, i] := moneyToStr(moneyMonth)
+              + ' руб.';
+        end;
       end;
     end;
-  end;
 end;
 
 end.

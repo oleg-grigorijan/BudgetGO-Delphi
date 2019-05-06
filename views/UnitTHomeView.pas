@@ -114,10 +114,12 @@ implementation
 {$R *.dfm}
 
 procedure THomeView.actionCategoriesView(Sender: TObject);
+var
+  categoriesView: TCategoriesView;
 begin
-  if not assigned(categoriesView) then
-    categoriesView := TCategoriesView.create(self);
+  categoriesView := TCategoriesView.create(self);
   categoriesView.showModal;
+  categoriesView.free;
 end;
 
 procedure THomeView.actionInit(Sender: TObject);
@@ -206,10 +208,10 @@ begin
 end;
 
 procedure THomeView.actionOperationView(Sender: TObject);
+var
+  operationView: TOperationView;
 begin
-  if not assigned(operationView) then
-    operationView := TOperationView.create(self);
-
+  operationView := TOperationView.create(self);
   if Sender = imgCreateIncome then
     operationView.prepareToCreate(income)
   else if Sender = imgCreateOutcome then
@@ -230,8 +232,7 @@ begin
   end
   else
   begin
-    operationView.ShowModal;
-    if operationView.ModalResult = mrOk then
+    if operationView.showModal = mrOk then
     begin
       updateData();
       messageBox(handle,
@@ -239,6 +240,7 @@ begin
         MB_OK + MB_ICONINFORMATION);
     end;
   end;
+  operationView.free;
 end;
 
 procedure THomeView.actionResize(

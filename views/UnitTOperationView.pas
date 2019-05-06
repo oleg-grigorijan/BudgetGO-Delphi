@@ -45,9 +45,6 @@ type
     procedure setCategories(const operTp: TOperationType);
   end;
 
-var
-  operationView: TOperationView;
-
 implementation
 
 {$R *.dfm}
