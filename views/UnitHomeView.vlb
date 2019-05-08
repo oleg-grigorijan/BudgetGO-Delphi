@@ -37,9 +37,6 @@ Coordinates=359,212,112,58
 [shpOutcome]
 Coordinates=523,416,87,36
 
-[btnEditCategories]
-Coordinates=164,348,117,58
-
 [lblCatsIncomeBefore]
 Coordinates=160,416,134,58
 
@@ -113,17 +110,11 @@ Coordinates=122,212,94,58
 Coordinates=266,144,84,58
 
 []
-Coordinates=860,166,116,58
+Coordinates=164,348,117,58
 Visible=True
 
 [imgBG]
 Coordinates=418,1,54,58
-
-[imgCreateIncome]
-Coordinates=860,243,116,58
-
-[imgCreateOutcome]
-Coordinates=1014,1,126,58
 
 [lblEditCategories]
 Coordinates=860,320,112,58

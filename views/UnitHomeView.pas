@@ -30,7 +30,6 @@ uses
 
 type
   THomeView = class(TForm, ISubscriber)
-    btnEditCategories: TButton;
     cbbMonth: TComboBox;
     cbbYear: TComboBox;
     grdCatsIncome: TStringGrid;
@@ -71,9 +70,9 @@ type
     shpOutcome: TShape;
     imgBG: TImage;
     lblEditCategories: TLabel;
-    imgCreateOutcome: TImage;
-    imgCreateIncome: TImage;
     lblBalance: TLabel;
+    btnCreateIncome: TButton;
+    btnCreateOutcome: TButton;
     procedure actionCategoriesView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
@@ -93,6 +92,7 @@ type
     imgIcons: array[TCatsStatus] of TImage;
     imgCatsStatus: array[TOperationType] of TImage;
     grdCats: array[TOperationType] of TStringGrid;
+    btnCreateOper: array[TOperationType] of TButton;
     selectedOperId: Integer;
     // Models
     opers: TOperationsTable;
@@ -105,6 +105,8 @@ type
     procedure updCategoriesGrid(const tp: TOperationtype);
     procedure updOperationsGrid();
     procedure updIncomeOutcome();
+    procedure updBtnCreateOper(const tp: TOperationType);
+    procedure updBalance();
     procedure setGridHeight(const grid: TStringGrid);
   public
     procedure onEvent(const sender: TObject);
@@ -181,6 +183,8 @@ begin
   imgIcons[csFail] := imgIcoNo;
   grdCats[income] := grdCatsIncome;
   grdCats[outcome] := grdCatsOutcome;
+  btnCreateOper[income] := btnCreateIncome;
+  btnCreateOper[outcome] := btnCreateOutcome;
 end;
 
 procedure THomeView.setModels( const opersStats: TOperationsStatistics;
@@ -207,7 +211,9 @@ begin
   cats[income].eventCatsUpd.follow(self);
   cats[outcome].eventCatsUpd.follow(self);
 
-  lblBalance.caption := moneyToStr(opers.balance) + currencyStr;
+  updBalance();
+  updBtnCreateOper(income);
+  updBtnCreateOper(outcome);
   updIncomeOutcome();
   updCategoriesStatus(income);
   updCategoriesGrid(income);
@@ -260,9 +266,9 @@ var
   operationView: TOperationView;
 begin
   operationView := TOperationView.create(self, opers, cats[income], cats[outcome]);
-  if Sender = imgCreateIncome then
+  if Sender = btnCreateIncome then
     operationView.prepareToCreate(income)
-  else if Sender = imgCreateOutcome then
+  else if Sender = btnCreateOutcome then
     operationView.prepareToCreate(outcome)
   else if (Sender = miEdit) or
     (Sender = grdOperations) then
@@ -416,10 +422,20 @@ begin
   end;
 end;
 
+procedure THomeView.updBtnCreateOper(const tp: TOperationType);
+begin
+  btnCreateOper[tp].enabled := catsStats[tp].status <> csEmpty;
+end;
+
+procedure THomeView.updBalance();
+begin
+  lblBalance.caption := moneyToStr(opers.balance) + currencyStr
+end;
+
 procedure THomeView.onEvent(const sender: TObject);
 begin
   if sender = opers.eventOpersUpd then
-    lblBalance.caption := moneyToStr(opers.balance) + currencyStr
+    updBalance()
   else if sender = cats[income].eventCatsUpd then
   begin
     updCategoriesGrid(income);
@@ -438,11 +454,17 @@ begin
   else if sender = catsStats[income].eventCatsMoneyUpd then
     updCategoriesGrid(income)
   else if sender = catsStats[income].eventCatsStatusUpd then
-    updCategoriesStatus(income)
+  begin
+    updCategoriesStatus(income);
+    updBtnCreateOper(income);
+  end
   else if sender = catsStats[outcome].eventCatsMoneyUpd then
     updCategoriesGrid(outcome)
   else if sender = catsStats[outcome].eventCatsStatusUpd then
-    updCategoriesStatus(outcome)
+  begin
+    updCategoriesStatus(outcome);
+    updBtnCreateOper(outcome);
+  end
   else
     raise exception.create('Unexpected event');
 end;
