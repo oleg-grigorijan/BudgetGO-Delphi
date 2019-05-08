@@ -1,11 +1,12 @@
-unit UnitTOperationsTable;
+unit UnitOperationsTable;
 
 interface
 
 uses
   System.SysUtils,
   DateUtils,
-  UnitTOperation;
+  UnitEvents,
+  UnitOperation;
 
 type
   TOperationListNode = class
@@ -19,6 +20,7 @@ type
 
   TOperationsTable = class
   private
+    fEventOpersUpd: TEventManager;
     fBalance: int64;
     fileName: string[255];
     head: TOperationListNode;
@@ -29,6 +31,7 @@ type
     procedure insertNode(const node: TOperationListNode);
     procedure removeNode(const node: TOperationListNode);
   public
+    constructor create(); overload;
     constructor create(const filename: string); overload;
     destructor destroy(); override;
     procedure addItem(const item: POperation);
@@ -40,17 +43,12 @@ type
       const catId: Integer);
     function editItem(const id: Integer;
       const newItem: POperation): Boolean;
+
+    property eventOpersUpd: TEventManager read feventOpersUpd;
     property balance: int64 read fBalance;
   end;
 
-var
-  opers: TOperationsTable;
-
 implementation
-
-const
-  dataDName = 'data';
-  operFName = 'data/operations.godev';
 
 constructor TOperationListNode.create(const item:
   POperation);
@@ -136,13 +134,19 @@ begin
   node.destroy();
 end;
 
+constructor TOperationsTable.create();
+begin
+  inherited create();
+  fEventOpersUpd := TEventManager.create();
+end;
+
 constructor TOperationsTable.create(const filename:
   string);
 var
   f: File of TOperation;
   itemTmp: POperation;
 begin
-  inherited create();
+  create();
   self.fileName := filename;
   assignFile(f, self.fileName);
   if not fileExists(self.filename) then
@@ -194,6 +198,7 @@ begin
   else if item^.id > self.maxId then
     self.maxId := item^.id;
   fBalance := fBalance + item^.getDelta;
+  eventOpersUpd.notify();
 end;
 
 function TOperationsTable.getItem(const id: Integer):
@@ -245,6 +250,7 @@ begin
     fBalance := fBalance - node.item^.getDelta;
     removeNode(node);
     result := true;
+    eventOpersUpd.notify();
   end;
 end;
 
@@ -267,6 +273,7 @@ begin
     end
     else
       nodeCurr := nodeCurr.prev;
+  eventOpersUpd.notify();
 end;
 
 function TOperationsTable.editItem(const id: Integer;
@@ -299,14 +306,7 @@ begin
     end;
     result := true;
   end;
+  eventOpersUpd.notify();
 end;
-
-initialization
-  if not directoryExists(dataDName) then
-    createDir(dataDName);
-  opers := TOperationsTable.create(operFName);
-
-finalization
-  opers.destroy();
 
 end.

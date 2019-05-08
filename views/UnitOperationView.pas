@@ -1,4 +1,4 @@
-unit UnitTOperationView;
+unit UnitOperationView;
 
 interface
 
@@ -6,10 +6,10 @@ uses
   System.Classes,
   System.SysUtils,
   UnitMoneyUtils,
-  UnitTCategoriesTable,
-  UnitTCategory,
-  UnitTOperation,
-  UnitTOperationsTable,
+  UnitCategoriesTable,
+  UnitCategory,
+  UnitOperation,
+  UnitOperationsTable,
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.Forms,
@@ -32,22 +32,38 @@ type
     lblPennyAfter: TLabel;
     lblRublesAfter: TLabel;
     lblTp: TLabel;
+    constructor create(owner: TComponent;
+      const opers: TOperationsTable;
+      const catsIncome, catsOutcome: TCategoriesTable); overload;
     procedure actionCreate(Sender: TObject);
-    procedure actionInit(Sender: TObject);
     procedure actionMoneyChange(Sender: TObject);
     procedure actionSave(Sender: TObject);
+  private
+    cats: array[TOperationType] of TCategoriesTable;
+    catsCurr: TCategoriesTable;
+    opers: TOperationsTable;
+    procedure setCategories(const tp: TOperationType);
   public
     procedure prepareToCreate(const tp: TOperationType);
     procedure prepareToEdit(const id: Integer);
     procedure prepareToRepeat(const id: Integer);
-  private
-    catsCurr: TCategoriesTable;
-    procedure setCategories(const operTp: TOperationType);
   end;
 
 implementation
 
 {$R *.dfm}
+
+constructor TOperationView.create(owner: TComponent;
+      const opers: TOperationsTable;
+      const catsIncome, catsOutcome: TCategoriesTable);
+begin
+  inherited create(owner);
+  self.opers := opers;
+  cats[income] := catsIncome;
+  cats[outcome] := catsOutcome;
+
+  edtDescription.maxLength := OPER_DESC_LEN;
+end;
 
 procedure TOperationView.actionCreate(Sender: TObject);
 var
@@ -64,11 +80,6 @@ begin
     date := dtpDate.date;
   end;
   opers.addItem(operation);
-end;
-
-procedure TOperationView.actionInit(Sender: TObject);
-begin
-  edtDescription.maxLength := OPER_DESC_LEN;
 end;
 
 procedure TOperationView.actionMoneyChange(Sender:
@@ -170,20 +181,14 @@ begin
   dtpDate.maxDate := date();
 end;
 
-procedure TOperationView.setCategories(const operTp:
-  TOperationType);
+procedure TOperationView.setCategories(const tp: TOperationType);
 var
   i: Integer;
 begin
-  case operTp of
-    income:
-      catsCurr := catsIncome;
-    outcome:
-      catsCurr := catsOutcome;
-  end;
+  catsCurr := cats[tp];
   cbbCategory.clear;
-  for i := 0 to catsCurr.count - 1 do
-    cbbCategory.items.add(catsCurr.items[i]^.name);
+  for i := 0 to self.catsCurr.count - 1 do
+    cbbCategory.items.add(self.catsCurr.items[i]^.name);
 end;
 
 end.

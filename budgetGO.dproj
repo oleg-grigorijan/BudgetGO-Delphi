@@ -92,21 +92,24 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="models\UnitCategoriesTable.pas"/>
+        <DCCReference Include="models\UnitCategory.pas"/>
+        <DCCReference Include="models\UnitOperation.pas"/>
+        <DCCReference Include="models\UnitOperationsTable.pas"/>
+        <DCCReference Include="models\UnitCatsStatistics.pas"/>
+        <DCCReference Include="models\UnitOperationsStatistics.pas"/>
+        <DCCReference Include="components\UnitEvents.pas"/>
         <DCCReference Include="components\UnitMoneyUtils.pas"/>
-        <DCCReference Include="models\UnitTCategoriesTable.pas"/>
-        <DCCReference Include="models\UnitTCategory.pas"/>
-        <DCCReference Include="models\UnitTOperation.pas"/>
-        <DCCReference Include="models\UnitTOperationsTable.pas"/>
-        <DCCReference Include="views\UnitTCategoriesView.pas">
+        <DCCReference Include="views\UnitCategoriesView.pas">
             <Form>categoriesView</Form>
         </DCCReference>
-        <DCCReference Include="views\UnitTCategoryView.pas">
+        <DCCReference Include="views\UnitCategoryView.pas">
             <Form>categoryView</Form>
         </DCCReference>
-        <DCCReference Include="views\UnitTHomeView.pas">
+        <DCCReference Include="views\UnitHomeView.pas">
             <Form>homeView</Form>
         </DCCReference>
-        <DCCReference Include="views\UnitTOperationView.pas">
+        <DCCReference Include="views\UnitOperationView.pas">
             <Form>operationView</Form>
         </DCCReference>
         <RcItem Include="..\GoogleSans-Bold.ttf">

@@ -1,4 +1,4 @@
-unit UnitTCategoriesView;
+unit UnitCategoriesView;
 
 interface
 
@@ -6,11 +6,11 @@ uses
   System.Classes,
   System.SysUtils,
   UnitMoneyUtils,
-  UnitTCategoriesTable,
-  UnitTCategory,
-  UnitTCategoryView,
-  UnitTOperation,
-  UnitTOperationsTable,
+  UnitCategoriesTable,
+  UnitCategory,
+  UnitCategoryView,
+  UnitOperation,
+  UnitOperationsTable,
   Vcl.ComCtrls,
   Vcl.Controls,
   Vcl.ExtCtrls,
@@ -31,18 +31,22 @@ type
     pmCategory: TPopupMenu;
     shpNoCategoriesBG: TShape;
     tbcOperType: TTabControl;
+    constructor create(owner: TComponent;
+      const opers: TOperationsTable;
+      const catsIncome, catsOutcome: TCategoriesTable);
     procedure actionCategoryDelete(Sender: TObject);
     procedure actionCategorySelect(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState;
       X, Y: Integer);
     procedure actionCategoryView(Sender: TObject);
-    procedure actionInit(Sender: TObject);
     procedure actionOnTypeChange(Sender: TObject);
   private
     const
       INCOME_TAB = 0;
       OUTCOME_TAB = 1;
     var
+      opers: TOperationsTable;
+      cats: array[TOperationType] of TCategoriesTable;
       catsCurr: TCategoriesTable;
       selectedCatId: Integer;
   public
@@ -53,8 +57,19 @@ implementation
 
 {$R *.dfm}
 
-uses
-  UnitTHomeView;
+constructor TCategoriesView.create(owner: TComponent;
+  const opers: TOperationsTable;
+  const catsIncome, catsOutcome: TCategoriesTable);
+begin
+  inherited create(owner);
+  self.opers := opers;
+  cats[income] := catsIncome;
+  cats[outcome] := catsOutcome;
+
+  grdCategories.cells[1, 0] := 'Название';
+  actionOnTypeChange(self);
+  updateData();
+end;
 
 procedure TCategoriesView.actionCategoryDelete
   (Sender: TObject);
@@ -75,7 +90,6 @@ begin
       opers.removeItems(catsCurr.operTp, selectedCatId);
       catsCurr.removeItem(selectedCatId);
       updateData();
-      homeView.updateData();
     end;
   end;
 end;
@@ -120,7 +134,6 @@ begin
     if categoryView.modalResult = mrOk then
     begin
       updateData();
-      homeView.updateData();
       messageBox(handle, 'Категория успешно сохранена',
         PChar('Уведомление'), MB_OK + MB_ICONINFORMATION);
     end
@@ -134,13 +147,6 @@ begin
   categoryView.free;
 end;
 
-procedure TCategoriesView.actionInit(Sender: TObject);
-begin
-  grdCategories.cells[1, 0] := 'Название';
-  actionOnTypeChange(self);
-  updateData();
-end;
-
 procedure TCategoriesView.actionOnTypeChange
   (Sender: TObject);
 begin
@@ -149,13 +155,13 @@ begin
       begin
         btnCreate.caption := 'Новая категория дохода';
         grdCategories.cells[2, 0] := 'Минимально в месяц';
-        catsCurr := catsIncome;
+        catsCurr := cats[income];
       end;
     OUTCOME_TAB:
       begin
         btnCreate.caption := 'Новая категория расхода';
         grdCategories.cells[2, 0] := 'Максимально в месяц';
-        catsCurr := catsOutcome;
+        catsCurr := cats[outcome];
       end;
   end;
   updateData();

@@ -1,15 +1,17 @@
-﻿unit UnitTCategoriesTable;
+﻿unit UnitCategoriesTable;
 
 interface
 
 uses
-  UnitTCategory,
-  UnitTOperation,
+  UnitCategory,
+  UnitOperation,
+  UnitEvents,
   System.SysUtils;
 
 type
   TCategoriesTable = class
   private
+    fEventCatsUpd: TEventManager;
     fCount: Integer;
     fileName: string[255];
     fItems: TCategories;
@@ -17,32 +19,26 @@ type
     function checkNameUnique(const name: string): Boolean;
     function getItemByIndex(const i: Integer): PCategory;
   public
-    function getItemIndex(const id: Integer): Integer;
+    constructor create(const tp: TOperationType); overload;
     constructor create(const fileName: string;
       const tp: TOperationType); overload;
     destructor destroy(); override;
+    function getItemIndex(const id: Integer): Integer;
     function addItem(const item: PCategory): Boolean;
     function editItem(const id: Integer;
       const newItem: PCategory): Boolean;
     function getItem(const id: Integer): PCategory;
-    function getType(): TOperationType;
     function removeItem(const id: Integer): Boolean;
+
+    property eventCatsUpd: TEventManager
+      read fEventCatsUpd;
     property operTp: TOperationType read fOperTp;
     property items[const i: Integer]: PCategory
       read getItemByIndex;
     property count: Integer read fCount;
   end;
 
-var
-  catsIncome: TCategoriesTable;
-  catsOutcome: TCategoriesTable;
-
 implementation
-
-const
-  dataDName = 'data';
-  catIncomeFName = 'data/categories_i.godev';
-  catOutcomeFName = 'data/categories_o.godev';
 
 function TCategoriesTable.checkNameUnique(const name:
   string): Boolean;
@@ -81,13 +77,24 @@ begin
   end;
 end;
 
+constructor TCategoriesTable.create(const tp:
+  TOperationType);
+begin
+  inherited create();
+  fOperTp := tp;
+  case tp of
+    income: fEventCatsUpd := TEventManager.create();
+    outcome: fEventCatsUpd := TEventManager.create();
+  end;
+end;
+
 constructor TCategoriesTable.create(const fileName: string;
   const tp: TOperationType);
 var
   f: File of TCategory;
   itemTmp: PCategory;
 begin
-  inherited create();
+  create(tp);
   self.fileName := filename;
   assignFile(f, self.fileName);
   if not fileExists(self.filename) then
@@ -103,7 +110,6 @@ begin
     end;
   end;
   closeFile(f);
-  self.fOperTp := tp;
 end;
 
 destructor TCategoriesTable.destroy();
@@ -124,8 +130,6 @@ end;
 
 function TCategoriesTable.addItem(const item: PCategory):
   Boolean;
-var
-  i: Integer;
 begin
   result := checkNameUnique(item^.name);
   if result then
@@ -139,6 +143,7 @@ begin
     setLength(fItems, self.fCount);
     self.fItems[fCount - 1] := item;
   end;
+  eventCatsUpd.notify();
 end;
 
 function TCategoriesTable.editItem(const id: Integer;
@@ -157,6 +162,7 @@ begin
       fItems[i] := newItem;
       result := true;
     end;
+  eventCatsUpd.notify();
 end;
 
 function TCategoriesTable.getItem(const id: Integer):
@@ -176,11 +182,6 @@ begin
   result := self.fItems[i];
 end;
 
-function TCategoriesTable.getType(): TOperationType;
-begin
-  result := self.operTp;
-end;
-
 function TCategoriesTable.removeItem(const id: Integer):
   Boolean;
 var
@@ -196,19 +197,8 @@ begin
       self.fItems[j] := self.fItems[j + 1];
     setLength(fItems, self.fCount);
     result := true;
+    eventCatsUpd.notify();
   end;
 end;
-
-initialization
-  if not directoryExists(dataDName) then
-    createDir(dataDName);
-  catsIncome := TCategoriesTable.create(catIncomeFName,
-    income);
-  catsOutcome := TCategoriesTable.create(catOutcomeFName,
-    outcome);
-
-finalization
-  catsIncome.destroy();
-  catsOutcome.destroy();
 
 end.

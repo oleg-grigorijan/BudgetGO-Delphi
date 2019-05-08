@@ -15,7 +15,6 @@ object categoriesView: TcategoriesView
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
-  OnCreate = actionInit
   PixelsPerInch = 120
   TextHeight = 17
   object lblHeader: TLabel

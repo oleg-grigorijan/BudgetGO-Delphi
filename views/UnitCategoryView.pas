@@ -1,4 +1,4 @@
-unit UnitTCategoryView;
+unit UnitCategoryView;
 
 interface
 
@@ -6,9 +6,9 @@ uses
   System.Classes,
   System.SysUtils,
   UnitMoneyUtils,
-  UnitTCategoriesTable,
-  UnitTCategory,
-  UnitTOperation,
+  UnitCategoriesTable,
+  UnitCategory,
+  UnitOperation,
   Vcl.Controls,
   Vcl.Forms,
   Vcl.StdCtrls;
@@ -142,8 +142,6 @@ procedure TCategoryView.prepareToEdit(
   const catsTable: TCategoriesTable;
   const id: Integer
 );
-var
-  item: PCategory;
 begin
   self.catsTable := catsTable;
   btnSave.visible := true;
