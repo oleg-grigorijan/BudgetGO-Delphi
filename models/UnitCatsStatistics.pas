@@ -89,7 +89,8 @@ begin
           if fMoney[i] < cats.items[i]^.moneyMonth then
             fStatus := csFail;
         outcome:
-          if fMoney[i] > cats.items[i]^.moneyMonth then
+          if (cats.items[i]^.moneyMonth <> 0) and
+            (fMoney[i] > cats.items[i]^.moneyMonth) then
             fStatus := csFail;
       end;
   end;
