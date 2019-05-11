@@ -46,7 +46,6 @@ type
     lblCatsIncomeStatus: TLabel;
     lblCatsOutcomeBefore: TLabel;
     lblCatsOutcomeStatus: TLabel;
-    lblHeader: TLabel;
     lblIncome: TLabel;
     lblIncomeBefore: TLabel;
     lblNewOperationBefore: TLabel;
@@ -73,6 +72,7 @@ type
     lblBalance: TLabel;
     btnCreateIncome: TButton;
     btnCreateOutcome: TButton;
+    imgLogo: TImage;
     procedure actionCategoriesView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
@@ -312,7 +312,7 @@ begin
   if not self.vertScrollBar.isScrollBarVisible then
     center := center - getSystemMetrics(SM_CXVSCROLL);
   center := center div 2;
-  lblHeader.left := center - lblHeader.width div 2;
+  imgLogo.left := center - imgLogo.width div 2;
   pnlContent.left := center - pnlContent.width div 2;
   pnlMainTools.left := pnlContent.left;
 end;

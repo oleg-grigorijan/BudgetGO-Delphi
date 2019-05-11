@@ -52,9 +52,6 @@ Coordinates=793,56,89,36
 [miRepeat]
 Coordinates=793,111,69,36
 
-[lblHeader]
-Coordinates=511,10,70,58
-
 [grdOperations]
 Coordinates=160,144,96,58
 
@@ -110,7 +107,7 @@ Coordinates=122,212,94,58
 Coordinates=266,144,84,58
 
 []
-Coordinates=164,348,117,58
+Coordinates=511,10,70,58
 Visible=True
 
 [imgBG]
