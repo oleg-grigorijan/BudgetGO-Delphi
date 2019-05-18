@@ -3,30 +3,13 @@ unit UnitHomeView;
 interface
 
 uses
-  DateUtils,
-  System.Classes,
-  System.SysUtils,
-  UnitMoneyUtils,
-  UnitEvents,
-  UnitCatsStatistics,
-  UnitCategoriesTable,
-  UnitCategory,
-  UnitCategoriesView,
-  UnitOperation,
-  UnitOperationsTable,
-  UnitOperationView,
-  UnitOperationsStatistics,
-  Vcl.Controls,
-  Vcl.ExtCtrls,
-  Vcl.Forms,
-  Vcl.Grids,
-  Vcl.Imaging.pngimage,
-  Vcl.Menus,
-  Vcl.StdCtrls,
-  Vcl.ComCtrls,
-  Vcl.Imaging.jpeg,
-  Vcl.Buttons,
-  Winapi.Windows;
+  DateUtils, System.Classes, System.SysUtils,
+  UnitMoneyUtils, UnitEvents, UnitCategoriesStatistics,
+  UnitCategoriesTable, UnitCategory, UnitCategoriesView,
+  UnitOperation, UnitOperationsTable, UnitOperationView,
+  UnitOperationsStatistics, Vcl.Controls, Vcl.ExtCtrls,
+  Vcl.Forms, Vcl.Grids, Vcl.Menus, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Winapi.Windows;
 
 type
   THomeView = class(TForm, ISubscriber)
@@ -78,41 +61,45 @@ type
     procedure actionOperationDelete(Sender: TObject);
     procedure actionOperationSelect(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState;
-      X, Y: Integer);
+      X, Y: integer);
     procedure actionOperationView(Sender: TObject);
-    procedure actionResize(Sender: TObject; var newWidth,
-      newHeight: Integer; var resize: Boolean);
+    procedure actionResize(Sender: TObject;
+      var newWidth, newHeight: integer;
+      var resize: boolean);
     procedure actionScroll(Sender: TObject;
-      Shift: TShiftState; WheelDelta: Integer;
-      MousePos: TPoint; var Handled: Boolean);
+      Shift: TShiftState; WheelDelta: integer;
+      MousePos: TPoint; var Handled: boolean);
     procedure actionMonthUpdate(Sender: TObject);
     procedure actionYearUpdate(Sender: TObject);
   private
-    lblCatsStatus: array[TOperationType] of TLabel;
-    imgIcons: array[TCatsStatus] of TImage;
-    imgCatsStatus: array[TOperationType] of TImage;
-    grdCats: array[TOperationType] of TStringGrid;
-    btnCreateOper: array[TOperationType] of TButton;
-    selectedOperId: Integer;
+    lblCatsStatus: array [TOperationType] of TLabel;
+    imgIcons: array [TCatsStatus] of TImage;
+    imgCatsStatus: array [TOperationType] of TImage;
+    grdCats: array [TOperationType] of TStringGrid;
+    btnCreateOper: array [TOperationType] of TButton;
+    selectedOperId: integer;
     // Models
     opers: TOperationsTable;
-    cats: array[TOperationType] of TCategoriesTable;
+    cats: array [TOperationType] of TCategoriesTable;
     opersStats: TOperationsStatistics;
-    catsStats: array[TOperationType] of TCatsStatistics;
-    const
-      currencyStr = ' руб.';
-    procedure updCategoriesStatus(const tp: TOperationType);
-    procedure updCategoriesGrid(const tp: TOperationtype);
+    catsStats: array [TOperationType]
+      of TCategoriesStatistics;
+
+  const
+    currencyStr = ' руб.';
+    procedure updCategoriesStatus(const tp
+      : TOperationType);
+    procedure updCategoriesGrid(const tp: TOperationType);
     procedure updOperationsGrid();
     procedure updIncomeOutcome();
     procedure updBtnCreateOper(const tp: TOperationType);
     procedure updBalance();
     procedure setGridHeight(const grid: TStringGrid);
   public
-    procedure onEvent(const sender: TObject);
-    procedure setModels( const opersStats: TOperationsStatistics;
-      const catsStatsIncome, catsStatsOutcome: TCatsStatistics);
-
+    procedure onEvent(const Sender: TObject);
+    procedure setModels(const opersStats
+      : TOperationsStatistics; const catsStatsIncome,
+      catsStatsOutcome: TCategoriesStatistics);
   end;
 
 var
@@ -123,20 +110,22 @@ implementation
 {$R *.dfm}
 
 var
-  catsStatusCaption: array[TOperationType] of array[TCatsStatus] of string;
+  catsStatusCaption: array [TOperationType] of array
+    [TCatsStatus] of string;
 
 procedure THomeView.actionCategoriesView(Sender: TObject);
 var
   categoriesView: TCategoriesView;
 begin
-  categoriesView := TCategoriesView.create(self, opers, cats[income], cats[outcome]);
+  categoriesView := TCategoriesView.create(self, opers,
+    cats[income], cats[outcome]);
   categoriesView.showModal;
   categoriesView.free;
 end;
 
 procedure THomeView.actionInit(Sender: TObject);
 var
-  i: Integer;
+  i: integer;
   noHighlight: TGridRect;
 begin
   clientWidth := pnlContent.width;
@@ -187,11 +176,10 @@ begin
   btnCreateOper[outcome] := btnCreateOutcome;
 end;
 
-procedure THomeView.setModels( const opersStats: TOperationsStatistics;
-  const catsStatsIncome, catsStatsOutcome: TCatsStatistics);
+procedure THomeView.setModels(const opersStats
+  : TOperationsStatistics; const catsStatsIncome,
+  catsStatsOutcome: TCategoriesStatistics);
 begin
-
-
   self.opersStats := opersStats;
   opersStats.eventOpersCurrUpd.follow(self);
 
@@ -224,13 +212,13 @@ end;
 
 procedure THomeView.actionOperationDelete(Sender: TObject);
 var
-  answer: Integer;
+  answer: integer;
 begin
   if selectedOperId <> 0 then
   begin
     answer := MessageBox(handle,
       'Вы действительно хотите удалить операцию?' + #13#10
-       + 'Удалённые данные будет невозможно восстановить.',
+      + 'Удалённые данные будет невозможно восстановить.',
       'Уведомление', MB_YESNO + MB_ICONQUESTION +
       MB_DEFBUTTON2);
     if answer = IDYES then
@@ -238,14 +226,10 @@ begin
   end;
 end;
 
-procedure THomeView.actionOperationSelect(
-  Sender: TObject;
-  Button: TMouseButton;
-  Shift: TShiftState;
-  X, Y: Integer
-);
+procedure THomeView.actionOperationSelect(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 var
-  col, row: Integer;
+  col, row: integer;
 begin
   grdOperations.mouseToCell(X, Y, col, row);
   grdOperations.col := col;
@@ -257,7 +241,8 @@ begin
       grdOperations.row := 1
     else
       grdOperations.row := row;
-    selectedOperId := opersStats.opersCurr[grdOperations.row - 1]^.id;
+    selectedOperId := opersStats.opersCurr
+      [grdOperations.row - 1]^.id;
   end;
 end;
 
@@ -265,48 +250,33 @@ procedure THomeView.actionOperationView(Sender: TObject);
 var
   operationView: TOperationView;
 begin
-  operationView := TOperationView.create(self, opers, cats[income], cats[outcome]);
+  operationView := TOperationView.create(self, opers,
+    cats[income], cats[outcome]);
   if Sender = btnCreateIncome then
     operationView.prepareToCreate(income)
   else if Sender = btnCreateOutcome then
     operationView.prepareToCreate(outcome)
-  else if (Sender = miEdit) or
-    (Sender = grdOperations) then
+  else if (Sender = miEdit) or (Sender = grdOperations)
+  then
     operationView.prepareToEdit(selectedOperId)
   else if Sender = miRepeat then
     operationView.prepareToRepeat(selectedOperId);
-//  if (Sender = imgCreateIncomeOff) or
-//    (Sender = imgCreateOutcomeOff) then
-//  begin
-//    messageBox(Handle,
-//      'Чтобы создавать операции данного типа,' + #13#10 +
-//      'сначала создайте категории', 'Уведомление',
-//      MB_OK + MB_ICONWARNING);
-//    actionCategoriesView(Sender);
-//  end
-//  else
   if operationView.showModal = mrOk then
-    messageBox(handle,
-      'Операция успешно сохранена', PChar('Уведомление'),
-      MB_OK + MB_ICONINFORMATION);
+    MessageBox(handle, 'Операция успешно сохранена',
+      PChar('Уведомление'), MB_OK + MB_ICONINFORMATION);
   operationView.free;
 end;
 
-procedure THomeView.actionResize(
-  Sender: TObject;
-  var newWidth, newHeight: Integer;
-  var resize: Boolean
-);
+procedure THomeView.actionResize(Sender: TObject;
+  var newWidth, newHeight: integer; var resize: boolean);
 var
-  center: Integer;
+  center: integer;
 begin
   if newWidth < pnlContent.width + self.width -
-    self.clientWidth +
-    getSystemMetrics(SM_CXVSCROLL) then
+    self.clientWidth + getSystemMetrics(SM_CXVSCROLL) then
   begin
     newWidth := pnlContent.width + self.width -
-      self.clientWidth +
-      getSystemMetrics(SM_CXVSCROLL);
+      self.clientWidth + getSystemMetrics(SM_CXVSCROLL);
   end;
   center := self.clientWidth;
   if not self.vertScrollBar.isScrollBarVisible then
@@ -317,16 +287,12 @@ begin
   pnlMainTools.left := pnlContent.left;
 end;
 
-procedure THomeView.actionScroll(
-  Sender: TObject;
-  Shift: TShiftState;
-  WheelDelta: Integer;
-  MousePos: TPoint;
-  var Handled: Boolean
-);
+procedure THomeView.actionScroll(Sender: TObject;
+  Shift: TShiftState; WheelDelta: integer;
+  MousePos: TPoint; var Handled: boolean);
 begin
-  self.VertScrollBar.Position :=
-    self.VertScrollBar.Position - WheelDelta;
+  self.vertScrollBar.Position :=
+    self.vertScrollBar.Position - WheelDelta;
 end;
 
 procedure THomeView.actionMonthUpdate(Sender: TObject);
@@ -342,14 +308,14 @@ end;
 procedure THomeView.setGridHeight(const grid: TStringGrid);
 begin
   with grid do
-    height := defaultRowHeight*rowCount +
-      gridLineWidth*(rowCount + 4);
+    height := defaultRowHeight * rowCount + gridLineWidth *
+      (rowCount + 4);
 end;
 
-procedure THomeView.updCategoriesGrid(
-  const tp: TOperationType);
+procedure THomeView.updCategoriesGrid
+  (const tp: TOperationType);
 var
-  i: Integer;
+  i: integer;
 begin
   with grdCats[tp], cats[tp] do
   begin
@@ -357,7 +323,8 @@ begin
     for i := 0 to count - 1 do
     begin
       cells[0, i + 1] := items[i]^.name;
-      cells[1, i + 1] := moneyToStr(catsStats[tp].money[i]);
+      cells[1, i + 1] :=
+        moneyToStr(catsStats[tp].money[i]);
       if items[i]^.moneyMonth <> 0 then
         cells[1, i + 1] := cells[1, i + 1] + ' / ' +
           moneyToStr(items[i]^.moneyMonth);
@@ -370,9 +337,10 @@ end;
 
 procedure THomeView.updOperationsGrid();
 var
-  i: Integer;
+  i: integer;
 begin
-  grdOperations.visible := length(opersStats.opersCurr) <> 0;
+  grdOperations.visible :=
+    length(opersStats.opersCurr) <> 0;
   lblNoOperations.visible := not grdOperations.visible;
 
   if length(opersStats.opersCurr) <> 0 then
@@ -382,38 +350,41 @@ begin
       setGridHeight(grdOperations);
       for i := 1 to length(opersStats.opersCurr) do
       begin
-        cells[0, i] := intToStr(i);
+        cells[0, i] := IntToStr(i);
         with opersStats.opersCurr[i - 1]^ do
         begin
           cells[3, i] := cats[tp].getItem(catId)^.name;
           case tp of
-            income:
-              cells[1, i] := 'Доход';
-            outcome:
-              cells[1, i] := 'Расход';
+          income:
+            cells[1, i] := 'Доход';
+          outcome:
+            cells[1, i] := 'Расход';
           end;
           cells[2, i] := moneyToStr(money) + currencyStr;
-          cells[4, i] := intToStr(dayOfTheMonth(date));
+          cells[4, i] := IntToStr(dayOfTheMonth(date));
           cells[5, i] := description;
         end;
       end;
     end;
 end;
 
-procedure THomeView.updCategoriesStatus(const tp: TOperationType);
+procedure THomeView.updCategoriesStatus
+  (const tp: TOperationType);
 begin
-  lblCatsStatus[tp].caption := catsStatusCaption[tp][catsStats[tp].status];
-  imgCatsStatus[tp].picture := imgIcons[catsStats[tp].status].picture;
+  lblCatsStatus[tp].caption := catsStatusCaption[tp]
+    [catsStats[tp].status];
+  imgCatsStatus[tp].picture :=
+    imgIcons[catsStats[tp].status].picture;
 end;
 
 procedure THomeView.updIncomeOutcome();
 begin
   with opersStats do
   begin
-    lblIncome.caption := moneyToStr(incomeMonth)
-      + currencyStr;
-    lblOutcome.caption := moneyToStr(outcomeMonth)
-      + currencyStr;
+    lblIncome.caption := moneyToStr(incomeMonth) +
+      currencyStr;
+    lblOutcome.caption := moneyToStr(outcomeMonth) +
+      currencyStr;
     if incomeMonth + outcomeMonth = 0 then
       shpIncome.width := 0
     else
@@ -422,45 +393,51 @@ begin
   end;
 end;
 
-procedure THomeView.updBtnCreateOper(const tp: TOperationType);
+procedure THomeView.updBtnCreateOper(const tp
+  : TOperationType);
 begin
-  btnCreateOper[tp].enabled := catsStats[tp].status <> csEmpty;
+  btnCreateOper[tp].enabled := catsStats[tp].status
+    <> csEmpty;
 end;
 
 procedure THomeView.updBalance();
 begin
-  lblBalance.caption := moneyToStr(opers.balance) + currencyStr
+  lblBalance.caption := moneyToStr(opers.balance) +
+    currencyStr
 end;
 
-procedure THomeView.onEvent(const sender: TObject);
+procedure THomeView.onEvent(const Sender: TObject);
 begin
-  if sender = opers.eventOpersUpd then
+  if Sender = opers.EventOpersUpd then
     updBalance()
-  else if sender = cats[income].eventCatsUpd then
+  else if Sender = cats[income].eventCatsUpd then
   begin
     updCategoriesGrid(income);
     updOperationsGrid();
   end
-  else if sender = cats[outcome].eventCatsUpd then
+  else if Sender = cats[outcome].eventCatsUpd then
   begin
     updCategoriesGrid(outcome);
     updOperationsGrid();
   end
-  else  if sender = opersStats.eventOpersCurrUpd then
+  else if Sender = opersStats.eventOpersCurrUpd then
   begin
     updIncomeOutcome();
     updOperationsGrid();
   end
-  else if sender = catsStats[income].eventCatsMoneyUpd then
+  else if Sender = catsStats[income].eventCatsMoneyUpd then
     updCategoriesGrid(income)
-  else if sender = catsStats[income].eventCatsStatusUpd then
+  else if Sender = catsStats[income].eventCatsStatusUpd
+  then
   begin
     updCategoriesStatus(income);
     updBtnCreateOper(income);
   end
-  else if sender = catsStats[outcome].eventCatsMoneyUpd then
+  else if Sender = catsStats[outcome].eventCatsMoneyUpd
+  then
     updCategoriesGrid(outcome)
-  else if sender = catsStats[outcome].eventCatsStatusUpd then
+  else if Sender = catsStats[outcome].eventCatsStatusUpd
+  then
   begin
     updCategoriesStatus(outcome);
     updBtnCreateOper(outcome);
@@ -470,24 +447,25 @@ begin
 end;
 
 initialization
-  catsStatusCaption[income][csEmpty] :=
-    'Для полноценного использования' + #13#10 +
-    'программы создайте категории доходов';
-  catsStatusCaption[income][csSuccess] :=
-    'Вы достигли желаемых доходов' + #13#10 +
-    'по всем категориям в этом месяце';;
-  catsStatusCaption[income][csFail] :=
-    'Вы не достигли желаемых доходов' + #13#10 +
-    'по некоторым категориям в этом месяце';
 
-  catsStatusCaption[outcome][csEmpty] :=
-    'Для полноценного использования' + #13#10 +
-    'программы создайте категории расходов';
-  catsStatusCaption[outcome][csSuccess] :=
-    'Вы не превысили запланированные' + #13#10 +
-    'расходы по категориям в этом месяце';
-  catsStatusCaption[outcome][csFail] :=
-    'Вы превысили запланированные расходы' + #13#10 +
-    'по некоторым категориям в этом месяце';
+catsStatusCaption[income][csEmpty] :=
+  'Для полноценного использования' + #13#10 +
+  'программы создайте категории доходов';
+catsStatusCaption[income][csSuccess] :=
+  'Вы достигли желаемых доходов' + #13#10 +
+  'по всем категориям в этом месяце';;
+catsStatusCaption[income][csFail] :=
+  'Вы не достигли желаемых доходов' + #13#10 +
+  'по некоторым категориям в этом месяце';
+
+catsStatusCaption[outcome][csEmpty] :=
+  'Для полноценного использования' + #13#10 +
+  'программы создайте категории расходов';
+catsStatusCaption[outcome][csSuccess] :=
+  'Вы не превысили запланированные' + #13#10 +
+  'расходы по категориям в этом месяце';
+catsStatusCaption[outcome][csFail] :=
+  'Вы превысили запланированные расходы' + #13#10 +
+  'по некоторым категориям в этом месяце';
 
 end.

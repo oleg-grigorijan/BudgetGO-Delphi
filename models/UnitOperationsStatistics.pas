@@ -3,9 +3,7 @@ unit UnitOperationsStatistics;
 interface
 
 uses
-  UnitOperation,
-  UnitOperationsTable,
-  UnitEvents,
+  UnitOperation, UnitOperationsTable, UnitEvents,
   System.SysUtils;
 
 type
@@ -43,8 +41,8 @@ type
 
 implementation
 
-constructor TOperationsStatistics.create(const opers:
-  TOperationsTable; const month, year: integer);
+constructor TOperationsStatistics.create(const opers
+  : TOperationsTable; const month, year: integer);
 begin
   inherited create();
   self.opers := opers;
@@ -57,22 +55,22 @@ begin
   setOpersCurr(opers.getItems(monthCurr, yearCurr));
 end;
 
-procedure TOperationsStatistics.setYearCurr(const year:
-  integer);
+procedure TOperationsStatistics.setYearCurr(const year
+  : integer);
 begin
   fYearCurr := year;
   setOpersCurr(opers.getItems(monthCurr, yearCurr));
 end;
 
-procedure TOperationsStatistics.setMonthCurr(const month:
-  integer);
+procedure TOperationsStatistics.setMonthCurr(const month
+  : integer);
 begin
   fMonthCurr := month;
   setOpersCurr(opers.getItems(monthCurr, yearCurr));
 end;
 
-procedure TOperationsStatistics.setOpersCurr(const opCurr:
-  TOperations);
+procedure TOperationsStatistics.setOpersCurr(const opCurr
+  : TOperations);
 begin
   fOpersCurr := opCurr;
   recountIncomeOutcome();
@@ -88,13 +86,15 @@ begin
   for i := 0 to length(fOpersCurr) - 1 do
     with fOpersCurr[i]^ do
       case tp of
-        income: fIncomeMonth := fIncomeMonth + money;
-        outcome: fOutcomeMonth := fOutcomeMonth + money;
+      income:
+        fIncomeMonth := fIncomeMonth + money;
+      outcome:
+        fOutcomeMonth := fOutcomeMonth + money;
       end;
 end;
 
-procedure TOperationsStatistics.onEvent(const sender:
-  TObject);
+procedure TOperationsStatistics.onEvent(const sender
+  : TObject);
 begin
   if sender = opers.eventOpersUpd then
     setOpersCurr(opers.getItems(monthCurr, yearCurr))

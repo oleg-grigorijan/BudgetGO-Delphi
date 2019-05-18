@@ -7,7 +7,7 @@ uses
   UnitCategory in 'models\UnitCategory.pas',
   UnitOperation in 'models\UnitOperation.pas',
   UnitOperationsTable in 'models\UnitOperationsTable.pas',
-  UnitCatsStatistics in 'models\UnitCatsStatistics.pas',
+  UnitCategoriesStatistics in 'models\UnitCategoriesStatistics.pas',
   UnitOperationsStatistics in 'models\UnitOperationsStatistics.pas',
   UnitEvents in 'components\UnitEvents.pas',
   UnitMoneyUtils in 'components\UnitMoneyUtils.pas',
@@ -25,9 +25,9 @@ var
   opers: TOperationsTable;
   opersStats: TOperationsStatistics;
   catsIncome: TCategoriesTable;
-  catsIncomeStats: TCatsStatistics;
+  catsIncomeStats: TCategoriesStatistics;
   catsOutcome: TCategoriesTable;
-  catsOutcomeStats: TCatsStatistics;
+  catsOutcomeStats: TCategoriesStatistics;
 
 const
   dataDName = 'data';
@@ -40,20 +40,24 @@ begin
     createDir(dataDName);
 
   opers := TOperationsTable.create(operFName);
-  opersStats := TOperationsStatistics.create(opers, monthOfTheYear(date), yearOf(date));
+  opersStats := TOperationsStatistics.create(opers,
+    monthOfTheYear(date), yearOf(date));
 
   catsIncome := TCategoriesTable.create
     (catIncomeFName, income);
-  catsIncomeStats := TCatsStatistics.create(catsIncome, opersStats);
+  catsIncomeStats := TCategoriesStatistics.create
+    (catsIncome, opersStats);
 
   catsOutcome := TCategoriesTable.create
     (catOutcomeFName, outcome);
-  catsOutcomeStats := TCatsStatistics.create(catsOutcome, opersStats);
+  catsOutcomeStats := TCategoriesStatistics.create
+    (catsOutcome, opersStats);
 
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(ThomeView, homeView);
-  homeView.setModels(opersStats, catsincomeStats, catsOutcomeStats);
+  homeView.setModels(opersStats, catsincomeStats,
+    catsOutcomeStats);
   Application.Run;
 
   opers.free();

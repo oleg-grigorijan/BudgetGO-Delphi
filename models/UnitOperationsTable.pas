@@ -3,10 +3,7 @@ unit UnitOperationsTable;
 interface
 
 uses
-  System.SysUtils,
-  DateUtils,
-  UnitEvents,
-  UnitOperation;
+  System.SysUtils, DateUtils, UnitEvents, UnitOperation;
 
 type
   TOperationListNode = class
@@ -22,43 +19,44 @@ type
   private
     fEventOpersUpd: TEventManager;
     fBalance: int64;
-    fileName: string[255];
+    fileName: string;
     head: TOperationListNode;
     last: TOperationListNode;
-    maxId: Integer;
-    function getNodeById(const id: Integer):
-      TOperationListNode;
+    maxId: integer;
+    function getNodeById(const id: integer)
+      : TOperationListNode;
     procedure insertNode(const node: TOperationListNode);
     procedure removeNode(const node: TOperationListNode);
   public
     constructor create(); overload;
-    constructor create(const filename: string); overload;
+    constructor create(const fileName: string); overload;
     destructor destroy(); override;
     procedure addItem(const item: POperation);
-    function getItem(const id: Integer): POperation;
-    function getItems(const month, year: Integer):
-      TOperations;
-    function removeItem(const id: Integer): Boolean;
+    function getItem(const id: integer): POperation;
+    function getItems(const month, year: integer)
+      : TOperations;
+    procedure removeItem(const id: integer);
     procedure removeItems(const tp: TOperationType;
-      const catId: Integer);
-    function editItem(const id: Integer;
-      const newItem: POperation): Boolean;
+      const catId: integer);
+    procedure editItem(const id: integer;
+      const newItem: POperation);
 
-    property eventOpersUpd: TEventManager read feventOpersUpd;
+    property eventOpersUpd: TEventManager
+      read fEventOpersUpd;
     property balance: int64 read fBalance;
   end;
 
 implementation
 
-constructor TOperationListNode.create(const item:
-  POperation);
+constructor TOperationListNode.create(const item
+  : POperation);
 begin
   inherited create();
   self.item := item;
 end;
 
-function TOperationsTable.getNodeById(const id: Integer):
-  TOperationListNode;
+function TOperationsTable.getNodeById(const id: integer)
+  : TOperationListNode;
 var
   nodeCurr: TOperationListNode;
 begin
@@ -73,10 +71,11 @@ begin
     end;
     nodeCurr := nodeCurr.prev;
   end;
+  // todo: прописать обработчик
 end;
 
-procedure TOperationsTable.insertNode(const node:
-  TOperationListNode);
+procedure TOperationsTable.insertNode(const node
+  : TOperationListNode);
 var
   nodeCurr: TOperationListNode;
 begin
@@ -111,8 +110,8 @@ begin
   end;
 end;
 
-procedure TOperationsTable.removeNode(const node:
-  TOperationListNode);
+procedure TOperationsTable.removeNode(const node
+  : TOperationListNode);
 begin
   if node.prev <> nil then
   begin
@@ -140,16 +139,16 @@ begin
   fEventOpersUpd := TEventManager.create();
 end;
 
-constructor TOperationsTable.create(const filename:
-  string);
+constructor TOperationsTable.create(const fileName
+  : string);
 var
   f: File of TOperation;
   itemTmp: POperation;
 begin
   create();
-  self.fileName := filename;
+  self.fileName := fileName;
   assignFile(f, self.fileName);
-  if not fileExists(self.filename) then
+  if not fileExists(self.fileName) then
     rewrite(f)
   else
   begin
@@ -201,8 +200,8 @@ begin
   eventOpersUpd.notify();
 end;
 
-function TOperationsTable.getItem(const id: Integer):
-  POperation;
+function TOperationsTable.getItem(const id: integer)
+  : POperation;
 var
   node: TOperationListNode;
 begin
@@ -212,11 +211,11 @@ begin
     result := node.item;
 end;
 
-function TOperationsTable.getItems(const month, year:
-  Integer): TOperations;
+function TOperationsTable.getItems(const month,
+  year: integer): TOperations;
 var
   nodeCurr: TOperationListNode;
-  found: Integer;
+  found: integer;
 begin
   found := 0;
   setLength(result, found);
@@ -238,26 +237,22 @@ begin
   end;
 end;
 
-function TOperationsTable.removeItem(const id: Integer):
-  Boolean;
+procedure TOperationsTable.removeItem(const id: integer);
 var
   node: TOperationListNode;
 begin
-  result := false;
   node := getNodeById(id);
   if node <> nil then
   begin
     fBalance := fBalance - node.item^.getDelta;
     removeNode(node);
-    result := true;
     eventOpersUpd.notify();
   end;
+  // todo: прописать исключение
 end;
 
-procedure TOperationsTable.removeItems(
-  const tp: TOperationType;
-  const catId: Integer
-);
+procedure TOperationsTable.removeItems
+  (const tp: TOperationType; const catId: integer);
 var
   nodeCurr, nodeTmp: TOperationListNode;
 begin
@@ -276,13 +271,12 @@ begin
   eventOpersUpd.notify();
 end;
 
-function TOperationsTable.editItem(const id: Integer;
-  const newItem: POperation): Boolean;
+procedure TOperationsTable.editItem(const id: integer;
+  const newItem: POperation);
 var
   oldItem: POperation;
   node: TOperationListNode;
 begin
-  result := false;
   node := getNodeById(id);
   if node <> nil then
   begin
@@ -290,10 +284,10 @@ begin
     newItem^.id := oldItem^.id;
     fBalance := fBalance - oldItem^.getDelta +
       newItem^.getDelta;
-    if ((node.prev = nil) or
-      (node.prev.item^.date <= newItem^.date)) and
-      ((node.next = nil) or
-      (node.next.item^.date >= newItem^.date)) then
+    if ((node.prev = nil) or (node.prev.item^.date <=
+      newItem^.date)) and
+      ((node.next = nil) or (node.next.item^.date >=
+      newItem^.date)) then
     begin
       node.item := newItem;
       dispose(oldItem);
@@ -304,7 +298,6 @@ begin
       node := TOperationListNode.create(newItem);
       insertNode(node);
     end;
-    result := true;
   end;
   eventOpersUpd.notify();
 end;

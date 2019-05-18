@@ -3,17 +3,10 @@ unit UnitOperationView;
 interface
 
 uses
-  System.Classes,
-  System.SysUtils,
-  UnitMoneyUtils,
-  UnitCategoriesTable,
-  UnitCategory,
-  UnitOperation,
-  UnitOperationsTable,
-  Vcl.ComCtrls,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.StdCtrls;
+  System.Classes, System.SysUtils, UnitMoneyUtils,
+  UnitCategoriesTable, UnitCategory, UnitOperation,
+  UnitOperationsTable, Vcl.ComCtrls, Vcl.Controls,
+  Vcl.Forms, Vcl.StdCtrls;
 
 type
   TOperationView = class(TForm)
@@ -34,19 +27,20 @@ type
     lblTp: TLabel;
     constructor create(owner: TComponent;
       const opers: TOperationsTable;
-      const catsIncome, catsOutcome: TCategoriesTable); overload;
+      const catsIncome, catsOutcome
+      : TCategoriesTable); overload;
     procedure actionCreate(Sender: TObject);
     procedure actionMoneyChange(Sender: TObject);
     procedure actionSave(Sender: TObject);
   private
-    cats: array[TOperationType] of TCategoriesTable;
+    cats: array [TOperationType] of TCategoriesTable;
     catsCurr: TCategoriesTable;
     opers: TOperationsTable;
     procedure setCategories(const tp: TOperationType);
   public
     procedure prepareToCreate(const tp: TOperationType);
-    procedure prepareToEdit(const id: Integer);
-    procedure prepareToRepeat(const id: Integer);
+    procedure prepareToEdit(const id: integer);
+    procedure prepareToRepeat(const id: integer);
   end;
 
 implementation
@@ -54,8 +48,8 @@ implementation
 {$R *.dfm}
 
 constructor TOperationView.create(owner: TComponent;
-      const opers: TOperationsTable;
-      const catsIncome, catsOutcome: TCategoriesTable);
+  const opers: TOperationsTable;
+  const catsIncome, catsOutcome: TCategoriesTable);
 begin
   inherited create(owner);
   self.opers := opers;
@@ -82,8 +76,8 @@ begin
   opers.addItem(operation);
 end;
 
-procedure TOperationView.actionMoneyChange(Sender:
-  TObject);
+procedure TOperationView.actionMoneyChange
+  (Sender: TObject);
 begin
   if strToMoney(edtRubles.text, edtPenny.text) = 0 then
   begin
@@ -113,14 +107,16 @@ begin
   opers.editItem(btnSave.tag, newItem);
 end;
 
-procedure TOperationView.prepareToCreate(const tp:
-  TOperationType);
+procedure TOperationView.prepareToCreate
+  (const tp: TOperationType);
 begin
   btnSave.visible := false;
   btnCreate.visible := true;
   case tp of
-    income: lblTp.caption := 'Новый доход';
-    outcome: lblTp.caption := 'Новый расход';
+  income:
+    lblTp.caption := 'Новый доход';
+  outcome:
+    lblTp.caption := 'Новый расход';
   end;
   edtRubles.text := '0';
   edtPenny.text := '0';
@@ -131,7 +127,7 @@ begin
   dtpDate.maxDate := date();
 end;
 
-procedure TOperationView.prepareToEdit(const id: Integer);
+procedure TOperationView.prepareToEdit(const id: integer);
 var
   item: POperation;
 begin
@@ -142,10 +138,10 @@ begin
   begin
     btnSave.tag := id;
     case tp of
-      income:
-        lblTp.caption := 'Редактирование дохода';
-      outcome:
-        lblTp.caption := 'Редактирование расхода';
+    income:
+      lblTp.caption := 'Редактирование дохода';
+    outcome:
+      lblTp.caption := 'Редактирование расхода';
     end;
     edtRubles.text := intToStr(money div 100);
     edtPenny.text := intToStr(money mod 100);
@@ -157,8 +153,8 @@ begin
   dtpDate.maxDate := date();
 end;
 
-procedure TOperationView.prepareToRepeat(const id:
-  Integer);
+procedure TOperationView.prepareToRepeat
+  (const id: integer);
 var
   item: POperation;
 begin
@@ -168,8 +164,10 @@ begin
   with item^ do
   begin
     case tp of
-      income: lblTp.caption := 'Новый доход';
-      outcome: lblTp.caption := 'Новый расход';
+    income:
+      lblTp.caption := 'Новый доход';
+    outcome:
+      lblTp.caption := 'Новый расход';
     end;
     setCategories(tp);
     cbbCategory.itemIndex := catsCurr.getItemIndex(catId);
@@ -181,9 +179,10 @@ begin
   dtpDate.maxDate := date();
 end;
 
-procedure TOperationView.setCategories(const tp: TOperationType);
+procedure TOperationView.setCategories
+  (const tp: TOperationType);
 var
-  i: Integer;
+  i: integer;
 begin
   catsCurr := cats[tp];
   cbbCategory.clear;

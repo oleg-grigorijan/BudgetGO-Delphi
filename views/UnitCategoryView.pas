@@ -3,15 +3,9 @@ unit UnitCategoryView;
 interface
 
 uses
-  System.Classes,
-  System.SysUtils,
-  UnitMoneyUtils,
-  UnitCategoriesTable,
-  UnitCategory,
-  UnitOperation,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.StdCtrls;
+  System.Classes, System.SysUtils, UnitMoneyUtils,
+  UnitCategoriesTable, UnitCategory, UnitOperation,
+  Vcl.Controls, Vcl.Forms, Vcl.StdCtrls;
 
 type
   TcategoryView = class(TForm)
@@ -35,10 +29,10 @@ type
     catsTable: TCategoriesTable;
     procedure setInfo(const operTp: TOperationType);
   public
-    procedure prepareToCreate(const catsTable:
-      TCategoriesTable);
-    procedure prepareToEdit(const catsTable:
-      TCategoriesTable; const id: Integer);
+    procedure prepareToCreate(const catsTable
+      : TCategoriesTable);
+    procedure prepareToEdit(const catsTable
+      : TCategoriesTable; const id: integer);
   end;
 
 var
@@ -48,7 +42,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TCategoryView.actionCreate(Sender: TObject);
+procedure TcategoryView.actionCreate(Sender: TObject);
 var
   item: PCategory;
 begin
@@ -64,13 +58,13 @@ begin
     self.modalResult := mrAbort;
 end;
 
-procedure TCategoryView.actionInit(Sender: TObject);
+procedure TcategoryView.actionInit(Sender: TObject);
 begin
   edtName.maxLength := CAT_NAME_LEN;
 end;
 
-procedure TCategoryView.actionOnNameChange(Sender:
-  TObject);
+procedure TcategoryView.actionOnNameChange
+  (Sender: TObject);
 begin
   if edtName.text = '' then
   begin
@@ -84,7 +78,7 @@ begin
   end;
 end;
 
-procedure TCategoryView.actionSave(Sender: TObject);
+procedure TcategoryView.actionSave(Sender: TObject);
 var
   newItem: PCategory;
 begin
@@ -98,18 +92,18 @@ begin
     self.modalResult := mrAbort;
 end;
 
-procedure TCategoryView.setInfo(const operTp:
-  TOperationType);
+procedure TcategoryView.setInfo(const operTp
+  : TOperationType);
 begin
   case operTp of
-    income:
+  income:
     begin
       lblMoneyBefore.caption := 'Минимально в месяц';
       lblInfo.caption := 'Мы уведомим вас, если до конца' +
         #13#10 + 'месяца вы не достигнете желаемой' +
         #13#10 + 'суммы по данной категории';
     end;
-    outcome:
+  outcome:
     begin
       lblMoneyBefore.caption := 'Максимально в месяц';
       lblInfo.caption :=
@@ -120,16 +114,17 @@ begin
   end;
 end;
 
-procedure TCategoryView.prepareToCreate(const catsTable:
-  TCategoriesTable);
+procedure TcategoryView.prepareToCreate(const catsTable
+  : TCategoriesTable);
 begin
   self.catsTable := catsTable;
   btnSave.visible := false;
   btnCreate.visible := true;
   case catsTable.operTp of
-    income: lblTp.caption := 'Новая категория' + #13#10 +
-      'дохода';
-    outcome: lblTp.caption := 'Новая категория' + #13#10 +
+  income:
+    lblTp.caption := 'Новая категория' + #13#10 + 'дохода';
+  outcome:
+    lblTp.caption := 'Новая категория' + #13#10 +
       'расхода';
   end;
   setInfo(catsTable.operTp);
@@ -138,18 +133,18 @@ begin
   edtPenny.text := '';
 end;
 
-procedure TCategoryView.prepareToEdit(
-  const catsTable: TCategoriesTable;
-  const id: Integer
-);
+procedure TcategoryView.prepareToEdit(const catsTable
+  : TCategoriesTable; const id: integer);
 begin
   self.catsTable := catsTable;
   btnSave.visible := true;
   btnCreate.visible := false;
   case catsTable.operTp of
-    income: lblTp.caption := 'Редактирование' + #13#10 +
+  income:
+    lblTp.caption := 'Редактирование' + #13#10 +
       'категории дохода';
-    outcome: lblTp.caption := 'Редактирование' + #13#10 +
+  outcome:
+    lblTp.caption := 'Редактирование' + #13#10 +
       'категории расхода';
   end;
   setInfo(catsTable.operTp);

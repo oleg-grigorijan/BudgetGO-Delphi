@@ -3,47 +3,44 @@
 interface
 
 uses
-  UnitCategory,
-  UnitOperation,
-  UnitEvents,
-  System.SysUtils;
+  UnitCategory, UnitOperation, UnitEvents, System.SysUtils;
 
 type
   TCategoriesTable = class
   private
     fEventCatsUpd: TEventManager;
-    fCount: Integer;
-    fileName: string[255];
+    fCount: integer;
+    fileName: string;
     fItems: TCategories;
     fOperTp: TOperationType;
-    function checkNameUnique(const name: string): Boolean;
-    function getItemByIndex(const i: Integer): PCategory;
+    function checkNameUnique(const name: string): boolean;
   public
     constructor create(const tp: TOperationType); overload;
     constructor create(const fileName: string;
       const tp: TOperationType); overload;
     destructor destroy(); override;
-    function getItemIndex(const id: Integer): Integer;
-    function addItem(const item: PCategory): Boolean;
-    function editItem(const id: Integer;
-      const newItem: PCategory): Boolean;
-    function getItem(const id: Integer): PCategory;
-    function removeItem(const id: Integer): Boolean;
+    function addItem(const item: PCategory): boolean;
+    function getItem(const id: integer): PCategory;
+    function getItemByIndex(const i: integer): PCategory;
+    function getItemIndex(const id: integer): integer;
+    function editItem(const id: integer;
+      const newItem: PCategory): boolean;
+    procedure removeItem(const id: integer);
 
     property eventCatsUpd: TEventManager
       read fEventCatsUpd;
     property operTp: TOperationType read fOperTp;
-    property items[const i: Integer]: PCategory
+    property items[const i: integer]: PCategory
       read getItemByIndex;
-    property count: Integer read fCount;
+    property count: integer read fCount;
   end;
 
 implementation
 
-function TCategoriesTable.checkNameUnique(const name:
-  string): Boolean;
+function TCategoriesTable.checkNameUnique(const name
+  : string): boolean;
 var
-  i: Integer;
+  i: integer;
 begin
   result := true;
   for i := 0 to self.fCount - 1 do
@@ -54,10 +51,10 @@ begin
     end;
 end;
 
-function TCategoriesTable.getItemIndex(const id: Integer):
-  Integer;
+function TCategoriesTable.getItemIndex
+  (const id: integer): integer;
 var
-  l, r, k: Integer;
+  l, r, k: integer;
 begin
   result := -1;
   l := 0;
@@ -75,16 +72,19 @@ begin
       break;
     end;
   end;
+  // todo: написать обработчик
 end;
 
-constructor TCategoriesTable.create(const tp:
-  TOperationType);
+constructor TCategoriesTable.create(const tp
+  : TOperationType);
 begin
   inherited create();
   fOperTp := tp;
   case tp of
-    income: fEventCatsUpd := TEventManager.create();
-    outcome: fEventCatsUpd := TEventManager.create();
+  income:
+    fEventCatsUpd := TEventManager.create();
+  outcome:
+    fEventCatsUpd := TEventManager.create();
   end;
 end;
 
@@ -95,9 +95,9 @@ var
   itemTmp: PCategory;
 begin
   create(tp);
-  self.fileName := filename;
+  self.fileName := fileName;
   assignFile(f, self.fileName);
-  if not fileExists(self.filename) then
+  if not fileExists(self.fileName) then
     rewrite(f)
   else
   begin
@@ -115,7 +115,7 @@ end;
 destructor TCategoriesTable.destroy();
 var
   f: File of TCategory;
-  i: Integer;
+  i: integer;
 begin
   if self.fileName <> '' then
   begin
@@ -128,8 +128,8 @@ begin
   inherited destroy();
 end;
 
-function TCategoriesTable.addItem(const item: PCategory):
-  Boolean;
+function TCategoriesTable.addItem(const item
+  : PCategory): boolean;
 begin
   result := checkNameUnique(item^.name);
   if result then
@@ -146,10 +146,10 @@ begin
   eventCatsUpd.notify();
 end;
 
-function TCategoriesTable.editItem(const id: Integer;
-  const newItem: PCategory): Boolean;
+function TCategoriesTable.editItem(const id: integer;
+  const newItem: PCategory): boolean;
 var
-  i: Integer;
+  i: integer;
 begin
   result := false;
   i := getItemIndex(id);
@@ -165,10 +165,10 @@ begin
   eventCatsUpd.notify();
 end;
 
-function TCategoriesTable.getItem(const id: Integer):
-  PCategory;
+function TCategoriesTable.getItem(const id: integer)
+  : PCategory;
 var
-  i: Integer;
+  i: integer;
 begin
   result := nil;
   i := getItemIndex(id);
@@ -176,18 +176,16 @@ begin
     result := self.fItems[i];
 end;
 
-function TCategoriesTable.getItemByIndex(const i: Integer):
-  PCategory;
+function TCategoriesTable.getItemByIndex(const i: integer)
+  : PCategory;
 begin
   result := self.fItems[i];
 end;
 
-function TCategoriesTable.removeItem(const id: Integer):
-  Boolean;
+procedure TCategoriesTable.removeItem(const id: integer);
 var
-  i, j: Integer;
+  i, j: integer;
 begin
-  result := false;
   i := getItemIndex(id);
   if i >= 0 then
   begin
@@ -196,7 +194,6 @@ begin
     for j := i to fCount - 1 do
       self.fItems[j] := self.fItems[j + 1];
     setLength(fItems, self.fCount);
-    result := true;
     eventCatsUpd.notify();
   end;
 end;

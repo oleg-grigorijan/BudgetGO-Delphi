@@ -7,25 +7,29 @@ const
 
 type
   TOperationType = (income, outcome);
+
   TOperation = packed record
-    id: Integer;
+    id: integer;
     tp: TOperationType;
-    money: Longword;
-    catId: Integer;
+    money: longword;
+    catId: integer;
     date: TDate;
     description: string[OPER_DESC_LEN];
-    function getDelta(): Longword;
+    function getDelta(): longword;
   end;
+
   POperation = ^TOperation;
   TOperations = array of POperation;
 
 implementation
 
-function TOperation.getDelta(): Longword;
+function TOperation.getDelta(): longword;
 begin
   case tp of
-    income: result := money;
-    outcome: result := -money;
+  income:
+    result := money;
+  outcome:
+    result := -money;
   end;
 end;
 

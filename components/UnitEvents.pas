@@ -2,9 +2,6 @@ unit UnitEvents;
 
 interface
 
-uses
-  System.SysUtils;
-
 type
   ISubscriber = interface
     procedure onEvent(const sender: TObject);
@@ -20,7 +17,8 @@ type
 
 implementation
 
-procedure TEventManager.follow(const subscriber: ISubscriber);
+procedure TEventManager.follow(const subscriber
+  : ISubscriber);
 begin
   setLength(subscribers, length(subscribers) + 1);
   subscribers[length(subscribers) - 1] := subscriber;

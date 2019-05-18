@@ -7,11 +7,13 @@ const
 
 type
   PCategory = ^TCategory;
+
   TCategory = packed record
-    id: Integer;
+    id: integer;
     name: string[CAT_NAME_LEN];
-    moneyMonth: Longword;
+    moneyMonth: longword;
   end;
+
   TCategories = array of PCategory;
 
 implementation

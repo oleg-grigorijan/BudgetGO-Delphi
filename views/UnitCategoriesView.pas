@@ -3,22 +3,11 @@ unit UnitCategoriesView;
 interface
 
 uses
-  System.Classes,
-  System.SysUtils,
-  UnitMoneyUtils,
-  UnitCategoriesTable,
-  UnitCategory,
-  UnitCategoryView,
-  UnitOperation,
-  UnitOperationsTable,
-  Vcl.ComCtrls,
-  Vcl.Controls,
-  Vcl.ExtCtrls,
-  Vcl.Forms,
-  Vcl.Grids,
-  Vcl.Menus,
-  Vcl.StdCtrls,
-  Winapi.Windows;
+  System.Classes, System.SysUtils, UnitMoneyUtils,
+  UnitCategoriesTable, UnitCategory, UnitCategoryView,
+  UnitOperation, UnitOperationsTable, Vcl.ComCtrls,
+  Vcl.Controls, Vcl.ExtCtrls, Vcl.Forms, Vcl.Grids,
+  Vcl.Menus, Vcl.StdCtrls, Winapi.Windows;
 
 type
   TCategoriesView = class(TForm)
@@ -33,22 +22,23 @@ type
     tbcOperType: TTabControl;
     constructor create(owner: TComponent;
       const opers: TOperationsTable;
-      const catsIncome, catsOutcome: TCategoriesTable);
+      const catsIncome, catsOutcome
+      : TCategoriesTable);
     procedure actionCategoryDelete(Sender: TObject);
     procedure actionCategorySelect(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState;
-      X, Y: Integer);
+      X, Y: integer);
     procedure actionCategoryView(Sender: TObject);
     procedure actionOnTypeChange(Sender: TObject);
-  private
-    const
-      INCOME_TAB = 0;
-      OUTCOME_TAB = 1;
-    var
-      opers: TOperationsTable;
-      cats: array[TOperationType] of TCategoriesTable;
-      catsCurr: TCategoriesTable;
-      selectedCatId: Integer;
+  private const
+    INCOME_TAB = 0;
+    OUTCOME_TAB = 1;
+
+  var
+    opers: TOperationsTable;
+    cats: array [TOperationType] of TCategoriesTable;
+    catsCurr: TCategoriesTable;
+    selectedCatId: integer;
   public
     procedure updateData();
   end;
@@ -74,7 +64,7 @@ end;
 procedure TCategoriesView.actionCategoryDelete
   (Sender: TObject);
 var
-  answer: Integer;
+  answer: integer;
 begin
   if selectedCatId <> 0 then
   begin
@@ -96,9 +86,9 @@ end;
 
 procedure TCategoriesView.actionCategorySelect
   (Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+  Shift: TShiftState; X, Y: integer);
 var
-  col, row: Integer;
+  col, row: integer;
 begin
   grdCategories.mouseToCell(X, Y, col, row);
   grdCategories.col := col;
@@ -151,25 +141,25 @@ procedure TCategoriesView.actionOnTypeChange
   (Sender: TObject);
 begin
   case tbcOperType.tabIndex of
-    INCOME_TAB:
-      begin
-        btnCreate.caption := 'Новая категория дохода';
-        grdCategories.cells[2, 0] := 'Минимально в месяц';
-        catsCurr := cats[income];
-      end;
-    OUTCOME_TAB:
-      begin
-        btnCreate.caption := 'Новая категория расхода';
-        grdCategories.cells[2, 0] := 'Максимально в месяц';
-        catsCurr := cats[outcome];
-      end;
+  INCOME_TAB:
+    begin
+      btnCreate.caption := 'Новая категория дохода';
+      grdCategories.cells[2, 0] := 'Минимально в месяц';
+      catsCurr := cats[income];
+    end;
+  OUTCOME_TAB:
+    begin
+      btnCreate.caption := 'Новая категория расхода';
+      grdCategories.cells[2, 0] := 'Максимально в месяц';
+      catsCurr := cats[outcome];
+    end;
   end;
   updateData();
 end;
 
 procedure TCategoriesView.updateData();
 var
-  i: Integer;
+  i: integer;
 begin
   if catsCurr.count = 0 then
     grdCategories.visible := false

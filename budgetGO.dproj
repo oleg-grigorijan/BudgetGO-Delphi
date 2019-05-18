@@ -96,7 +96,7 @@
         <DCCReference Include="models\UnitCategory.pas"/>
         <DCCReference Include="models\UnitOperation.pas"/>
         <DCCReference Include="models\UnitOperationsTable.pas"/>
-        <DCCReference Include="models\UnitCatsStatistics.pas"/>
+        <DCCReference Include="models\UnitCategoriesStatistics.pas"/>
         <DCCReference Include="models\UnitOperationsStatistics.pas"/>
         <DCCReference Include="components\UnitEvents.pas"/>
         <DCCReference Include="components\UnitMoneyUtils.pas"/>

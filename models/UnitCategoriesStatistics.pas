@@ -1,19 +1,17 @@
-unit UnitCatsStatistics;
+unit UnitCategoriesStatistics;
 
 interface
 
 uses
-  UnitCategoriesTable,
-  UnitOperation,
-  UnitOperationsStatistics,
-  UnitEvents,
-  System.SysUtils;
+  UnitCategoriesTable, UnitOperation,
+  UnitOperationsStatistics, UnitEvents, System.SysUtils;
 
 type
   TCatsStatus = (csEmpty, csSuccess, csFail);
   TCatsMoney = array of longword;
 
-  TCatsStatistics = class(TInterfacedObject, ISubscriber)
+  TCategoriesStatistics = class(TInterfacedObject,
+    ISubscriber)
   private
     fEventCatsMoneyUpd: TEventManager;
     fEventCatsStatusUpd: TEventManager;
@@ -39,9 +37,9 @@ type
 
 implementation
 
-constructor TCatsStatistics.create(const cats:
-  TCategoriesTable; const opersStats:
-  TOperationsStatistics);
+constructor TCategoriesStatistics.create(const cats
+  : TCategoriesTable;
+  const opersStats: TOperationsStatistics);
 begin
   inherited create();
 
@@ -58,9 +56,9 @@ begin
   determineCatsStatus();
 end;
 
-procedure TCatsStatistics.recountCatsMoney();
+procedure TCategoriesStatistics.recountCatsMoney();
 var
-  i, j: Integer;
+  i, j: integer;
 begin
   fMoney := nil;
   setLength(fMoney, cats.count);
@@ -74,9 +72,9 @@ begin
   eventCatsMoneyUpd.notify();
 end;
 
-procedure TCatsStatistics.determineCatsStatus();
+procedure TCategoriesStatistics.determineCatsStatus();
 var
-  i: Integer;
+  i: integer;
 begin
   if cats.count = 0 then
     fStatus := csEmpty
@@ -85,19 +83,20 @@ begin
     fStatus := csSuccess;
     for i := 0 to cats.count - 1 do
       case cats.operTp of
-        income:
-          if fMoney[i] < cats.items[i]^.moneyMonth then
-            fStatus := csFail;
-        outcome:
-          if (cats.items[i]^.moneyMonth <> 0) and
-            (fMoney[i] > cats.items[i]^.moneyMonth) then
-            fStatus := csFail;
+      income:
+        if fMoney[i] < cats.items[i]^.moneyMonth then
+          fStatus := csFail;
+      outcome:
+        if (cats.items[i]^.moneyMonth <> 0) and
+          (fMoney[i] > cats.items[i]^.moneyMonth) then
+          fStatus := csFail;
       end;
   end;
   eventCatsStatusUpd.notify();
 end;
 
-procedure TCatsStatistics.onEvent(const sender: TObject);
+procedure TCategoriesStatistics.onEvent(const sender
+  : TObject);
 begin
   if (sender = cats.eventCatsUpd) or
     (sender = opersStats.eventOpersCurrUpd) then

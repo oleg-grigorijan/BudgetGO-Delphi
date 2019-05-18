@@ -626,7 +626,6 @@ object homeView: ThomeView
     Color = 3355443
     ParentBackground = False
     TabOrder = 1
-    ExplicitTop = 42
     object imgBG: TImage
       Left = 0
       Top = 0
