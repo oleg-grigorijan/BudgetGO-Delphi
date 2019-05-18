@@ -47,7 +47,7 @@ begin
     if (self.fItems[i]^.name = name) then
     begin
       result := false;
-      break;
+      exit;
     end;
 end;
 
@@ -56,7 +56,6 @@ function TCategoriesTable.getItemIndex
 var
   l, r, k: integer;
 begin
-  result := -1;
   l := 0;
   r := self.fCount - 1;
   while l <= r do
@@ -69,10 +68,10 @@ begin
     else
     begin
       result := k;
-      break;
+      exit;
     end;
   end;
-  // todo: написать обработчик
+  raise exception.Create('Invalid category id');
 end;
 
 constructor TCategoriesTable.create(const tp
@@ -153,27 +152,21 @@ var
 begin
   result := false;
   i := getItemIndex(id);
-  if i >= 0 then
-    if (newItem^.name = fItems[i].name) or
-      checkNameUnique(newItem^.name) then
-    begin
-      newItem^.id := fItems[i]^.id;
-      dispose(fItems[i]);
-      fItems[i] := newItem;
-      result := true;
-    end;
+  if (newItem^.name = fItems[i].name) or
+    checkNameUnique(newItem^.name) then
+  begin
+    newItem^.id := fItems[i]^.id;
+    dispose(fItems[i]);
+    fItems[i] := newItem;
+    result := true;
+  end;
   eventCatsUpd.notify();
 end;
 
 function TCategoriesTable.getItem(const id: integer)
   : PCategory;
-var
-  i: integer;
 begin
-  result := nil;
-  i := getItemIndex(id);
-  if i >= 0 then
-    result := self.fItems[i];
+  result := self.fItems[getItemIndex(id)];
 end;
 
 function TCategoriesTable.getItemByIndex(const i: integer)
@@ -187,15 +180,12 @@ var
   i, j: integer;
 begin
   i := getItemIndex(id);
-  if i >= 0 then
-  begin
-    dec(self.fCount);
-    dispose(self.fItems[i]);
-    for j := i to fCount - 1 do
-      self.fItems[j] := self.fItems[j + 1];
-    setLength(fItems, self.fCount);
-    eventCatsUpd.notify();
-  end;
+  dec(self.fCount);
+  dispose(self.fItems[i]);
+  for j := i to fCount - 1 do
+    self.fItems[j] := self.fItems[j + 1];
+  setLength(fItems, self.fCount);
+  eventCatsUpd.notify();
 end;
 
 end.

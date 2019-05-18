@@ -23,6 +23,9 @@ type
 
 implementation
 
+uses
+  System.SysUtils;
+
 function TOperation.getDelta(): longword;
 begin
   case tp of
@@ -30,6 +33,8 @@ begin
     result := money;
   outcome:
     result := -money;
+  else
+    raise exception.create('Unexpected operation type');
   end;
 end;
 

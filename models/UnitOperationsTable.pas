@@ -60,18 +60,17 @@ function TOperationsTable.getNodeById(const id: integer)
 var
   nodeCurr: TOperationListNode;
 begin
-  result := nil;
   nodeCurr := self.last;
   while nodeCurr <> nil do
   begin
     if nodeCurr.item^.id = id then
     begin
       result := nodeCurr;
-      break;
+      exit;
     end;
     nodeCurr := nodeCurr.prev;
   end;
-  // todo: прописать обработчик
+  raise exception.create('Invalid operation id');
 end;
 
 procedure TOperationsTable.insertNode(const node
@@ -202,13 +201,8 @@ end;
 
 function TOperationsTable.getItem(const id: integer)
   : POperation;
-var
-  node: TOperationListNode;
 begin
-  result := nil;
-  node := getNodeById(id);
-  if node <> nil then
-    result := node.item;
+  result := getNodeById(id).item;
 end;
 
 function TOperationsTable.getItems(const month,
@@ -242,13 +236,9 @@ var
   node: TOperationListNode;
 begin
   node := getNodeById(id);
-  if node <> nil then
-  begin
-    fBalance := fBalance - node.item^.getDelta;
-    removeNode(node);
-    eventOpersUpd.notify();
-  end;
-  // todo: прописать исключение
+  fBalance := fBalance - node.item^.getDelta;
+  removeNode(node);
+  eventOpersUpd.notify();
 end;
 
 procedure TOperationsTable.removeItems
@@ -278,26 +268,23 @@ var
   node: TOperationListNode;
 begin
   node := getNodeById(id);
-  if node <> nil then
+  oldItem := node.item;
+  newItem^.id := oldItem^.id;
+  fBalance := fBalance - oldItem^.getDelta +
+    newItem^.getDelta;
+  if ((node.prev = nil) or (node.prev.item^.date <=
+    newItem^.date)) and
+    ((node.next = nil) or (node.next.item^.date >=
+    newItem^.date)) then
   begin
-    oldItem := node.item;
-    newItem^.id := oldItem^.id;
-    fBalance := fBalance - oldItem^.getDelta +
-      newItem^.getDelta;
-    if ((node.prev = nil) or (node.prev.item^.date <=
-      newItem^.date)) and
-      ((node.next = nil) or (node.next.item^.date >=
-      newItem^.date)) then
-    begin
-      node.item := newItem;
-      dispose(oldItem);
-    end
-    else
-    begin
-      removeNode(node);
-      node := TOperationListNode.create(newItem);
-      insertNode(node);
-    end;
+    node.item := newItem;
+    dispose(oldItem);
+  end
+  else
+  begin
+    removeNode(node);
+    node := TOperationListNode.create(newItem);
+    insertNode(node);
   end;
   eventOpersUpd.notify();
 end;
