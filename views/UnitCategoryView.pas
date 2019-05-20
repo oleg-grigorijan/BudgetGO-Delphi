@@ -9,6 +9,7 @@ uses
 
 type
   TcategoryView = class(TForm)
+    // Components
     btnCancel: TButton;
     btnCreate: TButton;
     btnSave: TButton;
@@ -21,12 +22,16 @@ type
     lblPennyAfter: TLabel;
     lblRublesAfter: TLabel;
     lblTp: TLabel;
+
+    // Actions
     procedure actionCreate(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOnNameChange(Sender: TObject);
     procedure actionSave(Sender: TObject);
   private
+    // Models
     catsTable: TCategoriesTable;
+
     procedure setInfo(const operTp: TOperationType);
   public
     procedure prepareToCreate(const catsTable

@@ -10,6 +10,7 @@ uses
 
 type
   TOperationView = class(TForm)
+    // Components
     btnCancel: TButton;
     btnCreate: TButton;
     btnSave: TButton;
@@ -25,17 +26,22 @@ type
     lblPennyAfter: TLabel;
     lblRublesAfter: TLabel;
     lblTp: TLabel;
+
     constructor create(owner: TComponent;
       const opers: TOperationsTable;
       const catsIncome, catsOutcome
       : TCategoriesTable); overload;
+
+    // Actions
     procedure actionCreate(Sender: TObject);
     procedure actionMoneyChange(Sender: TObject);
     procedure actionSave(Sender: TObject);
   private
+    // Models
     cats: array [TOperationType] of TCategoriesTable;
     catsCurr: TCategoriesTable;
     opers: TOperationsTable;
+
     procedure setCategories(const tp: TOperationType);
   public
     procedure prepareToCreate(const tp: TOperationType);
@@ -186,8 +192,8 @@ var
 begin
   catsCurr := cats[tp];
   cbbCategory.clear;
-  for i := 0 to self.catsCurr.count - 1 do
-    cbbCategory.items.add(self.catsCurr.items[i]^.name);
+  for i := 0 to catsCurr.count - 1 do
+    cbbCategory.items.add(catsCurr.items[i]^.name);
 end;
 
 end.

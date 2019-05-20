@@ -11,6 +11,7 @@ uses
 
 type
   TCategoriesView = class(TForm)
+    // Components
     btnCreate: TButton;
     grdCategories: TStringGrid;
     lblHeader: TLabel;
@@ -20,24 +21,29 @@ type
     pmCategory: TPopupMenu;
     shpNoCategoriesBG: TShape;
     tbcOperType: TTabControl;
+
     constructor create(owner: TComponent;
       const opers: TOperationsTable;
       const catsIncome, catsOutcome
       : TCategoriesTable);
+
+    // Actions
     procedure actionCategoryDelete(Sender: TObject);
     procedure actionCategorySelect(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState;
       X, Y: integer);
     procedure actionCategoryView(Sender: TObject);
     procedure actionOnTypeChange(Sender: TObject);
-  private const
+  private
+  const
     INCOME_TAB = 0;
     OUTCOME_TAB = 1;
-
   var
+    // Models
     opers: TOperationsTable;
     cats: array [TOperationType] of TCategoriesTable;
     catsCurr: TCategoriesTable;
+
     selectedCatId: integer;
   public
     procedure updateData();

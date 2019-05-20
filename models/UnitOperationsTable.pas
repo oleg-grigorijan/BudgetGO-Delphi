@@ -60,7 +60,7 @@ function TOperationsTable.getNodeById(const id: integer)
 var
   nodeCurr: TOperationListNode;
 begin
-  nodeCurr := self.last;
+  nodeCurr := last;
   while nodeCurr <> nil do
   begin
     if nodeCurr.item^.id = id then
@@ -78,16 +78,14 @@ procedure TOperationsTable.insertNode(const node
 var
   nodeCurr: TOperationListNode;
 begin
-  nodeCurr := self.last;
+  nodeCurr := last;
   while (nodeCurr <> nil) and
     (nodeCurr.item^.date > node.item^.date) do
-  begin
     nodeCurr := nodeCurr.prev;
-  end;
   if nodeCurr <> nil then
   begin
     if nodeCurr.next = nil then
-      self.last := node
+      last := node
     else
     begin
       node.next := nodeCurr.next;
@@ -98,14 +96,14 @@ begin
   end
   else
   begin
-    if self.head = nil then
-      self.last := node
+    if head = nil then
+      last := node
     else
     begin
-      node.next := self.head;
-      (self.head).prev := node;
+      node.next := head;
+      head.prev := node;
     end;
-    self.head := node;
+    head := node;
   end;
 end;
 
@@ -116,17 +114,17 @@ begin
   begin
     (node.prev).next := node.next;
     if node.next = nil then
-      self.last := node.prev
+      last := node.prev
     else
       (node.next).prev := node.prev;
   end
   else
   begin
-    self.head := node.next;
-    if self.head = nil then
-      self.last := nil
+    head := node.next;
+    if head = nil then
+      last := nil
     else
-      (self.head).prev := nil
+      head.prev := nil
   end;
   dispose(node.item);
   node.destroy();
@@ -140,14 +138,15 @@ end;
 
 constructor TOperationsTable.create(const fileName
   : string);
+{ Table creation with elements import from the file. }
 var
   f: File of TOperation;
   itemTmp: POperation;
 begin
   create();
   self.fileName := fileName;
-  assignFile(f, self.fileName);
-  if not fileExists(self.fileName) then
+  assignFile(f, fileName);
+  if not fileExists(fileName) then
     rewrite(f)
   else
   begin
@@ -156,22 +155,23 @@ begin
     begin
       new(itemTmp);
       read(f, itemTmp^);
-      self.addItem(itemTmp);
+      addItem(itemTmp);
     end;
   end;
   closeFile(f);
 end;
 
 destructor TOperationsTable.destroy();
+{ Table destruction with elements export to the file. }
 var
   f: File of TOperation;
   nodeCurr: TOperationListNode;
 begin
-  if self.fileName <> '' then
+  if fileName <> '' then
   begin
-    assignFile(f, self.fileName);
+    assignFile(f, fileName);
     rewrite(f);
-    nodeCurr := self.head;
+    nodeCurr := head;
     while nodeCurr <> nil do
     begin
       write(f, nodeCurr.item^);
@@ -190,11 +190,11 @@ begin
   insertNode(node);
   if item^.id = 0 then
   begin
-    inc(self.maxId);
-    item^.id := self.maxId;
+    inc(maxId);
+    item^.id := maxId;
   end
-  else if item^.id > self.maxId then
-    self.maxId := item^.id;
+  else if item^.id > maxId then
+    maxId := item^.id;
   fBalance := fBalance + item^.getDelta;
   eventOpersUpd.notify();
 end;
@@ -213,7 +213,7 @@ var
 begin
   found := 0;
   setLength(result, found);
-  nodeCurr := self.last;
+  nodeCurr := last;
   while (nodeCurr <> nil) and
     ((yearOf(nodeCurr.item^.date) <> year) or
     (monthOfTheYear(nodeCurr.item^.date) <> month)) do
@@ -243,10 +243,12 @@ end;
 
 procedure TOperationsTable.removeItems
   (const tp: TOperationType; const catId: integer);
+{ Removing all items with the given operation type and
+  category id. }
 var
   nodeCurr, nodeTmp: TOperationListNode;
 begin
-  nodeCurr := self.last;
+  nodeCurr := last;
   while nodeCurr <> nil do
     if (nodeCurr.item^.tp = tp) and
       (nodeCurr.item^.catId = catId) then
@@ -263,6 +265,8 @@ end;
 
 procedure TOperationsTable.editItem(const id: integer;
   const newItem: POperation);
+{ Changing fields of operation with the given id
+  to fields of newItem. }
 var
   oldItem: POperation;
   node: TOperationListNode;

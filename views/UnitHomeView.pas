@@ -13,6 +13,9 @@ uses
 
 type
   THomeView = class(TForm, ISubscriber)
+    // Components
+    btnCreateIncome: TButton;
+    btnCreateOutcome: TButton;
     cbbMonth: TComboBox;
     cbbYear: TComboBox;
     grdCatsIncome: TStringGrid;
@@ -23,6 +26,8 @@ type
     imgIcoNo: TImage;
     imgIcoOk: TImage;
     imgIcoWarning: TImage;
+    imgBG: TImage;
+    imgLogo: TImage;
     lblBalanceBefore: TLabel;
     lblCatsBefore: TLabel;
     lblCatsIncomeBefore: TLabel;
@@ -37,6 +42,8 @@ type
     lblOutcome: TLabel;
     lblOutcomeBefore: TLabel;
     lblStatisticsBefore: TLabel;
+    lblEditCategories: TLabel;
+    lblBalance: TLabel;
     miDelete: TMenuItem;
     miEdit: TMenuItem;
     miRepeat: TMenuItem;
@@ -50,12 +57,8 @@ type
     pnlStatistics: TPanel;
     shpIncome: TShape;
     shpOutcome: TShape;
-    imgBG: TImage;
-    lblEditCategories: TLabel;
-    lblBalance: TLabel;
-    btnCreateIncome: TButton;
-    btnCreateOutcome: TButton;
-    imgLogo: TImage;
+
+    // Actions
     procedure actionCategoriesView(Sender: TObject);
     procedure actionInit(Sender: TObject);
     procedure actionOperationDelete(Sender: TObject);
@@ -71,6 +74,7 @@ type
       MousePos: TPoint; var Handled: boolean);
     procedure actionMonthUpdate(Sender: TObject);
     procedure actionYearUpdate(Sender: TObject);
+
   private
     lblCatsStatus: array [TOperationType] of TLabel;
     imgIcons: array [TCatsStatus] of TImage;
@@ -78,6 +82,7 @@ type
     grdCats: array [TOperationType] of TStringGrid;
     btnCreateOper: array [TOperationType] of TButton;
     selectedOperId: integer;
+
     // Models
     opers: TOperationsTable;
     cats: array [TOperationType] of TCategoriesTable;
@@ -87,6 +92,9 @@ type
 
   const
     currencyStr = ' руб.';
+    procedure setGridHeight(const grid: TStringGrid);
+
+    // View updates
     procedure updCategoriesStatus(const tp
       : TOperationType);
     procedure updCategoriesGrid(const tp: TOperationType);
@@ -94,7 +102,7 @@ type
     procedure updIncomeOutcome();
     procedure updBtnCreateOper(const tp: TOperationType);
     procedure updBalance();
-    procedure setGridHeight(const grid: TStringGrid);
+
   public
     procedure onEvent(const Sender: TObject);
     procedure setModels(const opersStats
@@ -291,8 +299,8 @@ procedure THomeView.actionScroll(Sender: TObject;
   Shift: TShiftState; WheelDelta: integer;
   MousePos: TPoint; var Handled: boolean);
 begin
-  self.vertScrollBar.Position :=
-    self.vertScrollBar.Position - WheelDelta;
+  vertScrollBar.Position := vertScrollBar.Position -
+    WheelDelta;
 end;
 
 procedure THomeView.actionMonthUpdate(Sender: TObject);

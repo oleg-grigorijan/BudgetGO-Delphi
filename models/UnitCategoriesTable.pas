@@ -39,12 +39,14 @@ implementation
 
 function TCategoriesTable.checkNameUnique(const name
   : string): boolean;
+{ Checking whether there is a table element
+  with the given name. }
 var
   i: integer;
 begin
   result := true;
-  for i := 0 to self.fCount - 1 do
-    if (self.fItems[i]^.name = name) then
+  for i := 0 to count - 1 do
+    if (fItems[i]^.name = name) then
     begin
       result := false;
       exit;
@@ -57,13 +59,13 @@ var
   l, r, k: integer;
 begin
   l := 0;
-  r := self.fCount - 1;
+  r := count - 1;
   while l <= r do
   begin
     k := (l + r) div 2;
-    if self.fItems[k]^.id < id then
+    if fItems[k]^.id < id then
       l := k + 1
-    else if self.fItems[k]^.id > id then
+    else if fItems[k]^.id > id then
       r := k - 1
     else
     begin
@@ -89,14 +91,15 @@ end;
 
 constructor TCategoriesTable.create(const fileName: string;
   const tp: TOperationType);
+{ Table creation with elements import from the file. }
 var
   f: File of TCategory;
   itemTmp: PCategory;
 begin
   create(tp);
   self.fileName := fileName;
-  assignFile(f, self.fileName);
-  if not fileExists(self.fileName) then
+  assignFile(f, fileName);
+  if not fileExists(fileName) then
     rewrite(f)
   else
   begin
@@ -105,23 +108,24 @@ begin
     begin
       new(itemTmp);
       read(f, itemTmp^);
-      self.addItem(itemTmp);
+      addItem(itemTmp);
     end;
   end;
   closeFile(f);
 end;
 
 destructor TCategoriesTable.destroy();
+{ Table destruction with elements export to the file. }
 var
   f: File of TCategory;
   i: integer;
 begin
-  if self.fileName <> '' then
+  if fileName <> '' then
   begin
-    assignFile(f, self.fileName);
+    assignFile(f, fileName);
     rewrite(f);
-    for i := 0 to self.fCount - 1 do
-      write(f, self.fItems[i]^);
+    for i := 0 to count - 1 do
+      write(f, fItems[i]^);
     closeFile(f);
   end;
   inherited destroy();
@@ -134,13 +138,13 @@ begin
   if result then
   begin
     if item^.id = 0 then
-      if self.fCount = 0 then
+      if count = 0 then
         item^.id := 1
       else
-        item^.id := self.fItems[fCount - 1]^.id + 1;
-    inc(self.fCount);
-    setLength(fItems, self.fCount);
-    self.fItems[fCount - 1] := item;
+        item^.id := fItems[count - 1]^.id + 1;
+    inc(fCount);
+    setLength(fItems, count);
+    fItems[count - 1] := item;
   end;
   eventCatsUpd.notify();
 end;
@@ -166,13 +170,13 @@ end;
 function TCategoriesTable.getItem(const id: integer)
   : PCategory;
 begin
-  result := self.fItems[getItemIndex(id)];
+  result := fItems[getItemIndex(id)];
 end;
 
 function TCategoriesTable.getItemByIndex(const i: integer)
   : PCategory;
 begin
-  result := self.fItems[i];
+  result := fItems[i];
 end;
 
 procedure TCategoriesTable.removeItem(const id: integer);
@@ -180,11 +184,11 @@ var
   i, j: integer;
 begin
   i := getItemIndex(id);
-  dec(self.fCount);
-  dispose(self.fItems[i]);
-  for j := i to fCount - 1 do
-    self.fItems[j] := self.fItems[j + 1];
-  setLength(fItems, self.fCount);
+  dec(fCount);
+  dispose(fItems[i]);
+  for j := i to count - 1 do
+    fItems[j] := fItems[j + 1];
+  setLength(fItems, count);
   eventCatsUpd.notify();
 end;
 
