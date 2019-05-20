@@ -109,6 +109,7 @@ object categoryView: TcategoryView
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
+    MaxLength = 9
     NumbersOnly = True
     ParentFont = False
     ParentShowHint = False
@@ -127,6 +128,7 @@ object categoryView: TcategoryView
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
+    MaxLength = 2
     NumbersOnly = True
     ParentFont = False
     TabOrder = 2
