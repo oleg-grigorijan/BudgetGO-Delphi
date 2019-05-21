@@ -71,7 +71,7 @@ end;
 procedure TcategoryView.actionOnNameChange
   (Sender: TObject);
 begin
-  if edtName.text = '' then
+  if trim(edtName.text) = '' then
   begin
     btnCreate.enabled := false;
     btnSave.enabled := false;
