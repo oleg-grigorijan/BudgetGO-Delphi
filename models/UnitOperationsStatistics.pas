@@ -18,7 +18,7 @@ type
     fIncomeMonth: longword;
     fOutcomeMonth: longword;
     procedure recountIncomeOutcome();
-    procedure setOpersCurr(const opCurr: TOperations);
+    procedure updOpersCurr();
   public
     constructor create(const opers: TOperationsTable;
       const month, year: integer);
@@ -27,8 +27,7 @@ type
     procedure onEvent(const sender: TObject);
 
     property opersTable: TOperationsTable read opers;
-    property opersCurr: TOperations read fOpersCurr
-      write setOpersCurr;
+    property opersCurr: TOperations read fOpersCurr;
     property yearCurr: integer read fYearCurr
       write setYearCurr;
     property monthCurr: integer read fMonthCurr
@@ -52,29 +51,53 @@ begin
 
   fMonthCurr := month;
   fYearCurr := year;
-  setOpersCurr(opers.getItems(monthCurr, yearCurr));
+  updOpersCurr();
 end;
 
 procedure TOperationsStatistics.setYearCurr(const year
   : integer);
 begin
-  fYearCurr := year;
-  setOpersCurr(opers.getItems(monthCurr, yearCurr));
+  if fYearCurr <> year then
+  begin
+    fYearCurr := year;
+    updOpersCurr();
+  end;
 end;
 
 procedure TOperationsStatistics.setMonthCurr(const month
   : integer);
 begin
-  fMonthCurr := month;
-  setOpersCurr(opers.getItems(monthCurr, yearCurr));
+  if fMonthCurr <> month then
+  begin
+    fMonthCurr := month;
+    updOpersCurr();
+  end;
 end;
 
-procedure TOperationsStatistics.setOpersCurr(const opCurr
-  : TOperations);
+procedure TOperationsStatistics.updOpersCurr();
+var
+  opersNew: TOperations;
+  isUpdNeeded: boolean;
+  i: integer;
 begin
-  fOpersCurr := opCurr;
-  recountIncomeOutcome();
-  eventOpersCurrUpd.notify();
+  opersNew := opers.getItems(monthCurr, yearCurr);
+  isUpdNeeded := false;
+  if length(opersNew) <> length(opersCurr) then
+    isUpdNeeded := true
+  else
+    for i := 0 to length(opersNew) - 1 do
+    if opersNew[i] <> opersCurr[i] then
+    begin
+      isUpdNeeded := true;
+      break;
+    end;
+
+  if isUpdNeeded then
+  begin
+    fOpersCurr := opersNew;
+    recountIncomeOutcome();
+    eventOpersCurrUpd.notify();
+  end;
 end;
 
 procedure TOperationsStatistics.recountIncomeOutcome();
@@ -97,7 +120,7 @@ procedure TOperationsStatistics.onEvent(const sender
   : TObject);
 begin
   if sender = opers.eventOpersUpd then
-    setOpersCurr(opers.getItems(monthCurr, yearCurr))
+    updOpersCurr()
   else
     raise exception.create('Unexpected event');
 end;

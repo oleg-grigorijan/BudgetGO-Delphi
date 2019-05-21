@@ -59,9 +59,14 @@ end;
 procedure TCategoriesStatistics.recountCatsMoney();
 var
   i, j: integer;
+  moneyOld: TCatsMoney;
+  isUpdNeeded: boolean;
 begin
+  isUpdNeeded := false;
+  moneyOld := fMoney;
   fMoney := nil;
   setLength(fMoney, cats.count);
+  
   for i := 0 to length(opersStats.opersCurr) - 1 do
     with opersStats.opersCurr[i]^ do
       if tp = cats.operTp then
@@ -69,13 +74,27 @@ begin
         j := cats.getItemIndex(catId);
         fMoney[j] := fMoney[j] + money;
       end;
-  eventCatsMoneyUpd.notify();
+
+  if length(moneyOld) <> cats.count then
+    isUpdNeeded := true
+  else
+    for i := 0 to cats.count - 1 do
+      if moneyOld[i] <> money[i] then
+      begin
+        isUpdNeeded := true;
+        break;
+      end;  
+    
+  if isUpdNeeded then
+    eventCatsMoneyUpd.notify();
 end;
 
 procedure TCategoriesStatistics.determineCatsStatus();
 var
   i: integer;
+  oldStatus: TCatsStatus;
 begin
+  oldStatus := status;
   if cats.count = 0 then
     fStatus := csEmpty
   else
@@ -92,7 +111,8 @@ begin
           fStatus := csFail;
       end;
   end;
-  eventCatsStatusUpd.notify();
+  if oldStatus <> status then
+    eventCatsStatusUpd.notify();
 end;
 
 procedure TCategoriesStatistics.onEvent(const sender
