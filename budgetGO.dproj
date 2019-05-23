@@ -75,6 +75,11 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Icon_MainIcon>budgetGO_Icon.ico</Icon_MainIcon>
+        <VerInfo_MajorVer>2</VerInfo_MajorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=2.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -90,17 +95,34 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="views\UnitTHomeView.pas">
+        <DCCReference Include="models\UnitCategoriesTable.pas"/>
+        <DCCReference Include="models\UnitCategory.pas"/>
+        <DCCReference Include="models\UnitOperation.pas"/>
+        <DCCReference Include="models\UnitOperationsTable.pas"/>
+        <DCCReference Include="models\UnitCategoriesStatistics.pas"/>
+        <DCCReference Include="models\UnitOperationsStatistics.pas"/>
+        <DCCReference Include="components\UnitEvents.pas"/>
+        <DCCReference Include="components\UnitMoneyUtils.pas"/>
+        <DCCReference Include="views\UnitCategoriesView.pas">
+            <Form>categoriesView</Form>
+        </DCCReference>
+        <DCCReference Include="views\UnitCategoryView.pas">
+            <Form>categoryView</Form>
+        </DCCReference>
+        <DCCReference Include="views\UnitHomeView.pas">
             <Form>homeView</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="models\UnitTOperation.pas"/>
-        <DCCReference Include="models\UnitTOperationList.pas"/>
-        <DCCReference Include="models\UnitTOperationListNode.pas"/>
-        <DCCReference Include="views\UnitTOperationView.pas">
-            <Form>OperationView</Form>
-            <FormType>dfm</FormType>
+        <DCCReference Include="views\UnitOperationView.pas">
+            <Form>operationView</Form>
         </DCCReference>
+        <RcItem Include="..\GoogleSans-Bold.ttf">
+            <ResourceType>FONT</ResourceType>
+            <ResourceId>1</ResourceId>
+        </RcItem>
+        <RcItem Include="..\GoogleSans-Regular.ttf">
+            <ResourceType>FONT</ResourceType>
+            <ResourceId>2</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -121,11 +143,27 @@
                 <Source>
                     <Source Name="MainSource">BudgetGO.dpr</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k260.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp260.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
+                <DeployFile LocalName="..\GoogleSans-Bold.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\BudgetGO.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>BudgetGO.exe</RemoteName>
+                        <RemoteName>budgetGO.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\GoogleSans-Regular.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
